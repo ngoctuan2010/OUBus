@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="55.0" layoutY="70.0" prefHeight="200.0" prefWidth="222.0" styleClass="box-order" stylesheets="@Style.css">
+         <children>
+            <MenuButton mnemonicParsing="false" prefHeight="26.0" prefWidth="222.0" text="Nơi đi" textFill="#07689f">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </MenuButton>
+            <MenuButton mnemonicParsing="false" prefHeight="26.0" prefWidth="227.0" text="Nơi đến" textFill="#07689f">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </MenuButton>
+            <DatePicker prefHeight="26.0" prefWidth="222.0" promptText="Ngày khởi hành" />
+         </children>
+      </VBox>
+   </children>
+</Pane>

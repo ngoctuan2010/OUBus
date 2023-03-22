@@ -1,0 +1,59 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 16, 2023, 5:02:20 PM
+    Author     : bthta
+*/
+/*TỔNG QUÁT*/
+.background{
+-fx-background-color:#05266b;
+}
+
+/*LOGIN*/
+.btn-login{
+    -fx-background-color: #fdd428;
+    
+}
+
+.btn-login:hover{
+    -fx-opacity: 0.8;
+}
+
+.btn-guest:hover{
+    -fx-opacity: 0.8;
+}
+
+/*BÁN VÉ*/
+.btn-buyticket{
+    -fx-background-color: #21ba45;
+}
+.btn-buyticket:hover{
+    -fx-opacity: 0.8; 
+}
+.bg-option{
+    -fx-background-color: #ffffff;
+}
+/*Hệ Thống*/
+.bg-navigation{
+    -fx-background-color: #07689F;
+}
+
+.box{
+    -fx-background-color: #fbfbfb;
+}
+.btn-button{
+    -fx-background-color: #ffffff;
+    -fx-border-bottom-style: solid;
+    -fx-border-color: #cccccc; 
+}
+.btn-button:hover{
+    -fx-cursor:hand; 
+    -fx-opacity: 0.8; 
+}
+.btn-close{
+    -fx-background-color: #FF7E67;
+    -fx-cursor:hand; 
+    -fx-opacity: 0.8; 
+}
