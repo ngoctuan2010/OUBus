@@ -1,2 +1,6 @@
+com\oubus\oubus\PrimaryController.class
 com\oubus\oubus\App.class
-module-info.class
+com\oubus\oubus\MainController.class
+com\oubus\oubus\LoginController.class
+com\oubus\oubus\SecondaryController.class
+com\oubus\oubus\BuyTicketsController.class
