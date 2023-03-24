@@ -4,6 +4,7 @@
  */
 package com.oubus.pojo;
 
+import java.sql.Date;
 import java.util.UUID;
 
 /**
@@ -14,10 +15,16 @@ public class Employee {
 
     private String employeeID;
     private String name;
+    private boolean sex;
+    private Date DateOfBirth;
+    private String nationality;
+    private String nationalID;
     private String address;
     private String email;
     private String telephone;
-
+    private String position;
+    
+    
     {
         employeeID = UUID.randomUUID().toString();
     }
