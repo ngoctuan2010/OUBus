@@ -33,20 +33,18 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </Label>
-            <Label prefHeight="15.0" prefWidth="177.0" text="Ngày đi" textFill="#07689f">
-               <font>
-                  <Font name="Arial" size="12.0" />
-               </font>
-            </Label>
             <Label prefHeight="15.0" prefWidth="57.0" text="Xe" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="188.0" />
                </HBox.margin>
             </Label>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
       <HBox prefHeight="2.0" prefWidth="690.0">
          <children>
@@ -55,7 +53,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </ChoiceBox>
-            <DatePicker>
+            <DatePicker promptText="Ngày đi">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
@@ -65,22 +63,6 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </ChoiceBox>
-            <Button mnemonicParsing="false" prefHeight="8.0" prefWidth="78.0" styleClass="btn-buyticket" text="Bán vé" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="70.0" styleClass="btn-buyticket" text="Hủy" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </Button>
          </children>
       </HBox>
       <HBox prefHeight="7.0" prefWidth="690.0">
@@ -97,8 +79,14 @@
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </Label>
          </children>
+         <VBox.margin>
+            <Insets top="4.0" />
+         </VBox.margin>
       </HBox>
       <HBox prefHeight="26.0" prefWidth="690.0">
          <children>
@@ -138,14 +126,50 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
-            <ChoiceBox prefHeight="26.0" prefWidth="160.0">
-               <HBox.margin>
-                  <Insets left="10.0" right="160.0" />
-               </HBox.margin>
-            </ChoiceBox>
-            <TextField prefHeight="26.0" prefWidth="331.0" promptText="Ghi chú">
+            <TextField promptText="Email">
                <HBox.margin>
                   <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <ChoiceBox prefHeight="26.0" prefWidth="346.0">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ChoiceBox>
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="8.0" prefWidth="78.0" styleClass="btn-buyticket" text="Bán vé" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="8.0" prefWidth="78.0" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="8.0" prefWidth="78.0" styleClass="btn-buyticket" text="Hủy vé" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <TextField prefHeight="26.0" prefWidth="331.0" promptText="Ghi chú">
+               <HBox.margin>
+                  <Insets left="80.0" />
                </HBox.margin>
             </TextField>
          </children>

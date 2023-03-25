@@ -35,7 +35,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .bg-option{
     -fx-background-color: #ffffff;
 }
-/*Hệ Thống*/
+/*Main*/
 .bg-navigation{
     -fx-background-color: #07689F;
 }
@@ -51,6 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .btn-button:hover{
     -fx-cursor:hand; 
     -fx-opacity: 0.8; 
+    -fx-background-color: #07689F; 
 }
 .btn-close{
     -fx-background-color: #FF7E67;
