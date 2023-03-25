@@ -35,7 +35,7 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý khách hàng" textFill="#07689f">
+            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadCustomers" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý khách hàng" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>

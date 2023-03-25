@@ -36,4 +36,9 @@ public class MainController {
         VBox f = FXMLLoader.load(getClass().getResource("Trip.fxml"));
         scense.getChildren().setAll(f);
     }
+    
+    public void loadCustomers(ActionEvent e) throws IOException{
+        VBox f = FXMLLoader.load(getClass().getResource("Customers.fxml"));
+        scense.getChildren().setAll(f);
+    }
 }
