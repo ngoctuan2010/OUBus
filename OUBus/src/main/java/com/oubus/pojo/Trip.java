@@ -14,13 +14,13 @@ import java.util.UUID;
 public class Trip {
 
     private int tripID;
-    private String busID;
+    private int busID;
     private int departure;
     private Date TimeOfDeparture;
     private Date  DateOfDeparture; 
     private int destination;
 
-    public Trip(String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
+    public Trip(int busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
         this.busID = busID;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
@@ -28,7 +28,7 @@ public class Trip {
         this.destination = destination;
     }
 
-    public Trip(int tripID, String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
+    public Trip(int tripID, int busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
         this.tripID = tripID;
         this.busID = busID;
         this.departure = departure;
@@ -56,14 +56,14 @@ public class Trip {
     /**
      * @return the busID
      */
-    public String getBusID() {
+    public int getBusID() {
         return busID;
     }
 
     /**
      * @param busID the busID to set
      */
-    public void setBusID(String busID) {
+    public void setBusID(int busID) {
         this.busID = busID;
     }
 

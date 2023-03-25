@@ -1,9 +1,3 @@
-com\oubus\oubus\PrimaryController.class
 com\oubus\oubus\App.class
-com\oubus\services\JdbcUtils.class
-com\oubus\oubus\LoginController.class
-com\oubus\oubus\SecondaryController.class
-com\oubus\pojo\Customer.class
 com\oubus\pojo\Employee.class
 com\oubus\oubus\BuyTicketsController.class
-com\oubus\oubus\MainController.class

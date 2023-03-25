@@ -28,9 +28,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 /*BÁN VÉ*/
 .btn-buyticket{
     -fx-background-color: #21ba45;
+    
 }
 .btn-buyticket:hover{
     -fx-opacity: 0.8; 
+    
 }
 .bg-option{
     -fx-background-color: #ffffff;
@@ -42,6 +44,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 .box{
     -fx-background-color: #fbfbfb;
+    -fx-border-left-style: solid;
+    -fx-border-color:#05266b;
 }
 .btn-button{
     -fx-background-color: #ffffff;
@@ -52,6 +56,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-cursor:hand; 
     -fx-opacity: 0.8; 
     -fx-background-color: #07689F; 
+    -fx-text-fill: white;
 }
 .btn-close{
     -fx-background-color: #FF7E67;
