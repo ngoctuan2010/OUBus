@@ -5,6 +5,7 @@
 package com.oubus.pojo;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 /**
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class Trip {
 
     private int tripID;
+<<<<<<< Updated upstream
     private String busID;
     private int departure;
     private Date TimeOfDeparture;
@@ -22,15 +24,29 @@ public class Trip {
 
     public Trip(String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
         this.busID = busID;
+=======
+    private Bus bus;
+    private Location departure;
+    private String TimeOfDeparture;
+    private String  DateOfDeparture; 
+    private Location destination;
+
+    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+        this.bus = bus;
+>>>>>>> Stashed changes
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
     }
 
+<<<<<<< Updated upstream
     public Trip(int tripID, String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
+=======
+    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+>>>>>>> Stashed changes
         this.tripID = tripID;
-        this.busID = busID;
+        this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
@@ -54,51 +70,61 @@ public class Trip {
     }
 
     /**
-     * @return the busID
+     * @return the bus
      */
+<<<<<<< Updated upstream
     public String getBusID() {
         return busID;
+=======
+    public Bus getBus() {
+        return bus;
+>>>>>>> Stashed changes
     }
 
     /**
-     * @param busID the busID to set
+     * @param bus
      */
+<<<<<<< Updated upstream
     public void setBusID(String busID) {
         this.busID = busID;
+=======
+    public void setBus(Bus bus) {
+        this.bus = bus;
+>>>>>>> Stashed changes
     }
 
     /**
      * @return the departure
      */
-    public int getDeparture() {
+    public Location getDeparture() {
         return departure;
     }
 
     /**
      * @param departure the departure to set
      */
-    public void setDeparture(int departure) {
+    public void setDeparture(Location departure) {
         this.departure = departure;
     }
 
     /**
      * @return the TimeOfDeparture
      */
-    public Date getTimeOfDeparture() {
+    public String getTimeOfDeparture() {
         return TimeOfDeparture;
     }
 
     /**
      * @param TimeOfDeparture the TimeOfDeparture to set
      */
-    public void setTimeOfDeparture(Date TimeOfDeparture) {
+    public void setTimeOfDeparture(String TimeOfDeparture) {
         this.TimeOfDeparture = TimeOfDeparture;
     }
 
     /**
      * @return the destination
      */
-    public int getDestination() {
+    public Location getDestination() {
         return destination;
     }
 
@@ -106,21 +132,21 @@ public class Trip {
     /**
      * @param destination the destination to set
      */
-    public void setDestination(int destination) {
+    public void setDestination(Location destination) {
         this.destination = destination;
     }
 
     /**
      * @return the DateOfDeparture
      */
-    public Date getDateOfDeparture() {
+    public String getDateOfDeparture() {
         return DateOfDeparture;
     }
 
     /**
      * @param DateOfDeparture the DateOfDeparture to set
      */
-    public void setDateOfDeparture(Date DateOfDeparture) {
+    public void setDateOfDeparture(String DateOfDeparture) {
         this.DateOfDeparture = DateOfDeparture;
     }
 

@@ -1,5 +1,6 @@
 com\oubus\oubus\PrimaryController.class
 com\oubus\oubus\App.class
+<<<<<<< Updated upstream
 
 com\oubus\oubus\MainController.class
 com\oubus\services\JdbcUtils.class
@@ -16,3 +17,12 @@ com\oubus\oubus\MainController.class
 
 com\oubus\pojo\Buses.class
 
+=======
+com\oubus\services\JdbcUtils.class
+com\oubus\oubus\LoginController.class
+com\oubus\oubus\SecondaryController.class
+com\oubus\pojo\Customer.class
+com\oubus\pojo\Employee.class
+com\oubus\oubus\BuyTicketsController.class
+com\oubus\oubus\MainController.class
+>>>>>>> Stashed changes

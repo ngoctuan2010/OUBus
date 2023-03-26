@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oubus.oubus.TripController">
+   <children>
+      <Label text="Quản lí chuyến xe" textFill="#07689f">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" />
+         </VBox.margin>
+      </Label>
+      <HBox prefHeight="29.0" prefWidth="690.0">
+         <children>
+            <TextField fx:id="txtTripID" prefHeight="26.0" prefWidth="217.0" promptText="Mã chuyến xe" />
+            <TextField fx:id="txtBusID" prefHeight="26.0" prefWidth="283.0" promptText="Mã xe ">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="28.0" prefWidth="690.0">
+         <children>
+            <ComboBox fx:id="cbDeparture" prefHeight="26.0" prefWidth="183.0" promptText="Nơi khởi hành">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbTime" prefHeight="26.0" prefWidth="170.0" promptText="Giờ khởi hành">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbDestination" prefHeight="26.0" prefWidth="178.0" promptText="Nơi đến">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ComboBox>
+            <ComboBox prefHeight="26.0" prefWidth="202.0" promptText="Chức vụ">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="10.0" right="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="31.0" prefWidth="690.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#addTrip" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="10.0" right="100.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <TextField alignment="CENTER" prefHeight="26.0" prefWidth="149.0" promptText="---Tìm kiếm---">
+               <HBox.margin>
+                  <Insets left="200.0" />
+               </HBox.margin>
+            </TextField>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <TableView fx:id="tbTrips" onMouseClicked="#fetchData" prefHeight="367.0" prefWidth="679.0">
+         <columns>
+            <TableColumn prefWidth="75.0" />
+            <TableColumn prefWidth="75.0" />
+         </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+         </VBox.margin>
+      </TableView>
+   </children>
+   <padding>
+      <Insets bottom="10.0" />
+   </padding>
+</VBox>

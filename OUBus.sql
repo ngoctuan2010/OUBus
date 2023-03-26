@@ -39,8 +39,13 @@ CREATE TABLE Trip (
 	tripID int primary key auto_increment,
     busID int,
     departure int,
+<<<<<<< Updated upstream
     TimeOfDeparture nvarchar(50),
     DateOfDeparture nvarchar(50),
+=======
+    TimeOfDeparture Time(1),
+    DateOfDeparture Date,
+>>>>>>> Stashed changes
     destination int,
     FOREIGN KEY (busID) REFERENCES Bus(busID),
     FOREIGN KEY (departure) REFERENCES Location(locationID),
