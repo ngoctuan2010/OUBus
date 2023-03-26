@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
+import com.oubus.pojo.Bus;
 
 /**
  *
@@ -33,6 +34,28 @@ public class BusServices {
         
         }
         return null;
-       
+    }
+    
+     public static Bus getBusbyID(int ID) throws SQLException{
+        Bus b = new Bus();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM bus WHERE busID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, ID);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                b.setBusID(rs.getInt("busID"));
+                b.setVehicleName(rs.getString("vehicleName"));
+                b.setManufacturer(rs.getString("manufacturer"));
+                b.setLicensePlate(rs.getString("licensePlate"));
+                b.setTotalSeat(rs.getInt("totalSeat"));
+                b.setBusType(rs.getString("busType"));
+            }  
+            return b;
+        }
+
     }
 }

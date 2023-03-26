@@ -23,8 +23,8 @@
       </Label>
       <HBox prefHeight="29.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="217.0" promptText="Mã chuyến xe" />
-            <TextField prefHeight="26.0" prefWidth="283.0" promptText="Mã xe ">
+            <TextField fx:id="txtTripID" prefHeight="26.0" prefWidth="217.0" promptText="Mã chuyến xe" />
+            <TextField fx:id="txtBusID" prefHeight="26.0" prefWidth="283.0" promptText="Mã xe ">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -36,17 +36,17 @@
       </HBox>
       <HBox prefHeight="28.0" prefWidth="690.0">
          <children>
-            <ComboBox prefHeight="26.0" prefWidth="183.0" promptText="Nơi khởi hành">
+            <ComboBox fx:id="cbDeparture" prefHeight="26.0" prefWidth="183.0" promptText="Nơi khởi hành">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox prefHeight="26.0" prefWidth="170.0" promptText="Giờ khởi hành">
+            <ComboBox fx:id="cbTime" prefHeight="26.0" prefWidth="170.0" promptText="Giờ khởi hành">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox prefHeight="26.0" prefWidth="178.0" promptText="Nơi đến">
+            <ComboBox fx:id="cbDestination" prefHeight="26.0" prefWidth="178.0" promptText="Nơi đến">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -63,7 +63,7 @@
       </HBox>
       <HBox prefHeight="31.0" prefWidth="690.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+            <Button mnemonicParsing="false" onAction="#addTrip" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -97,7 +97,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="tbTrips" prefHeight="367.0" prefWidth="679.0">
+      <TableView fx:id="tbTrips" onMouseClicked="#fetchData" prefHeight="367.0" prefWidth="679.0">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
