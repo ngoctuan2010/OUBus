@@ -15,36 +15,22 @@ import java.util.UUID;
 public class Trip {
 
     private int tripID;
-<<<<<<< Updated upstream
-    private String busID;
+    private Bus bus;
     private int departure;
     private Date TimeOfDeparture;
     private Date  DateOfDeparture; 
     private int destination;
 
-    public Trip(String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
-        this.busID = busID;
-=======
-    private Bus bus;
-    private Location departure;
-    private String TimeOfDeparture;
-    private String  DateOfDeparture; 
-    private Location destination;
 
     public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
         this.bus = bus;
->>>>>>> Stashed changes
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
     }
 
-<<<<<<< Updated upstream
-    public Trip(int tripID, String busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
-=======
     public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
->>>>>>> Stashed changes
         this.tripID = tripID;
         this.bus = bus;
         this.departure = departure;
@@ -72,25 +58,15 @@ public class Trip {
     /**
      * @return the bus
      */
-<<<<<<< Updated upstream
-    public String getBusID() {
-        return busID;
-=======
     public Bus getBus() {
         return bus;
->>>>>>> Stashed changes
     }
 
     /**
      * @param bus
      */
-<<<<<<< Updated upstream
-    public void setBusID(String busID) {
-        this.busID = busID;
-=======
     public void setBus(Bus bus) {
         this.bus = bus;
->>>>>>> Stashed changes
     }
 
     /**

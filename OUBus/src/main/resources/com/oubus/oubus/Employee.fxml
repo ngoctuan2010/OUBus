@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -12,7 +13,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Quản lí khách hàng" textFill="#07689f">
+      <Label text="Quản lí nhân viên" textFill="#07689f">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -22,27 +23,33 @@
       </Label>
       <HBox prefHeight="28.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="238.0" promptText="Họ Tên">
+            <TextField prefHeight="26.0" prefWidth="238.0" promptText="Mã nhân viên">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Điện thoại">
+            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Tên nhân viên">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="278.0" promptText="Email">
+            <ComboBox prefWidth="150.0" promptText="Giới tính" />
+            <TextField prefHeight="26.0" prefWidth="278.0" promptText="Quốc tịch">
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </TextField>
          </children>
       </HBox>
       <HBox prefHeight="29.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="377.0" promptText="Địa chỉ" />
-            <TextField prefHeight="26.0" prefWidth="283.0" promptText="CCCD/CMND">
+            <TextField prefHeight="26.0" prefWidth="217.0" promptText="CMND/CCCD" />
+            <TextField prefHeight="26.0" prefWidth="283.0" promptText="Địa chỉ">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField prefHeight="26.0" prefWidth="199.0" promptText="SĐT">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -51,6 +58,20 @@
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
+      </HBox>
+      <HBox prefHeight="54.0" prefWidth="690.0">
+         <children>
+            <TextField prefHeight="26.0" prefWidth="199.0" promptText="Email">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <ComboBox prefWidth="150.0" promptText="Chức vụ">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ComboBox>
+         </children>
       </HBox>
       <HBox prefHeight="31.0" prefWidth="690.0">
          <children>
@@ -80,18 +101,21 @@
                   <Font name="Arial" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="1.0" />
+                  <Insets left="2.0" />
                </HBox.margin>
             </Button>
          </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
       </HBox>
-      <TableView prefHeight="397.0" prefWidth="679.0">
+      <TableView prefHeight="560.0" prefWidth="700.0">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
          </columns>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </TableView>
    </children>
