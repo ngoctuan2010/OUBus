@@ -14,7 +14,7 @@ import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;
 import com.oubus.services.LocationServices;
 import com.oubus.services.LocationServices;
-import com.oubus.utils.MessageBox;
+//import com.oubus.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -114,12 +114,12 @@ public class TripController implements Initializable {
         Location departure = cbDeparture.getSelectionModel().getSelectedItem();
         Location destination = cbDestination.getSelectionModel().getSelectedItem();
         String time = cbTime.getSelectionModel().getSelectedItem();
-        MessageBox.getBox(busID + "", BusServices.getBusbyID(busID).getBusID() + "", Alert.AlertType.INFORMATION).show();
+//        MessageBox.getBox(busID + "", BusServices.getBusbyID(busID).getBusID() + "", Alert.AlertType.INFORMATION).show();
 
         Trip tr = new Trip(BusServices.getBusbyID(busID), departure, time, null, destination);
 
         if (departure.getLocationID() == destination.getLocationID()) {
-            MessageBox.getBox("Error", "Locations is not same", Alert.AlertType.WARNING).show();
+//            MessageBox.getBox("Error", "Locations is not same", Alert.AlertType.WARNING).show();
         } else {
             try {
                 t.addTrip(tr);

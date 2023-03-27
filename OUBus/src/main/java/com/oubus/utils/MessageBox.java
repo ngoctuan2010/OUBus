@@ -11,10 +11,11 @@ import javafx.scene.control.Alert;
  * @author PC
  */
 public class MessageBox {
-    public static Alert getBox(String title, String content, Alert.AlertType type) {
+    public static Alert getBox(String title, String content, Alert.AlertType type){
         Alert a = new Alert(type);
         a.setTitle(title);
         a.setContentText(content);
+        
         return a;
     }
 }
