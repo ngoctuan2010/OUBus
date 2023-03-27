@@ -13,13 +13,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import javafx.scene.control.TableColumn;
 
 /**
  *
  * @author PC
  */
 public class BusServices {
-    public static String getLicensePlateByID(int ID){
+   public static String getLicensePlateByID(int ID){
         String lp = "";
         try(Connection cnn = JdbcUtils.getConn()){
             
@@ -59,4 +60,6 @@ public class BusServices {
         
         return bus;
 }
+   
+  
 }
