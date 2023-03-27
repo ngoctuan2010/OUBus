@@ -17,7 +17,7 @@ public class Trip {
     private int busID;
     private int departure;
     private Date TimeOfDeparture;
-    private Date  DateOfDeparture; 
+    private Date DateOfDeparture; 
     private int destination;
 
     public Trip(int busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
