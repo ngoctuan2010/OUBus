@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\oubus\SecondaryController.java
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\pojo\RuleSet.java
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\services\JdbcUtils.java
@@ -15,3 +16,24 @@ C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\pojo\T
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\pojo\Job.java
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\pojo\Account.java
 C:\Users\bthta\OneDrive\Desktop\OUBus\OUBus\OUBus\src\main\java\com\oubus\pojo\Employee.java
+=======
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Trip.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\services\JdbcUtils.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Account.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Bus.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\oubus\MainController.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Customer.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\utils\MessageBox.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\oubus\TripController.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\services\BusServices.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\oubus\BuyTicketsController.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Location.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Job.java
+D:\Code\OUBus\OUBus\src\main\java\module-info.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Bill.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\services\TripServices.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\Employee.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\oubus\LoginController.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\pojo\RuleSet.java
+D:\Code\OUBus\OUBus\src\main\java\com\oubus\oubus\App.java
+>>>>>>> Stashed changes
