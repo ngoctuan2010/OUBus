@@ -7,6 +7,7 @@ package com.oubus.pojo;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.UUID;
+import com.oubus.pojo.Bus;
 
 /**
  *
@@ -16,18 +17,10 @@ public class Trip {
 
     private int tripID;
     private Bus bus;
-<<<<<<< HEAD
     private Location departure;
     private String TimeOfDeparture;
     private String  DateOfDeparture; 
     private Location destination;
-=======
-    private int departure;
-    private Date TimeOfDeparture;
-    private Date DateOfDeparture; 
-    private int destination;
-
->>>>>>> 6158e669438e441fd7fdabca48cf5ef30034edac
 
     public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
         this.bus = bus;
@@ -65,30 +58,15 @@ public class Trip {
     /**
      * @return the bus
      */
-<<<<<<< HEAD
-
 
     public Bus getBus() {
         return bus;
-
-=======
-    public Bus getBus() {
-        return bus;
->>>>>>> 6158e669438e441fd7fdabca48cf5ef30034edac
     }
-
     /**
      * @param bus
      */
-<<<<<<< HEAD
-
     public void setBus(Bus bus) {
         this.bus = bus;
-
-=======
-    public void setBus(Bus bus) {
-        this.bus = bus;
->>>>>>> 6158e669438e441fd7fdabca48cf5ef30034edac
     }
 
     /**
