@@ -5,6 +5,7 @@
 package com.oubus.pojo;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.UUID;
 
 /**
@@ -14,23 +15,24 @@ import java.util.UUID;
 public class Trip {
 
     private int tripID;
-    private int busID;
+    private Bus bus;
     private int departure;
     private Date TimeOfDeparture;
     private Date DateOfDeparture; 
     private int destination;
 
-    public Trip(int busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
-        this.busID = busID;
+
+    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+        this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
     }
 
-    public Trip(int tripID, int busID, int departure, Date TimeOfDeparture, Date  DateOfDeparture, int destination) {
+    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
         this.tripID = tripID;
-        this.busID = busID;
+        this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
@@ -54,51 +56,51 @@ public class Trip {
     }
 
     /**
-     * @return the busID
+     * @return the bus
      */
-    public int getBusID() {
-        return busID;
+    public Bus getBus() {
+        return bus;
     }
 
     /**
-     * @param busID the busID to set
+     * @param bus
      */
-    public void setBusID(int busID) {
-        this.busID = busID;
+    public void setBus(Bus bus) {
+        this.bus = bus;
     }
 
     /**
      * @return the departure
      */
-    public int getDeparture() {
+    public Location getDeparture() {
         return departure;
     }
 
     /**
      * @param departure the departure to set
      */
-    public void setDeparture(int departure) {
+    public void setDeparture(Location departure) {
         this.departure = departure;
     }
 
     /**
      * @return the TimeOfDeparture
      */
-    public Date getTimeOfDeparture() {
+    public String getTimeOfDeparture() {
         return TimeOfDeparture;
     }
 
     /**
      * @param TimeOfDeparture the TimeOfDeparture to set
      */
-    public void setTimeOfDeparture(Date TimeOfDeparture) {
+    public void setTimeOfDeparture(String TimeOfDeparture) {
         this.TimeOfDeparture = TimeOfDeparture;
     }
 
     /**
      * @return the destination
      */
-    public int getDestination() {
+    public Location getDestination() {
         return destination;
     }
 
@@ -106,21 +108,21 @@ public class Trip {
     /**
      * @param destination the destination to set
      */
-    public void setDestination(int destination) {
+    public void setDestination(Location destination) {
         this.destination = destination;
     }
 
     /**
      * @return the DateOfDeparture
      */
-    public Date getDateOfDeparture() {
+    public String getDateOfDeparture() {
         return DateOfDeparture;
     }
 
     /**
      * @param DateOfDeparture the DateOfDeparture to set
      */
-    public void setDateOfDeparture(Date DateOfDeparture) {
+    public void setDateOfDeparture(String DateOfDeparture) {
         this.DateOfDeparture = DateOfDeparture;
     }
 

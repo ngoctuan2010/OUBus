@@ -28,7 +28,19 @@ public class Bus {
         this.busType = busType;      
     }
     
-    public Bus(int id, String name){}
+
+        
+    public Bus(int nusID, String vehicleName, String manufacturer, String licensePlate, int totalSeat, String busType){
+        this.busID = busID;
+        this.vehicleName = vehicleName;
+        this.manufacturer = manufacturer;
+        this.licensePlate = licensePlate;
+        this.totalSeat = totalSeat;
+        this.busType = busType;      
+    }
+    
+    public Bus(){}
+
 
     /**
      * @return the busID
@@ -113,10 +125,12 @@ public class Bus {
     public void setBusType(String busType) {
         this.busType = busType;
     }
+
+    
     @Override
-    public String toString()
-    {
-        return this.vehicleName;
+    public String toString(){
+        return this.licensePlate;
+
     }
    
 }
