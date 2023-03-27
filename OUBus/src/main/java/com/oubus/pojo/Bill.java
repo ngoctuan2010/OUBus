@@ -4,7 +4,7 @@
  */
 package com.oubus.pojo;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -23,30 +23,31 @@ public class Bill {
     private String billID;
     private String customerID;
     private String employeeID;
-    private String tripID;
+    private int tripID;
     private int seat;
     private statePayment bookingState;
     private double totalDue;
-    private Date aqruiredDate;
+    private LocalDate aqruiredDate;
     
     {
         setBillID(UUID.randomUUID().toString());
     }
     
-    public Bill(String customerID, String employeeID, String busesID, int seat, statePayment state, double totalPrice){
+    public Bill(String customerID, String employeeID, int tripID, int seat, statePayment state, double totalPrice){
         this.customerID = customerID;
         this.employeeID = employeeID;
-        this.tripID = busesID;
+        this.tripID = tripID;
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
+        this.aqruiredDate = LocalDate.now();
     }
     
-    public Bill(String receiptID,String customerID, String employeeID, String busesID, int seat, statePayment state, double totalPrice){
+    public Bill(String receiptID,String customerID, String employeeID, int tripID, int seat, statePayment state, double totalPrice){
         this.billID = receiptID;
         this.customerID = customerID;
         this.employeeID = employeeID;
-        this.tripID = busesID;
+        this.tripID = tripID;
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
@@ -99,14 +100,14 @@ public class Bill {
     /**
      * @return the tripID
      */
-    public String getTripID() {
+    public int getTripID() {
         return tripID;
     }
 
     /**
      * @param tripID the tripID to set
      */
-    public void setTripID(String tripID) {
+    public void setTripID(int tripID) {
         this.tripID = tripID;
     }
     /**
@@ -154,14 +155,14 @@ public class Bill {
     /**
      * @return the aqruiredDate
      */
-    public Date getAqruiredDate() {
+    public LocalDate getAqruiredDate() {
         return aqruiredDate;
     }
 
     /**
      * @param aqruiredDate the aqruiredDate to set
      */
-    public void setAqruiredDate(Date aqruiredDate) {
+    public void setAqruiredDate(LocalDate aqruiredDate) {
         this.aqruiredDate = aqruiredDate;
     }
     

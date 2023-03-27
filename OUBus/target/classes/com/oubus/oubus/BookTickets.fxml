@@ -35,16 +35,21 @@
                </HBox.margin>
             </DatePicker>
             <ComboBox prefWidth="150.0" promptText="Xe " />
+            <TextField prefHeight="26.0" prefWidth="160.0" promptText="Số ghế">
+                <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </TextField>
          </children>
       </HBox>
       <HBox prefHeight="26.0" prefWidth="690.0">
          <children>
-            <ComboBox prefWidth="150.0" promptText="Nơi đi">
+            <ComboBox prefHeight="26.0" prefWidth="330.0" promptText="Nơi đi">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox prefWidth="150.0" promptText="Nơi đến">
+            <ComboBox prefHeight="26.0" prefWidth="330.0" promptText="Nơi đến">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -116,7 +121,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <TextField prefHeight="26.0" prefWidth="331.0" promptText="Ghi chú">
+            <TextField prefHeight="26.0" prefWidth="339.0" promptText="Ghi chú">
                <HBox.margin>
                   <Insets left="80.0" />
                </HBox.margin>
@@ -126,7 +131,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <TableView prefHeight="365.0" prefWidth="669.0">
+      <TableView prefHeight="365.0" prefWidth="670.0">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
