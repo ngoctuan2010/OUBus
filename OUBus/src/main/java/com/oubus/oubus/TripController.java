@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
+
 import com.oubus.pojo.Location;
 import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;
@@ -39,10 +40,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+
 /**
  *
  * @author PC
  */
+
 public class TripController implements Initializable {
 
     static TripServices t = new TripServices();
@@ -58,9 +61,7 @@ public class TripController implements Initializable {
     ComboBox<Location> cbDestination;
     @FXML
     ComboBox<String> cbTime;
-    
-    
-    
+       
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         LocationServices ls = new LocationServices();
@@ -151,6 +152,4 @@ public class TripController implements Initializable {
         times.add("16:00");
         return times;
     }
-    
-
 }

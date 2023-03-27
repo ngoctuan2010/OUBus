@@ -12,7 +12,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Quản lí khách hàng" textFill="#07689f">
+      <Label text="Quản lí xe" textFill="#07689f">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -22,17 +22,17 @@
       </Label>
       <HBox prefHeight="28.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="238.0" promptText="Họ Tên">
+            <TextField prefHeight="26.0" prefWidth="238.0" promptText="Mã xe">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Điện thoại">
+            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Tên phương tiện">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="278.0" promptText="Email">
+            <TextField prefHeight="26.0" prefWidth="278.0" promptText="Giấy phép">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
@@ -41,8 +41,13 @@
       </HBox>
       <HBox prefHeight="29.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="377.0" promptText="Địa chỉ" />
-            <TextField prefHeight="26.0" prefWidth="283.0" promptText="CCCD/CMND">
+            <TextField prefHeight="26.0" prefWidth="126.0" promptText="Số ghế" />
+            <TextField prefHeight="26.0" prefWidth="245.0" promptText="Loại xe">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField prefHeight="26.0" prefWidth="283.0" promptText="Nhà sản xuất">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -80,18 +85,18 @@
                   <Font name="Arial" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="1.0" />
+                  <Insets left="2.0" />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
-      <TableView prefHeight="397.0" prefWidth="679.0">
+      <TableView prefHeight="380.0" prefWidth="679.0">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
          </columns>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+            <Insets bottom="5.0" left="10.0" right="10.0" top="20.0" />
          </VBox.margin>
       </TableView>
    </children>

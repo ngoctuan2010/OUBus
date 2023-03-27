@@ -1,7 +1,22 @@
 com\oubus\oubus\App.class
+<<<<<<< HEAD
 com\oubus\services\JdbcUtils.class
 com\oubus\oubus\LoginController.class
 com\oubus\pojo\Customer.class
 com\oubus\pojo\Employee.class
 com\oubus\oubus\BuyTicketsController.class
 com\oubus\oubus\MainController.class
+=======
+com\oubus\oubus\MainController.class
+com\oubus\services\JdbcUtils.class
+com\oubus\oubus\LoginController.class
+com\oubus\pojo\Receipt$statePayment.class
+com\oubus\oubus\SecondaryController.class
+com\oubus\pojo\Customer.class
+com\oubus\pojo\Receipt.class
+com\oubus\pojo\Employee.class
+com\oubus\oubus\BuyTicketsController.class
+com\oubus\oubus\MainController.class
+com\oubus\pojo\Buses.class
+
+>>>>>>> 6158e669438e441fd7fdabca48cf5ef30034edac

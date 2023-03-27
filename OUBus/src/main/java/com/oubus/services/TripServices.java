@@ -30,6 +30,7 @@ public class TripServices {
             cnn.setAutoCommit(false);
             String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination) VALUE(?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
+            
             stm.setInt(1, trip.getBus().getBusID());
             stm.setInt(2, trip.getDeparture().getLocationID());
             stm.setString(3, trip.getTimeOfDeparture());
@@ -59,6 +60,7 @@ public class TripServices {
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
                 int tripID = rs.getInt("tripID");
+
                 Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
                 Location departure = LocationServices.getLocationById(rs.getInt("departure"));
                 String tOd = rs.getString("time");
