@@ -20,7 +20,7 @@ public class Bus {
     
 
     
-    public Bus(int totalSeat, String vehicleName, String manufacturer, String licensePlate, int toSeat, String busType){
+    public Bus(int BusID, String vehicleName, String manufacturer, String licensePlate, int toSeat, String busType){
         this.vehicleName = vehicleName;
         this.manufacturer = manufacturer;
         this.licensePlate = licensePlate;
