@@ -20,6 +20,8 @@ public class Location {
     public Location(String name){
         this.name = name;
     }
+    
+    public Location(){}
 
     /**
      * @return the locationID
@@ -50,7 +52,7 @@ public class Location {
     }
     
     @Override
-    public String toString() {
+    public String toString(){
         return this.name;
     }
 }

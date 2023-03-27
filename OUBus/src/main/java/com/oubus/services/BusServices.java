@@ -13,7 +13,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+<<<<<<< HEAD
 import javafx.scene.control.TableColumn;
+=======
+import com.oubus.pojo.Bus;
+>>>>>>> 378ddbd3fef0d0c43d01e5e2f20d460c73e01f60
 
 /**
  *
@@ -38,7 +42,29 @@ public class BusServices {
         
         }
         return null;
-       
+    }
+    
+     public static Bus getBusbyID(int ID) throws SQLException{
+        Bus b = new Bus();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM bus WHERE busID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, ID);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                b.setBusID(rs.getInt("busID"));
+                b.setVehicleName(rs.getString("vehicleName"));
+                b.setManufacturer(rs.getString("manufacturer"));
+                b.setLicensePlate(rs.getString("licensePlate"));
+                b.setTotalSeat(rs.getInt("totalSeat"));
+                b.setBusType(rs.getString("busType"));
+            }  
+            return b;
+        }
+
     }
    public List<Bus> getBusName() throws SQLException {
         List<Bus> bus = new ArrayList<>();

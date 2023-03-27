@@ -6,12 +6,14 @@ package com.oubus.services;
 import com.oubus.services.JdbcUtils;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
+import com.oubus.pojo.Location;
 import com.oubus.utils.MessageBox;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Alert;
@@ -28,18 +30,21 @@ public class TripServices {
             cnn.setAutoCommit(false);
             String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination) VALUE(?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setInt(1, trip.getBusID());
-            stm.setInt(2, trip.getDeparture());
-            stm.setDate(3, trip.getTimeOfDeparture());
-            stm.setDate(4, trip.getDateOfDeparture());
-            stm.setInt(5, trip.getDestination());
+            
+            stm.setInt(1, trip.getBus().getBusID());
+            stm.setInt(2, trip.getDeparture().getLocationID());
+            stm.setString(3, trip.getTimeOfDeparture());
+            stm.setString(4, trip.getDateOfDeparture());
+            stm.setInt(5, trip.getDestination().getLocationID());
+            
+            stm.executeUpdate();
             
             try{
                 cnn.commit();
-                MessageBox.getBox("Success", "Add trip completely", Alert.AlertType.CONFIRMATION);
+//                MessageBox.getBox("Success", "Add trip completely", Alert.AlertType.CONFIRMATION).show();
                 return true;
             }catch(SQLException ex){
-                MessageBox.getBox("Fail", "Add trip failure", Alert.AlertType.WARNING);
+//                MessageBox.getBox("Fail", "Add trip failure", Alert.AlertType.WARNING).show();
                 return false;
             }}
             
@@ -49,19 +54,20 @@ public class TripServices {
     public List<Trip> getTrip() throws SQLException{
         List<Trip> trips = new ArrayList<>();
         try(Connection cnn = JdbcUtils.getConn()){
-            String sql = "SELECT * FROM trip";
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%h:%i') as time, DateOfDeparture, destination FROM trip";
             
             PreparedStatement stm = cnn.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
                 int tripID = rs.getInt("tripID");
-                int busID = rs.getInt("busID");                
-                int departure = rs.getInt("departure");
-                Date tOd = rs.getDate("TimeOfDeparture");
-                Date dOd = rs.getDate("DateOfDeparture");
-                int destination = rs.getInt("destination");
+
+                Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
+                Location departure = LocationServices.getLocationById(rs.getInt("departure"));
+                String tOd = rs.getString("time");
+                String dOd = rs.getString("DateOfDeparture");
+                Location destination = LocationServices.getLocationById(rs.getInt("destination"));
                 
-                Trip trip = new Trip(tripID, busID, departure, tOd, dOd, destination);
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination);
                 trips.add(trip);
             }
 
