@@ -14,18 +14,12 @@ import java.util.UUID;
 
 public class Bill {
     
-    public static enum statePayment{
-        PAID,
-        UNPAID,
-        CANCEL
-    }
-    
     private String billID;
     private String customerID;
     private String employeeID;
     private int tripID;
     private int seat;
-    private statePayment bookingState;
+    private int bookingState;
     private double totalDue;
     private LocalDate aqruiredDate;
     
@@ -33,7 +27,7 @@ public class Bill {
         setBillID(UUID.randomUUID().toString());
     }
     
-    public Bill(String customerID, String employeeID, int tripID, int seat, statePayment state, double totalPrice){
+    public Bill(String customerID, String employeeID, int tripID, int seat, int state, double totalPrice){
         this.customerID = customerID;
         this.employeeID = employeeID;
         this.tripID = tripID;
@@ -43,7 +37,7 @@ public class Bill {
         this.aqruiredDate = LocalDate.now();
     }
     
-    public Bill(String receiptID,String customerID, String employeeID, int tripID, int seat, statePayment state, double totalPrice){
+    public Bill(String receiptID,String customerID, String employeeID, int tripID, int seat, int state, double totalPrice){
         this.billID = receiptID;
         this.customerID = customerID;
         this.employeeID = employeeID;
@@ -113,14 +107,14 @@ public class Bill {
     /**
      * @return the bookingState
      */
-    public statePayment getBookingState() {
+    public int getBookingState() {
         return bookingState;
     }
 
     /**
      * @param bookingState the bookingState to set
      */
-    public void setBookingState(statePayment bookingState) {
+    public void setBookingState(int bookingState) {
         this.bookingState = bookingState;
     }
 

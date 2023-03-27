@@ -13,11 +13,11 @@ import javafx.scene.control.ChoiceBox;
  *
  * @author bthta
  */
-public class BuyTicketsController {
+public class BookTicketsController {
     @FXML
     private ChoiceBox<String> TimeChoiceBox;
     
-    private String[] timeGo ={"3:00","13:00","9:30"};
+    private final String[] timeGo ={"3:00","13:00","9:30"};
     
     public void initialize(URL arg0, ResourceBundle arg1){
         TimeChoiceBox.getItems().addAll(timeGo);

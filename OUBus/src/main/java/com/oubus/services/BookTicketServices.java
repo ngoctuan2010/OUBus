@@ -5,13 +5,10 @@
 package com.oubus.services;
 
 import com.oubus.pojo.Bill;
-import com.oubus.pojo.Bill.statePayment;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class BookTicketServices {
                 String employeeID = rs.getString("employeeID");                
                 int tripID = rs.getInt("tripID");
                 int seat = rs.getInt("seat");
-                statePayment bookingState = rs.State("bookingState");
+                int bookingState = rs.getInt("bookingState");
                 double totalPrice = rs.getDouble("totalPrice");
                 
                 Bill bill = new Bill(customerID, employeeID, tripID, seat, bookingState, totalPrice);
