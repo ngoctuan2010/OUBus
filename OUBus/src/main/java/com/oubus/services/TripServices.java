@@ -41,10 +41,10 @@ public class TripServices {
             
             try{
                 cnn.commit();
-//                MessageBox.getBox("Success", "Add trip completely", Alert.AlertType.CONFIRMATION).show();
+                MessageBox.getBox("Success", "Add trip completely", Alert.AlertType.CONFIRMATION).show();
                 return true;
             }catch(SQLException ex){
-//                MessageBox.getBox("Fail", "Add trip failure", Alert.AlertType.WARNING).show();
+                MessageBox.getBox("Fail", "Add trip failure", Alert.AlertType.WARNING).show();
                 return false;
             }}
             
@@ -75,5 +75,44 @@ public class TripServices {
         }
         
     }
-
+    
+    public boolean updateTrip(Trip tr) throws SQLException {
+        try(Connection cnn = JdbcUtils.getConn()){
+            cnn.setAutoCommit(false);
+            String sql = "UPDATE trip SET busID = ?, departure = ?, TimeOfDeparture = ?, DateOfDeparture = ?, destination = ? WHERE tripID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, tr.getBus().getBusID());
+            stm.setInt(2, tr.getDeparture().getLocationID());
+            stm.setString(3, tr.getTimeOfDeparture());
+            stm.setString(4, tr.getDateOfDeparture());
+            stm.setInt(5, tr.getDestination().getLocationID());
+            stm.setInt(6, tr.getTripID());
+            
+            stm.executeUpdate();
+            
+            try{
+                cnn.commit();
+                return true;
+            }catch(SQLException ex){
+                return false;
+            }
+         }
+    }
+    
+    public boolean deleteTrip(int id) throws SQLException{
+        try(Connection cnn = JdbcUtils.getConn()){
+            cnn.setAutoCommit(false);
+            String sql = "DELETE FROM trip WHERE tripID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+            
+            try{
+                cnn.commit();
+                return true;
+            }catch(SQLException ex){
+                return false;
+            }
+        }
+    }
 }

@@ -62,5 +62,4 @@ public class BuyTicketsController implements Initializable{
         }
     }
 
-    
 }

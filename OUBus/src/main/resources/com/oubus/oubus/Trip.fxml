@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -18,40 +19,40 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" />
+            <Insets bottom="10.0" left="10.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="29.0" prefWidth="690.0">
+      <HBox alignment="CENTER" prefHeight="29.0" prefWidth="690.0">
          <children>
-            <TextField fx:id="txtTripID" prefHeight="26.0" prefWidth="217.0" promptText="Mã chuyến xe" />
-            <TextField fx:id="txtBusID" prefHeight="26.0" prefWidth="283.0" promptText="Mã xe ">
+            <ComboBox fx:id="cbBus" prefWidth="150.0" promptText="Xe bus" />
+            <ComboBox fx:id="cbTimeOfDeparture" prefHeight="26.0" prefWidth="170.0" promptText="Giờ khởi hành">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
-            </TextField>
+            </ComboBox>
+            <DatePicker fx:id="dpDateOfDeparture" promptText="Ngày khởi hành">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </DatePicker>
          </children>
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="28.0" prefWidth="690.0">
+      <HBox alignment="CENTER" prefHeight="28.0" prefWidth="690.0">
          <children>
             <ComboBox fx:id="cbDeparture" prefHeight="26.0" prefWidth="183.0" promptText="Nơi khởi hành">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox fx:id="cbTime" prefHeight="26.0" prefWidth="170.0" promptText="Giờ khởi hành">
+            <Label prefHeight="25.0" prefWidth="51.0" text="&gt;&gt;&gt;&gt;&gt;&gt;" textOverrun="CLIP">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
-            </ComboBox>
+            </Label>
             <ComboBox fx:id="cbDestination" prefHeight="26.0" prefWidth="178.0" promptText="Nơi đến">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="26.0" prefWidth="202.0" promptText="Chức vụ">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -61,9 +62,9 @@
             <Insets bottom="10.0" right="10.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="31.0" prefWidth="690.0">
+      <HBox prefHeight="29.0" prefWidth="700.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#addTrip" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+            <Button mnemonicParsing="false" onAction="#addTripHandler" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -71,7 +72,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#updateTripHandler" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="100.0" />
                </HBox.margin>
@@ -84,7 +85,7 @@
                   <Insets left="200.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#searchTrip" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
@@ -94,17 +95,20 @@
             </Button>
          </children>
          <VBox.margin>
-            <Insets top="5.0" />
+            <Insets top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="tbTrips" onMouseClicked="#fetchData" prefHeight="367.0" prefWidth="679.0">
+      <TableView id="tripTable" fx:id="tbTrips" onMouseClicked="#fetchDataHandler" prefHeight="367.0" prefWidth="679.0" stylesheets="@Style.css">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
          </columns>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
          </VBox.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
    <padding>
