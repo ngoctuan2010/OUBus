@@ -4,6 +4,7 @@
  */
 package com.oubus.services;
 
+import com.oubus.pojo.Bus;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,14 +12,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import javafx.scene.control.TableColumn;
+
 import com.oubus.pojo.Bus;
+
 
 /**
  *
  * @author PC
  */
 public class BusServices {
-    public static String getLicensePlateByID(int ID){
+   public static String getLicensePlateByID(int ID){
         String lp = "";
         try(Connection cnn = JdbcUtils.getConn()){
             
@@ -74,10 +79,13 @@ public class BusServices {
                 String licenPla = rs.getString("licensePlate");
                 int toSeat = rs.getInt("totalSeat");
                 String bustype =rs.getString("busType");
-                bus.add(new Bus(id,verName,manufac,licenPla,toSeat,bustype));
+                Bus b = new Bus(id,verName,manufac,licenPla,toSeat,bustype);
+                bus.add(b);
             }
         }
         
         return bus;
 }
+   
+   
 }

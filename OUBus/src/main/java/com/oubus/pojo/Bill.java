@@ -4,7 +4,7 @@
  */
 package com.oubus.pojo;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.UUID;
 
 /**
@@ -14,37 +14,44 @@ import java.util.UUID;
 
 public class Bill {
     
+    public static enum statePayment{
+        PAID,
+        UNPAID,
+        CANCEL
+    }
+    
     private String billID;
-    private String customerID;
-    private String employeeID;
-    private int tripID;
+    private Customer customerID;
+    private Employee employeeID;
+    private Trip tripID;
     private int seat;
-    private int bookingState;
+    private statePayment bookingState;
     private double totalDue;
-    private LocalDate aqruiredDate;
+    private Date aquiredDate;
     
     {
         setBillID(UUID.randomUUID().toString());
     }
     
-    public Bill(String customerID, String employeeID, int tripID, int seat, int state, double totalPrice){
+    public Bill(Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, Date aquireDate){
         this.customerID = customerID;
         this.employeeID = employeeID;
         this.tripID = tripID;
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
-        this.aqruiredDate = LocalDate.now();
+        this.aquiredDate=aquireDate;
     }
     
-    public Bill(String receiptID,String customerID, String employeeID, int tripID, int seat, int state, double totalPrice){
-        this.billID = receiptID;
+    public Bill(String billID,Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, Date aquireDate){
+        this.billID = billID;
         this.customerID = customerID;
         this.employeeID = employeeID;
         this.tripID = tripID;
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
+        this.aquiredDate =aquireDate;
     }
     
     public Bill(){}
@@ -66,55 +73,55 @@ public class Bill {
     /**
      * @return the customerID
      */
-    public String getCustomerID() {
+    public Customer getCustomerID() {
         return customerID;
     }
 
     /**
      * @param customerID the customerID to set
      */
-    public void setCustomerID(String customerID) {
+    public void setCustomerID(Customer customerID) {
         this.customerID = customerID;
     }
 
     /**
      * @return the employeeID
      */
-    public String getEmployeeID() {
+    public Employee getEmployeeID() {
         return employeeID;
     }
 
     /**
      * @param employeeID the employeeID to set
      */
-    public void setEmployeeID(String employeeID) {
+    public void setEmployeeID(Employee employeeID) {
         this.employeeID = employeeID;
     }
 
     /**
      * @return the tripID
      */
-    public int getTripID() {
+    public Trip getTripID() {
         return tripID;
     }
 
     /**
      * @param tripID the tripID to set
      */
-    public void setTripID(int tripID) {
+    public void setTripID(Trip tripID) {
         this.tripID = tripID;
     }
     /**
      * @return the bookingState
      */
-    public int getBookingState() {
+    public statePayment getBookingState() {
         return bookingState;
     }
 
     /**
      * @param bookingState the bookingState to set
      */
-    public void setBookingState(int bookingState) {
+    public void setBookingState(statePayment bookingState) {
         this.bookingState = bookingState;
     }
 
@@ -147,17 +154,17 @@ public class Bill {
     }
 
     /**
-     * @return the aqruiredDate
+     * @return the aquiredDate
      */
-    public LocalDate getAqruiredDate() {
-        return aqruiredDate;
+    public Date getAquiredDate() {
+        return aquiredDate;
     }
 
     /**
-     * @param aqruiredDate the aqruiredDate to set
+     * @param aquiredDate the aquiredDate to set
      */
-    public void setAqruiredDate(LocalDate aqruiredDate) {
-        this.aqruiredDate = aqruiredDate;
+    public void setAquiredDate(Date aquiredDate) {
+        this.aquiredDate = aquiredDate;
     }
     
     

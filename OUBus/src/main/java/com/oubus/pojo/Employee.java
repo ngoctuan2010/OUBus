@@ -115,5 +115,49 @@ public class Employee {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
+    
+    public Date getDateOfBirth(){
+        return this.DateOfBirth; 
+    }
+    
+    public void setDateOfBirth( Date DateOfBirth){
+        this.DateOfBirth= this.DateOfBirth;
+    }
+    
+    public String getNationality(){
+        return this.nationality;
+    }
+    
+    public void setNationality(String nationality){
+        this.nationality= nationality;
+    }
+    
+    public String getNationalID(){
+        return this.nationalID;
+    }
+    
+    public void setNationalID( String nationalID){
+        this.nationalID =nationalID;
+    }
+    
+    public String getPosition(){
+        return this.position;
+    }
+    
+    public void setPosition( String position){
+        this.position=position;
+    }    
+    
+    public boolean getSex(){
+        return this.sex;
+    }
+    
+    public void setSex( boolean sex){
+        this.sex= sex;
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
+    }
 }
