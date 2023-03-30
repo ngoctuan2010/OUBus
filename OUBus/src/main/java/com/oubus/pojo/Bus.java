@@ -20,9 +20,8 @@ public class Bus {
     
 
     
-<<<<<<< HEAD
-    public Bus(int BusID, String vehicleName, String manufacturer, String licensePlate, int toSeat, String busType){
-=======
+
+   
     public Bus(String vehicleName, String manufacturer, String licensePlate, int totalSeat, String busType){
         this.vehicleName = vehicleName;
         this.manufacturer = manufacturer;
@@ -33,7 +32,6 @@ public class Bus {
      
     public Bus(int busID, String vehicleName, String manufacturer, String licensePlate, int totalSeat, String busType){
         this.busID = busID;
->>>>>>> 378ddbd3fef0d0c43d01e5e2f20d460c73e01f60
         this.vehicleName = vehicleName;
         this.manufacturer = manufacturer;
         this.licensePlate = licensePlate;

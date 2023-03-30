@@ -13,11 +13,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-<<<<<<< HEAD
 import javafx.scene.control.TableColumn;
-=======
+
 import com.oubus.pojo.Bus;
->>>>>>> 378ddbd3fef0d0c43d01e5e2f20d460c73e01f60
+
 
 /**
  *
@@ -80,7 +79,8 @@ public class BusServices {
                 String licenPla = rs.getString("licensePlate");
                 int toSeat = rs.getInt("totalSeat");
                 String bustype =rs.getString("busType");
-                bus.add(new Bus(id,verName,manufac,licenPla,toSeat,bustype));
+                Bus b = new Bus(id,verName,manufac,licenPla,toSeat,bustype);
+                bus.add(b);
             }
         }
         
