@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -20,7 +21,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
 /**
  *
  * @author bthta
@@ -36,6 +36,8 @@ public class CustomersController implements Initializable{
         TextField txtAddress;
         @FXML
         TextField txtEmail;
+        @FXML
+        TextField txtPhone;
         
         @Override
         public void initialize(URL url,ResourceBundle rb)      
@@ -43,7 +45,7 @@ public class CustomersController implements Initializable{
             try {
                 this.LoadTableColumn();
                 this.LoadTable();
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -66,11 +68,11 @@ public class CustomersController implements Initializable{
             colEmail.setCellValueFactory(new PropertyValueFactory("email"));
             colEmail.setPrefWidth(150);
             
-            TableColumn colPhone = new TableColumn("PhoneNumber");
+            TableColumn colPhone = new TableColumn("Phone Number");
             colPhone.setCellValueFactory(new PropertyValueFactory("phoneNumber"));
             colPhone.setPrefWidth(100);
             
-            this.tbCustomer.getColumns().addAll(colID,colName,colAddress,colEmail,colPhone);
+            this.tbCustomer.getColumns().setAll(colID,colName,colAddress,colEmail,colPhone);
         }
         
         private void LoadTable() throws SQLException{
@@ -85,8 +87,27 @@ public class CustomersController implements Initializable{
                 ctm = tbCustomer.getSelectionModel().getSelectedItem();
                 txtName.setText(ctm.getName()+"");
                 txtAddress.setText(ctm.getAddress()+"");
-                txtEmail.setText(ctm.getEmail()+"");        
+                txtEmail.setText(ctm.getEmail()+"");     
+                txtPhone.setText(ctm.getPhoneNumber()+"");
           
             }
         }
+        
+         public void addCustomer(ActionEvent e) throws SQLException {
+        String name = txtName.getText();
+        String address =txtAddress.getText();
+        String email =txtEmail.getText();
+        String phoneNumber =txtPhone.getText();
+
+
+        Customer cus = new Customer(name, address, email, phoneNumber);
+
+            try {
+                c.addCustomer(cus);
+                LoadTable();
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }
 } 
