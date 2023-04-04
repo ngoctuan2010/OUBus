@@ -40,12 +40,23 @@ public class CustomerServices {
         }
     }
     
-    public List<Customer> getCustomer() throws SQLException{
+    public List<Customer> getCustomer(String phoneNumber) throws SQLException{
             List<Customer> customers = new ArrayList<>();
             try (Connection cnn = JdbcUtils.getConn()) { 
                String sql ="SELECT * FROM customer";
                 
+               if(phoneNumber!=null && !phoneNumber.isEmpty())
+               {
+                   sql +=" WHERE phoneNumber =? ";
+               }
+               
                PreparedStatement stm = cnn.prepareCall(sql);
+               
+               if(phoneNumber!=null && !phoneNumber.isEmpty())
+               {
+                   stm.setString(1, phoneNumber);
+               }
+               
                ResultSet rs = stm.executeQuery();
                
                while(rs.next()){
@@ -60,10 +71,11 @@ public class CustomerServices {
                 }
                 return customers;
             }         
+            
            
     }
     
-     public boolean addCustomer(Customer customer) throws SQLException{
+    public boolean addCustomer(Customer customer) throws SQLException{
         try(Connection cnn = JdbcUtils.getConn()){
             cnn.setAutoCommit(false);
             String sql = "INSERT INTO customer(customerID, name, address, email, phoneNumber) VALUE(?, ?, ?, ?, ?)";
@@ -86,5 +98,30 @@ public class CustomerServices {
             }}
             
             
+    }
+     
+    
+    public boolean updateCustomer(Customer cus) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "UPDATE customer SET customerID = ?, name = ?, address = ?, email = ?, phoneNumber = ? WHERE customerID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            
+            stm.setString(1, cus.getCustomerID());
+            stm.setString(2, cus.getName());
+            stm.setString(3, cus.getAddress());
+            stm.setString(4, cus.getEmail());
+            stm.setString(5, cus.getPhoneNumber());
+            stm.setString(6, cus.getCustomerID());
+           
+            stm.executeUpdate();
+
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
     }
 }
