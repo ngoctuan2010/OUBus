@@ -33,7 +33,7 @@ public class CustomerServices {
                 c.setName(rs.getString("name"));
                 c.setAddress(rs.getString("address"));
                 c.setEmail(rs.getString("Email"));
-                c.setPhone(rs.getString("phoneNumber"));
+                c.setPhoneNumber(rs.getString("phoneNumber"));
               
             }  
             return c;
@@ -63,4 +63,28 @@ public class CustomerServices {
            
     }
     
+     public boolean addCustomer(Customer customer) throws SQLException{
+        try(Connection cnn = JdbcUtils.getConn()){
+            cnn.setAutoCommit(false);
+            String sql = "INSERT INTO customer(customerID, name, address, email, phoneNumber) VALUE(?, ?, ?, ?, ?)";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            
+            stm.setString(1, customer.getCustomerID());
+            stm.setString(2, customer.getName());
+            stm.setString(3, customer.getAddress());
+            stm.setString(4, customer.getEmail()); 
+            stm.setString(5, customer.getPhoneNumber());
+            stm.executeUpdate();
+            
+            try{
+                cnn.commit();
+//                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
+                return true;
+            }catch(SQLException ex){
+//                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
+                return false;
+            }}
+            
+            
+    }
 }

@@ -26,7 +26,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Điện thoại">
+            <TextField fx:id="txtPhone" prefHeight="26.0" prefWidth="130.0" promptText="Điện thoại">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
@@ -48,7 +48,7 @@
       </HBox>
       <HBox prefHeight="31.0" prefWidth="690.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+            <Button mnemonicParsing="false" onAction="#addCustomer" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -79,7 +79,7 @@
             </Button>
          </children>
       </HBox>
-      <TableView fx:id="tbCustomer" prefHeight="397.0" prefWidth="679.0">
+      <TableView fx:id="tbCustomer" onMouseClicked="#fetchData" prefHeight="397.0" prefWidth="679.0">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
          </VBox.margin>
