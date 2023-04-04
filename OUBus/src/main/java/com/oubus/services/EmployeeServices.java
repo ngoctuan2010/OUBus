@@ -42,7 +42,7 @@ public class EmployeeServices {
             }
         }
           return employees;
-
+    }
     
      public static Employee getEmployeeByID(int ID) throws SQLException{
         Employee e = new Employee();
@@ -57,8 +57,8 @@ public class EmployeeServices {
             while(rs.next()){
                 e.setEmployeeID(rs.getString("employeeID"));
                 e.setName(rs.getString("name"));
-                e.setSex(rs.getBoolean("sex"));
-                e.setDateOfBirth(rs.getDate("DateOfBirth"));
+                e.setSex(rs.getInt("sex"));
+                e.setDateOfBirth(rs.getString("DateOfBirth"));
                 e.setNationality(rs.getString("nationality"));
                 e.setNationalID(rs.getString("nationalID"));
                 e.setAddress(rs.getString("address"));

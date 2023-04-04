@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class Trip {
 
-    private String tripID;
+    private int tripID;
     private Bus bus;
     private Location departure;
     private String TimeOfDeparture;
@@ -29,7 +29,7 @@ public class Trip {
         this.destination = destination;
     }
 
-    public Trip(String tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
         this.tripID = tripID;
         this.bus = bus;
         this.departure = departure;
@@ -43,14 +43,14 @@ public class Trip {
     /**
      * @return the tripID
      */
-    public String getTripID() {
+    public int getTripID() {
         return tripID;
     }
 
     /**
      * @param tripID the tripID to set
      */
-    public void setTripID(String tripID) {
+    public void setTripID(int tripID) {
         this.tripID = tripID;
     }
 
@@ -126,8 +126,8 @@ public class Trip {
     }
 
     
-    @Override
-    public String toString(){
-        return this.getTripID();
-    }
+//    @Override
+//    public String toString(){
+//        return this.toString(getTripID());
+//    }
 }

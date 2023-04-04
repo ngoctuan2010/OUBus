@@ -83,7 +83,7 @@ public class TripServices {
             ResultSet rs = stm.executeQuery();
             
             while(rs.next()){
-                t.setTripID(rs.getString("tripID"));
+                t.setTripID(rs.getInt("tripID"));
                 t.setBus(BusServices.getBusbyID(rs.getInt("busID")));
                 t.setDeparture(LocationServices.getLocationById(rs.getInt("departure")));
                 t.setTimeOfDeparture(rs.getString("TimeOfDeparture"));
@@ -93,6 +93,7 @@ public class TripServices {
             }  
             return t;
         }
+    }
 
     public List<Trip> searchTrip(Bus bus, Location departure, Location destination, String tOd, String dOd) throws SQLException {
         List<Trip> trips = new ArrayList<>();

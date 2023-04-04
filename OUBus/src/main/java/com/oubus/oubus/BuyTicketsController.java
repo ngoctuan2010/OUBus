@@ -57,7 +57,7 @@ public class BuyTicketsController implements Initializable{
             List<Location> localdes = l.getLocations();
             this.desLocation.setItems(FXCollections.observableList(localdes));
         /*Get Name Bus*/
-            List<Bus> bus = bs.getBusName();
+            List<Bus> bus = bs.getBuses();
             this.busType.setItems(FXCollections.observableList(bus));
             
             this.loadTableColumn();

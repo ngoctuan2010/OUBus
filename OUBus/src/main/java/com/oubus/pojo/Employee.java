@@ -128,12 +128,12 @@ public class Employee {
         this.telephone = telephone;
     }
     
-    public Date getDateOfBirth(){
+    public String getDateOfBirth(){
         return this.DateOfBirth; 
     }
     
-    public void setDateOfBirth( Date DateOfBirth){
-        this.DateOfBirth= this.DateOfBirth;
+    public void setDateOfBirth(String DateOfBirth){
+        this.DateOfBirth = DateOfBirth;
     }
     
     public String getNationality(){
@@ -160,11 +160,11 @@ public class Employee {
         this.position=position;
     }    
     
-    public boolean getSex(){
+    public int getSex(){
         return this.sex;
     }
     
-    public void setSex( boolean sex){
+    public void setSex(int sex){
         this.sex= sex;
     }
     
