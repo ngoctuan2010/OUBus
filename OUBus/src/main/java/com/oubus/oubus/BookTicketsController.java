@@ -110,5 +110,4 @@ public class BuyTicketsController implements Initializable{
         this.tbBill.setItems(FXCollections.observableList(bills));
     }
     
-    
 }

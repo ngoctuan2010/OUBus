@@ -7,7 +7,6 @@ package com.oubus.pojo;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.UUID;
-import com.oubus.pojo.Bus;
 
 /**
  *

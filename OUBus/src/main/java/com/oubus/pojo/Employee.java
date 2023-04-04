@@ -15,36 +15,48 @@ public class Employee {
 
     private String employeeID;
     private String name;
-    private boolean sex;
-    private Date DateOfBirth;
+    private int sex;
+    private String DateOfBirth;
     private String nationality;
     private String nationalID;
     private String address;
     private String email;
     private String telephone;
     private String position;
-    
-    
+
     {
         employeeID = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, String address, String email, String telephone) {
+    public Employee(String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.name = name;
+        this.address = address;
+        this.sex = sex;
+        this.DateOfBirth = dOb;
+        this.nationality = nationality;
+        this.nationalID = nationalID;
         this.address = address;
         this.email = email;
         this.telephone = telephone;
+        this.position = position;
     }
 
-    public Employee(String id, String name, String address, String email, String telephone) {
+    public Employee(String id, String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.employeeID = id;
         this.name = name;
         this.address = address;
+        this.sex = sex;
+        this.DateOfBirth = dOb;
+        this.nationality = nationality;
+        this.nationalID = nationalID;
+        this.address = address;
         this.email = email;
         this.telephone = telephone;
+        this.position = position;
     }
-    
-    public Employee() {}
+
+    public Employee() {
+    }
 
     /**
      * @return the employeeID

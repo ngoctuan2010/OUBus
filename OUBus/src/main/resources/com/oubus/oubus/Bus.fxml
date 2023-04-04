@@ -3,14 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oubus.oubus.BusController">
    <children>
       <Label text="Quản lí xe" textFill="#07689f">
          <font>
@@ -22,44 +21,39 @@
       </Label>
       <HBox prefHeight="28.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="238.0" promptText="Mã xe">
+            <TextField fx:id="txtName" prefHeight="26.0" prefWidth="150.0" promptText="Tên phương tiện">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="130.0" promptText="Tên phương tiện">
+            <TextField fx:id="txtManufacturer" prefHeight="26.0" prefWidth="150.0" promptText="Nhà sản xuất">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField prefHeight="26.0" prefWidth="278.0" promptText="Giấy phép">
+            <TextField fx:id="txtSeat" prefHeight="26.0" prefWidth="150.0" promptText="Số ghế" />
+            <TextField fx:id="txtType" prefHeight="26.0" prefWidth="150.0" promptText="Loại xe">
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets left="10.0" />
                </HBox.margin>
             </TextField>
          </children>
       </HBox>
       <HBox prefHeight="29.0" prefWidth="690.0">
          <children>
-            <TextField prefHeight="26.0" prefWidth="126.0" promptText="Số ghế" />
-            <TextField prefHeight="26.0" prefWidth="245.0" promptText="Loại xe">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-            </TextField>
-            <TextField prefHeight="26.0" prefWidth="283.0" promptText="Nhà sản xuất">
+            <TextField fx:id="txtLicense" prefHeight="26.0" prefWidth="150.0" promptText="Biển số xe">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </TextField>
          </children>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" right="10.0" top="10.0" />
          </VBox.margin>
       </HBox>
       <HBox prefHeight="31.0" prefWidth="690.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+            <Button mnemonicParsing="false" onAction="#addBusHandler" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -67,7 +61,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#updateBusHandler" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="100.0" />
                </HBox.margin>
@@ -90,14 +84,13 @@
             </Button>
          </children>
       </HBox>
-      <TableView prefHeight="380.0" prefWidth="679.0">
-         <columns>
-            <TableColumn prefWidth="75.0" />
-            <TableColumn prefWidth="75.0" />
-         </columns>
+      <TableView fx:id="tbBus" onMouseClicked="#fetchBusData" prefHeight="380.0" prefWidth="679.0">
          <VBox.margin>
             <Insets bottom="5.0" left="10.0" right="10.0" top="20.0" />
          </VBox.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
    <padding>
