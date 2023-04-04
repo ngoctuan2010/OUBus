@@ -63,3 +63,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-cursor:hand; 
     -fx-opacity: 0.8; 
 }
+
+
+TableColumn {
+    -fx-alignment: CENTER;   
+}
