@@ -7,7 +7,7 @@ package com.oubus.oubus;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Location;
 import com.oubus.services.BusServices;
-import com.oubus.services.LocationService;
+import com.oubus.services.LocationServices;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,11 +36,11 @@ public class BuyTicketsController implements Initializable{
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
         TimeChoiceBox.getItems().addAll(timeGo);
-         LocationService l = new LocationService();
+         LocationServices l = new LocationServices();
          BusServices b = new BusServices();
        /* Get location name go */
          try {
-            List<Location> local = l.getLocationName();
+            List<Location> local = l.getLocations();
             this.goLocation.setItems(FXCollections.observableList(local));
         } catch (SQLException ex) {
             Logger.getLogger(BuyTicketsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,14 +48,14 @@ public class BuyTicketsController implements Initializable{
          
           /* Get location name des */
          try {
-            List<Location> local = l.getLocationName();
+            List<Location> local = l.getLocations();
             this.desLocation.setItems(FXCollections.observableList(local));
         } catch (SQLException ex) {
             Logger.getLogger(BuyTicketsController.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*Get Name Bus*/
           try {
-            List<Bus> bus =b.getBusName();
+            List<Bus> bus =b.getBuses();
             this.busType.setItems(FXCollections.observableList(bus));
         } catch (SQLException ex) {
             Logger.getLogger(BuyTicketsController.class.getName()).log(Level.SEVERE, null, ex);

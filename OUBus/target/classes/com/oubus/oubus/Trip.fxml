@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -64,7 +63,7 @@
       </HBox>
       <HBox prefHeight="29.0" prefWidth="700.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#addTripHandler" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
+            <Button mnemonicParsing="false" onAction="#addTripHandler" prefHeight="30.0" prefWidth="100.0" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
@@ -72,7 +71,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#updateTripHandler" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#updateTripHandler" prefHeight="30.0" prefWidth="100.0" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="100.0" />
                </HBox.margin>
@@ -80,18 +79,21 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" prefHeight="26.0" prefWidth="149.0" promptText="---Tìm kiếm---">
-               <HBox.margin>
-                  <Insets left="200.0" />
-               </HBox.margin>
-            </TextField>
-            <Button mnemonicParsing="false" onAction="#searchTrip" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#searchTripHandler" prefHeight="30.0" prefWidth="100.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="2.0" />
+                  <Insets left="230.0" />
                </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#reload" prefHeight="25.0" styleClass="btn-buyticket" text="←" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Button>
          </children>
          <VBox.margin>

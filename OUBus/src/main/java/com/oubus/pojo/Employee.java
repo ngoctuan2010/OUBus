@@ -15,36 +15,48 @@ public class Employee {
 
     private String employeeID;
     private String name;
-    private boolean sex;
-    private Date DateOfBirth;
+    private int sex;
+    private String DateOfBirth;
     private String nationality;
     private String nationalID;
     private String address;
     private String email;
     private String telephone;
     private String position;
-    
-    
+
     {
         employeeID = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, String address, String email, String telephone) {
+    public Employee(String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.name = name;
+        this.address = address;
+        this.sex = sex;
+        this.DateOfBirth = dOb;
+        this.nationality = nationality;
+        this.nationalID = nationalID;
         this.address = address;
         this.email = email;
         this.telephone = telephone;
+        this.position = position;
     }
 
-    public Employee(String id, String name, String address, String email, String telephone) {
+    public Employee(String id, String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.employeeID = id;
         this.name = name;
         this.address = address;
+        this.sex = sex;
+        this.DateOfBirth = dOb;
+        this.nationality = nationality;
+        this.nationalID = nationalID;
+        this.address = address;
         this.email = email;
         this.telephone = telephone;
+        this.position = position;
     }
-    
-    public Employee() {}
+
+    public Employee() {
+    }
 
     /**
      * @return the employeeID
@@ -116,4 +128,76 @@ public class Employee {
         this.telephone = telephone;
     }
 
+    /**
+     * @return the sex
+     */
+    public int getSex() {
+        return sex;
+    }
+
+    /**
+     * @param sex the sex to set
+     */
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * @return the DateOfBirth
+     */
+    public String getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    /**
+     * @param DateOfBirth the DateOfBirth to set
+     */
+    public void setDateOfBirth(String DateOfBirth) {
+        this.DateOfBirth = DateOfBirth;
+    }
+
+    /**
+     * @return the nationality
+     */
+    public String getNationality() {
+        return nationality;
+    }
+
+    /**
+     * @param nationality the nationality to set
+     */
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    /**
+     * @return the nationalID
+     */
+    public String getNationalID() {
+        return nationalID;
+    }
+
+    /**
+     * @param nationalID the nationalID to set
+     */
+    public void setNationalID(String nationalID) {
+        this.nationalID = nationalID;
+    }
+
+    /**
+     * @return the position
+     */
+    public String getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    
+    
 }
