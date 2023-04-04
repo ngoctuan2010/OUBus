@@ -54,7 +54,7 @@ public class TripServices {
             PreparedStatement stm = cnn.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int tripID = rs.getInt("tripID");
+                String tripID = rs.getString("tripID");
 
 
                 Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
@@ -93,6 +93,8 @@ public class TripServices {
             }  
             return t;
         }
+        
+    }
 
     public List<Trip> searchTrip(Bus bus, Location departure, Location destination, String tOd, String dOd) throws SQLException {
         List<Trip> trips = new ArrayList<>();
@@ -152,7 +154,7 @@ public class TripServices {
             stm.executeQuery();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int tripID = rs.getInt("tripID");
+                String tripID = rs.getString("tripID");
 
                 Bus _bus = BusServices.getBusbyID(rs.getInt("busID"));
                 Location _ideparture = LocationServices.getLocationById(rs.getInt("departure"));
@@ -178,7 +180,7 @@ public class TripServices {
             stm.setString(3, tr.getTimeOfDeparture());
             stm.setString(4, tr.getDateOfDeparture());
             stm.setInt(5, tr.getDestination().getLocationID());
-            stm.setInt(6, tr.getTripID());
+            stm.setString(6, tr.getTripID());
 
             stm.executeUpdate();
 
@@ -191,12 +193,12 @@ public class TripServices {
         }
     }
 
-    public boolean deleteTrip(int id) throws SQLException {
+    public boolean deleteTrip(String id) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
             String sql = "DELETE FROM trip WHERE tripID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setInt(1, id);
+            stm.setString(1, id);
             stm.executeUpdate();
 
             try {

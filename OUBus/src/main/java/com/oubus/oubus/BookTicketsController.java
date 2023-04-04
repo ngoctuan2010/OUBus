@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -57,17 +58,17 @@ public class BuyTicketsController implements Initializable{
             List<Location> localdes = l.getLocations();
             this.desLocation.setItems(FXCollections.observableList(localdes));
         /*Get Name Bus*/
-            List<Bus> bus = bs.getBusName();
+                List<Bus> bus = bs.getBuses();
             this.busType.setItems(FXCollections.observableList(bus));
             
-            this.loadTableColumn();
-            this.loadTable();
+            loadTableColumn();
+            loadTable();
         } catch (SQLException ex) {
             Logger.getLogger(BuyTicketsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void loadTableColumn()
+    private void loadTableColumn() throws SQLException
     {
         TableColumn colBill = new TableColumn( "Bill");
         colBill.setCellValueFactory(new PropertyValueFactory("billID"));
@@ -102,12 +103,18 @@ public class BuyTicketsController implements Initializable{
         colDate.setPrefWidth(100);
         
         this.tbBill.getColumns().setAll(colBill,colCustomer,colEmployee,colTrip,colSeat,colState,colDue,colDate);
+        loadTable();
     }
     
     private void loadTable() throws SQLException{
         List<Bill> bills = b.getBill();
         this.tbBill.getItems().clear();
         this.tbBill.setItems(FXCollections.observableList(bills));
+    }
+    
+    public void reload(ActionEvent e) throws SQLException {
+        loadTable();
+        for 
     }
     
 }
