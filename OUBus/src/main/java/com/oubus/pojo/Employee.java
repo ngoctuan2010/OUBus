@@ -128,7 +128,7 @@ public class Employee {
         this.telephone = telephone;
     }
     
-    public Date getDateOfBirth(){
+    public String getDateOfBirth(){
         return this.DateOfBirth; 
     }
     
@@ -165,7 +165,11 @@ public class Employee {
     }
     
     public void setSex(int sex){
+<<<<<<< Updated upstream
         this.sex = sex;
+=======
+        this.sex= sex;
+>>>>>>> Stashed changes
     }
     
    
