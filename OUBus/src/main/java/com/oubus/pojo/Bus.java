@@ -20,6 +20,8 @@ public class Bus {
     
 
     
+
+   
     public Bus(String vehicleName, String manufacturer, String licensePlate, int totalSeat, String busType){
         this.vehicleName = vehicleName;
         this.manufacturer = manufacturer;

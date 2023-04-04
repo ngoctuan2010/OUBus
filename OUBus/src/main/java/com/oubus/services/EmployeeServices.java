@@ -11,12 +11,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.PreparedStatement;
+
 
 /**
  *
  * @author PC
  */
 public class EmployeeServices {
+
     public List<Employee> getEmployees() throws SQLException{
         List<Employee> employees = new ArrayList<>();
         try(Connection cnn = JdbcUtils.getConn()){
@@ -39,5 +42,33 @@ public class EmployeeServices {
             }
         }
           return employees;
+
+    
+     public static Employee getEmployeeByID(int ID) throws SQLException{
+        Employee e = new Employee();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM employee WHERE employeeID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, ID);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                e.setEmployeeID(rs.getString("employeeID"));
+                e.setName(rs.getString("name"));
+                e.setSex(rs.getBoolean("sex"));
+                e.setDateOfBirth(rs.getDate("DateOfBirth"));
+                e.setNationality(rs.getString("nationality"));
+                e.setNationalID(rs.getString("nationalID"));
+                e.setAddress(rs.getString("address"));
+                e.setEmail(rs.getString("email"));
+                e.setTelephone(rs.getString("phoneNumber"));
+                e.setPosition(rs.getString("position"));
+              
+            }  
+            return e;
+        }
+
     }
 }

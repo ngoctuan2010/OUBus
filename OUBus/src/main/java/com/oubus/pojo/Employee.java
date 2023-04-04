@@ -127,77 +127,49 @@ public class Employee {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
-    /**
-     * @return the sex
-     */
-    public int getSex() {
-        return sex;
-    }
-
-    /**
-     * @param sex the sex to set
-     */
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    /**
-     * @return the DateOfBirth
-     */
-    public String getDateOfBirth() {
-        return DateOfBirth;
-    }
-
-    /**
-     * @param DateOfBirth the DateOfBirth to set
-     */
-    public void setDateOfBirth(String DateOfBirth) {
-        this.DateOfBirth = DateOfBirth;
-    }
-
-    /**
-     * @return the nationality
-     */
-    public String getNationality() {
-        return nationality;
-    }
-
-    /**
-     * @param nationality the nationality to set
-     */
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    /**
-     * @return the nationalID
-     */
-    public String getNationalID() {
-        return nationalID;
-    }
-
-    /**
-     * @param nationalID the nationalID to set
-     */
-    public void setNationalID(String nationalID) {
-        this.nationalID = nationalID;
-    }
-
-    /**
-     * @return the position
-     */
-    public String getPosition() {
-        return position;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
     
+    public Date getDateOfBirth(){
+        return this.DateOfBirth; 
+    }
     
+    public void setDateOfBirth( Date DateOfBirth){
+        this.DateOfBirth= this.DateOfBirth;
+    }
+    
+    public String getNationality(){
+        return this.nationality;
+    }
+    
+    public void setNationality(String nationality){
+        this.nationality= nationality;
+    }
+    
+    public String getNationalID(){
+        return this.nationalID;
+    }
+    
+    public void setNationalID( String nationalID){
+        this.nationalID =nationalID;
+    }
+    
+    public String getPosition(){
+        return this.position;
+    }
+    
+    public void setPosition( String position){
+        this.position=position;
+    }    
+    
+    public boolean getSex(){
+        return this.sex;
+    }
+    
+    public void setSex( boolean sex){
+        this.sex= sex;
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
+    }
 }

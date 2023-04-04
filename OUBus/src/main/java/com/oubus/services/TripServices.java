@@ -5,6 +5,7 @@
 package com.oubus.services;
 
 import com.oubus.services.JdbcUtils;
+import com.oubus.services.BusServices;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Location;
@@ -55,6 +56,7 @@ public class TripServices {
             while (rs.next()) {
                 int tripID = rs.getInt("tripID");
 
+
                 Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
                 Location departure = LocationServices.getLocationById(rs.getInt("departure"));
                 String tOd = rs.getString("time");
@@ -69,6 +71,28 @@ public class TripServices {
         }
 
     }
+    
+    public static Trip getTripByID(int ID) throws SQLException{
+        Trip t = new Trip();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM trip WHERE tripID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, ID);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                t.setTripID(rs.getString("tripID"));
+                t.setBus(BusServices.getBusbyID(rs.getInt("busID")));
+                t.setDeparture(LocationServices.getLocationById(rs.getInt("departure")));
+                t.setTimeOfDeparture(rs.getString("TimeOfDeparture"));
+                t.setDateOfDeparture(rs.getString("DateOfDeparture"));
+                t.setDestination(LocationServices.getLocationById(rs.getInt("destination")));
+               
+            }  
+            return t;
+        }
 
     public List<Trip> searchTrip(Bus bus, Location departure, Location destination, String tOd, String dOd) throws SQLException {
         List<Trip> trips = new ArrayList<>();
@@ -184,3 +208,4 @@ public class TripServices {
         }
     }
 }
+
