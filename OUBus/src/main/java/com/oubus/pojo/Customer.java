@@ -4,17 +4,23 @@
  */
 package com.oubus.pojo;
 
+import java.util.UUID;
+
 
 /**
  *
  * @author PC
  */
 public class Customer {
-    private String  customerID;
+    private String customerID;
     private String name;
     private String address;
     private String email;
     private String phoneNumber;
+    
+    {
+        customerID = UUID.randomUUID().toString();
+    }
 
 
     public Customer (String customerID, String name, String address, String email, String telephone)
@@ -68,16 +74,24 @@ public class Customer {
         this.email=email;
     }
     
-    public String getPhone(){
-       return this.phoneNumber;
-    }
     
-    public void setPhone(String phone){
-            this.phoneNumber = phone;
-    }
     
     @Override
      public String toString(){
      return this.name;
 }
+
+    /**
+     * @return the phoneNumber
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * @param phoneNumber the phoneNumber to set
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 } 
