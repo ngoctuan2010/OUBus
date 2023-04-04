@@ -5,7 +5,9 @@
 package com.oubus.services;
 
 import com.oubus.pojo.Employee;
+import static java.lang.Integer.parseInt;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +31,7 @@ public class EmployeeServices {
                 String id = rs.getString("EmployeeID");
                 String name = rs.getString("name");
                 int sex = rs.getInt("sex");
-                String dOb = rs.getString("DateOfBirth");
+                Date dOb = rs.getDate("DateOfBirth");
                 String nationlity = rs.getString("nationality");
                 String nationalID = rs.getString("nationalID");
                 String address = rs.getString("address");
@@ -43,32 +45,35 @@ public class EmployeeServices {
         }
           return employees;
 
-    
-     public static Employee getEmployeeByID(int ID) throws SQLException{
+    /**
+     *
+     * @param ID
+     * @return
+     * @throws SQLException
+     */
+    public static Employee getEmployeeByID(String ID) throws SQLException{
         Employee e = new Employee();
         try(Connection cnn = JdbcUtils.getConn()){
             
             String sql = "SELECT * FROM employee WHERE employeeID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setInt(1, ID);
+            stm.setInt(1, parseInt(ID));
             
             ResultSet rs = stm.executeQuery();
             
             while(rs.next()){
                 e.setEmployeeID(rs.getString("employeeID"));
                 e.setName(rs.getString("name"));
-                e.setSex(rs.getBoolean("sex"));
+                e.setSex(rs.getInt("sex"));
                 e.setDateOfBirth(rs.getDate("DateOfBirth"));
                 e.setNationality(rs.getString("nationality"));
                 e.setNationalID(rs.getString("nationalID"));
                 e.setAddress(rs.getString("address"));
                 e.setEmail(rs.getString("email"));
                 e.setTelephone(rs.getString("phoneNumber"));
-                e.setPosition(rs.getString("position"));
-              
+                e.setPosition(rs.getString("position"));  
             }  
             return e;
         }
-
     }
 }

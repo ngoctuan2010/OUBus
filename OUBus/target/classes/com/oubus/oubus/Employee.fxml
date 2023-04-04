@@ -77,10 +77,10 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextField prefWidth="300.0" promptText="Username" />
-            <TextField prefWidth="300.0" promptText="Password">
+            <TextField prefHeight="26.0" prefWidth="330.0" promptText="Username" />
+            <TextField prefHeight="26.0" prefWidth="322.0" promptText="Password">
                <HBox.margin>
-                  <Insets left="70.0" />
+                  <Insets left="25.0" />
                </HBox.margin>
             </TextField>
          </children>
@@ -88,7 +88,7 @@
             <Insets left="10.0" right="10.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="31.0" prefWidth="690.0">
+      <HBox prefHeight="26.0" prefWidth="123.0">
          <children>
             <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Thêm" textFill="#f4f4f4">
                <HBox.margin>
@@ -100,23 +100,31 @@
             </Button>
             <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Xoá" textFill="white">
+               <HBox.margin>
                   <Insets left="10.0" right="100.0" />
                </HBox.margin>
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" prefHeight="26.0" prefWidth="149.0" promptText="---Tìm kiếm---">
+            <TextField alignment="CENTER" prefHeight="26.0" prefWidth="146.0" promptText="---Tìm kiếm---">
                <HBox.margin>
-                  <Insets left="200.0" />
+                  <Insets left="140.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="106.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets left="2.0" />
+                  <Insets left="10.0" />
                </HBox.margin>
             </Button>
          </children>
