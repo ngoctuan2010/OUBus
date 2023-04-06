@@ -180,7 +180,7 @@ public class TripController implements Initializable {
     public void updateTripHandler(ActionEvent e) throws SQLException {
         if (tbTrips.getSelectionModel().getSelectedItem() != null) {
             Trip updatedTrip = new Trip();
-            String id = tbTrips.getSelectionModel().getSelectedItem().getTripID();
+            int id = tbTrips.getSelectionModel().getSelectedItem().getTripID();
             updatedTrip.setTripID(id);
             updatedTrip.setBus(cbBus.getSelectionModel().getSelectedItem());
             updatedTrip.setDeparture(cbDeparture.getSelectionModel().getSelectedItem());

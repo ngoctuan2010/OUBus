@@ -16,7 +16,7 @@ public class Employee {
     private String employeeID;
     private String name;
     private int sex;
-    private Date DateOfBirth;
+    private String DateOfBirth;
     private String nationality;
     private String nationalID;
     private String address;
@@ -28,7 +28,7 @@ public class Employee {
         employeeID = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, int sex, Date dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.name = name;
         this.address = address;
         this.sex = sex;
@@ -41,7 +41,7 @@ public class Employee {
         this.position = position;
     }
 
-    public Employee(String id, String name, int sex, Date dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String id, String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.employeeID = id;
         this.name = name;
         this.address = address;
@@ -132,7 +132,7 @@ public class Employee {
         return this.DateOfBirth; 
     }
     
-    public void setDateOfBirth(Date DateOfBirth){
+    public void setDateOfBirth(String DateOfBirth){
         this.DateOfBirth= DateOfBirth;
     }
     
@@ -165,12 +165,12 @@ public class Employee {
     }
     
     public void setSex(int sex){
-<<<<<<< Updated upstream
         this.sex = sex;
-=======
-        this.sex= sex;
->>>>>>> Stashed changes
     }
     
+        @Override
+    public String toString(){
+        return employeeID;
+    }
    
 }

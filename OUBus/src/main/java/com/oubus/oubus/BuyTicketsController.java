@@ -112,9 +112,6 @@ public class BuyTicketsController implements Initializable{
         this.tbBill.setItems(FXCollections.observableList(bills));
     }
     
-    public void reload(ActionEvent e) throws SQLException {
-        loadTable();
-        for 
-    }
+
     
 }

@@ -31,7 +31,7 @@ public class EmployeeServices {
                 String id = rs.getString("EmployeeID");
                 String name = rs.getString("name");
                 int sex = rs.getInt("sex");
-                Date dOb = rs.getDate("DateOfBirth");
+                String dOb = rs.getString("DateOfBirth");
                 String nationlity = rs.getString("nationality");
                 String nationalID = rs.getString("nationalID");
                 String address = rs.getString("address");
@@ -58,7 +58,7 @@ public class EmployeeServices {
             
             String sql = "SELECT * FROM employee WHERE employeeID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setInt(1, parseInt(ID));
+            stm.setString(1, ID);
             
             ResultSet rs = stm.executeQuery();
             
@@ -66,7 +66,7 @@ public class EmployeeServices {
                 e.setEmployeeID(rs.getString("employeeID"));
                 e.setName(rs.getString("name"));
                 e.setSex(rs.getInt("sex"));
-                e.setDateOfBirth(rs.getDate("DateOfBirth"));
+                e.setDateOfBirth(rs.getString("DateOfBirth"));
                 e.setNationality(rs.getString("nationality"));
                 e.setNationalID(rs.getString("nationalID"));
                 e.setAddress(rs.getString("address"));

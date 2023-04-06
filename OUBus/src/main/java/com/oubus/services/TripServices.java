@@ -54,7 +54,7 @@ public class TripServices {
             PreparedStatement stm = cnn.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                String tripID = rs.getString("tripID");
+                int tripID = rs.getInt("tripID");
 
 
                 Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
@@ -83,7 +83,7 @@ public class TripServices {
             ResultSet rs = stm.executeQuery();
             
             while(rs.next()){
-                t.setTripID(rs.getString("tripID"));
+                t.setTripID(rs.getInt("tripID"));
                 t.setBus(BusServices.getBusbyID(rs.getInt("busID")));
                 t.setDeparture(LocationServices.getLocationById(rs.getInt("departure")));
                 t.setTimeOfDeparture(rs.getString("TimeOfDeparture"));
@@ -154,7 +154,7 @@ public class TripServices {
             stm.executeQuery();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                String tripID = rs.getString("tripID");
+                int tripID = rs.getInt("tripID");
 
                 Bus _bus = BusServices.getBusbyID(rs.getInt("busID"));
                 Location _ideparture = LocationServices.getLocationById(rs.getInt("departure"));
@@ -180,7 +180,7 @@ public class TripServices {
             stm.setString(3, tr.getTimeOfDeparture());
             stm.setString(4, tr.getDateOfDeparture());
             stm.setInt(5, tr.getDestination().getLocationID());
-            stm.setString(6, tr.getTripID());
+            stm.setInt(6, tr.getTripID());
 
             stm.executeUpdate();
 
@@ -193,12 +193,12 @@ public class TripServices {
         }
     }
 
-    public boolean deleteTrip(String id) throws SQLException {
+    public boolean deleteTrip(int id) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
             String sql = "DELETE FROM trip WHERE tripID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setString(1, id);
+            stm.setInt(1, id);
             stm.executeUpdate();
 
             try {
