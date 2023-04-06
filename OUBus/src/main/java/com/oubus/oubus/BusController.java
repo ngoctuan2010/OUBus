@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.oubus.oubus;
-
+/*
 import static com.oubus.oubus.TripController.t;
+*/
 import com.oubus.services.BusServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -100,7 +101,7 @@ public class BusController implements Initializable {
                                 MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
                             }
                         } catch (SQLException ex) {
-                            Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 });

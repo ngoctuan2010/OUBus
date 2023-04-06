@@ -43,6 +43,7 @@ public class TripServices {
                 return false;
             }
         }
+
     }
 
     public List<Trip> getTrip() throws SQLException {
@@ -92,82 +93,9 @@ public class TripServices {
             }  
             return t;
         }
-        
     }
 
-    public List<Trip> searchTrip(Bus bus, Location departure, Location destination, String tOd, String dOd) throws SQLException {
-        List<Trip> trips = new ArrayList<>();
-        try (Connection cnn = JdbcUtils.getConn()) {
-            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination FROM trip WHERE";
-            
-//            stm.setInt(1, busID);
-//            stm.setInt(2, departureID);
-//            stm.setInt(3, destinationID);
-//            stm.setString(4, tOd);
-//            stm.setString(5, dOd);
-            int i = 0;
-            if(bus != null){
-                sql += " busID = ? and";
-                i+=1;
-            }
-            if(departure != null){
-                sql += " departure = ? and";
-                i+=1;
-            }
-            if(destination != null){
-                sql += " destination = ? and";
-                i+=1;
-            }
-            if(tOd != null && !tOd.isEmpty()){
-                sql += " TIME_FORMAT(TimeOfDeparture, '%H:%i') = ? and";
-                i+=1;
-            }
-            if(dOd!= null && !dOd.isEmpty()){
-                sql += " DateOfDeparture = ? and";
-                i+=1;
-            }
-            
-            sql = sql.substring(0, sql.length()-3);
-            
-            PreparedStatement stm = cnn.prepareCall(sql);
-            if(dOd!= null && !dOd.isEmpty()){
-                stm.setString(i, dOd);
-                i-=1;
-            }
-            if(tOd != null &&!tOd.isEmpty()){
-                stm.setString(i, tOd);
-                i-=1;
-            }
-            if(destination != null){
-                stm.setInt(i, destination.getLocationID());
-                i-=1;
-            }
-            if(departure != null){
-                stm.setInt(i, departure.getLocationID());
-                i-=1;
-            }
-            if(bus != null){
-                stm.setInt(i, bus.getBusID());
-            }
-              
-            stm.executeQuery();
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                int tripID = rs.getInt("tripID");
-
-                Bus _bus = BusServices.getBusbyID(rs.getInt("busID"));
-                Location _ideparture = LocationServices.getLocationById(rs.getInt("departure"));
-                String _time = rs.getString("time");
-                String _date = rs.getString("DateOfDeparture");
-                Location _destination = LocationServices.getLocationById(rs.getInt("destination"));
-
-                Trip trip = new Trip(tripID, _bus, _ideparture, _time, _date, _destination);
-                trips.add(trip);
-            }
-
-            return trips;
-        }
-    }
+   
 
     public boolean updateTrip(Trip tr) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {

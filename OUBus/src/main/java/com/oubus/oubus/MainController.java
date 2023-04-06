@@ -5,8 +5,11 @@
 package com.oubus.oubus;
 
 import com.oubus.pojo.Account;
+import com.oubus.pojo.Employee;
+import com.oubus.services.EmployeeServices;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,10 +36,12 @@ public class MainController {
     Button btnLogout;
 
     private Account cur_user;
+    EmployeeServices emp = new EmployeeServices();
 
-    public void initUser(Account user) {
+    public void initUser(Account user) throws SQLException {
         cur_user = user;
-        this.user.setText(cur_user.getAccessLevel().toString());
+        Employee login = emp.getEmployeeByID(cur_user.getEmployeeID());
+        this.user.setText(login.toString());
     }
 
     public void loadBookTickets(ActionEvent e) throws IOException {

@@ -40,11 +40,11 @@ public class LoginController {
 
         if (username.isEmpty() || password.isEmpty()) {
             MessageBox.getBox("Blank", "Please enter fully", Alert.AlertType.WARNING).show();
-        } else if (as.getUser(username, password) != null) {
+        } else if (as.getAccount(username, password) != null) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent main = (Parent) fxmlLoader.load();
             MainController mc = fxmlLoader.getController();
-            mc.initUser(as.getUser(username, password));
+            mc.initUser(as.getAccount(username, password));
             Stage openStage = new Stage();  
             openStage.setScene(new Scene(main));
             Stage closeStage = (Stage) btnLogin.getScene().getWindow();

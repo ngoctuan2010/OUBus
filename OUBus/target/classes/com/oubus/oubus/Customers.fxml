@@ -21,6 +21,11 @@
       </Label>
       <HBox prefHeight="28.0" prefWidth="690.0">
          <children>
+            <TextField fx:id="txtCustomerID" prefHeight="26.0" prefWidth="143.0" promptText="Ma Khach Hang">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </TextField>
             <TextField fx:id="txtName" prefHeight="26.0" prefWidth="238.0" promptText="Họ Tên">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
@@ -31,7 +36,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </TextField>
-            <TextField fx:id="txtEmail" prefHeight="26.0" prefWidth="278.0" promptText="Email">
+            <TextField fx:id="txtEmail" prefHeight="26.0" prefWidth="145.0" promptText="Email">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
@@ -56,20 +61,25 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#updateCustomerHandler" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <HBox.margin>
-                  <Insets left="10.0" right="100.0" />
+                  <Insets left="10.0" right="10.0" />
                </HBox.margin>
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <TextField alignment="CENTER" prefHeight="26.0" prefWidth="149.0" promptText="---Tìm kiếm---">
+            <Button mnemonicParsing="false" onAction="#DeleteCustomer" styleClass="btn-buyticket" text="Xóa" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txtSearch" alignment="CENTER" prefHeight="26.0" prefWidth="149.0" promptText="---Tìm kiếm---">
                <HBox.margin>
-                  <Insets left="200.0" />
+                  <Insets left="150.0" />
                </HBox.margin>
             </TextField>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#searchCustomerHandler" prefHeight="26.0" prefWidth="93.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>

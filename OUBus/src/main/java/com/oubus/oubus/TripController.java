@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package com.oubus.oubus;
 
 import javafx.fxml.FXML;
@@ -36,10 +37,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-/**
- *
- * @author PC
- */
+
 public class TripController implements Initializable {
 
     static TripServices t = new TripServices();
@@ -214,9 +212,7 @@ public class TripController implements Initializable {
             dOd = dpDateOfDeparture.getValue().toString();
         
         
-        List<Trip> trips = t.searchTrip(b, departure, destination, tOd, dOd);
-        this.tbTrips.getItems().clear();
-        this.tbTrips.setItems(FXCollections.observableList(trips));
+        
     }
 
     public void reload(ActionEvent e) throws SQLException {
