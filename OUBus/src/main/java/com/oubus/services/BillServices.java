@@ -36,7 +36,7 @@ public class BillServices {
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
                 Employee emp = EmployeeServices.getEmployeeByID(rs.getString("employeeID"));
                 Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
-                int seat=rs.getInt("seatNo");
+                int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
                 String aquiredDate =rs.getString("aquiredDate");
