@@ -73,13 +73,7 @@ public class Customer {
     public void setEmail(String email){
         this.email=email;
     }
-    
-    
-    
-    @Override
-     public String toString(){
-     return this.name;
-}
+
 
     /**
      * @return the phoneNumber
@@ -94,4 +88,11 @@ public class Customer {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-} 
+    
+    @Override
+    public String toString(){
+        return customerID;
+    }
+}
+
+

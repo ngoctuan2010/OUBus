@@ -43,7 +43,6 @@ public class TripServices {
                 return false;
             }
         }
-
     }
 
     public List<Trip> getTrip() throws SQLException {

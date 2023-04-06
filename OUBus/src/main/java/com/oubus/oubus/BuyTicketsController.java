@@ -70,28 +70,28 @@ public class BuyTicketsController implements Initializable{
 
     private void loadTableColumn() throws SQLException
     {
-        TableColumn colBill = new TableColumn( "Bill");
+        TableColumn colBill = new TableColumn( "BillID");
         colBill.setCellValueFactory(new PropertyValueFactory("billID"));
         colBill.setPrefWidth(50);
         
-        TableColumn colCustomer = new TableColumn("Customer");
-        colCustomer.setCellValueFactory( new PropertyValueFactory("customerID"));
+        TableColumn colCustomer = new TableColumn("CustomerID");
+        colCustomer.setCellValueFactory( new PropertyValueFactory("customer"));
         colCustomer.setPrefWidth(100);
         
-        TableColumn colEmployee = new TableColumn("Employee");
-        colEmployee.setCellValueFactory( new PropertyValueFactory("employeeID"));
+        TableColumn colEmployee = new TableColumn("EmployeeID");
+        colEmployee.setCellValueFactory( new PropertyValueFactory("employee"));
         colEmployee.setPrefWidth(100);
         
-        TableColumn colTrip = new TableColumn("Trip");
-        colTrip.setCellValueFactory( new PropertyValueFactory("tripID"));
+        TableColumn colTrip = new TableColumn("TripID");
+        colTrip.setCellValueFactory( new PropertyValueFactory("trip"));
         colTrip.setPrefWidth(50);
         
-        TableColumn colSeat = new TableColumn("Seat");
-        colSeat.setCellValueFactory( new PropertyValueFactory("seatNo"));
+        TableColumn colSeat = new TableColumn("SeatNo");
+        colSeat.setCellValueFactory( new PropertyValueFactory("seat"));
         colSeat.setPrefWidth(50);
         
         TableColumn colState = new TableColumn("State");
-        colState.setCellValueFactory( new PropertyValueFactory("state"));
+        colState.setCellValueFactory( new PropertyValueFactory("bookingState"));
         colState.setPrefWidth(50);
         
         TableColumn colDue = new TableColumn("TotalDue");

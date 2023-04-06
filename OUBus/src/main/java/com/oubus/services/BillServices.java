@@ -9,11 +9,9 @@ import com.oubus.pojo.Customer;
 import com.oubus.pojo.Employee;
 import com.oubus.pojo.Trip;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class BillServices {
                 int seat=rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
-                Date aquiredDate =rs.getDate("aquiredDate");
+                String aquiredDate =rs.getString("aquiredDate");
               
              
                 Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
@@ -51,20 +49,22 @@ public class BillServices {
         }
     }
    
-    public boolean addTrip(Trip bill) throws SQLException {
+        public boolean addBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination) VALUE(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Bill(customerID, employeeID, tripID, seat, state, totalPrice, aquireDate) VALUE(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
 
-            stm.setInt(1, bill.getBus().getBusID());
-            stm.setInt(2, bill.getDeparture().getLocationID());
-            stm.setString(3, bill.getTimeOfDeparture());
-            stm.setString(4, bill.getDateOfDeparture());
-            stm.setInt(5, bill.getDestination().getLocationID());
+            stm.setString(1, bill.getCustomer().getCustomerID());
+            stm.setString(2, bill.getEmployee().getEmployeeID());
+            stm.setInt(3, bill.getTrip().getTripID());
+            stm.setInt (4, bill.getSeat());
+            stm.setInt(5, bill.getBookingState().ordinal());
+            stm.setInt(6, bill.getTrip().getTripID());
+            stm.setString(7, bill.getAquiredDate());
 
             stm.executeUpdate();
-
+            
             try {
                 cnn.commit();
                 return true;
@@ -72,4 +72,49 @@ public class BillServices {
                 return false;
             }
         }
+    }
+        
+        public boolean updateBill(Bill bill) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seat = ?, state = ?, totalPrice = ?, aquireDate = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+
+            stm.setString(1, bill.getCustomer().getCustomerID());
+            stm.setString(2, bill.getEmployee().getEmployeeID());
+            stm.setInt(3, bill.getTrip().getTripID());
+            stm.setInt (4, bill.getSeat());
+            stm.setInt(5, bill.getBookingState().ordinal());
+            stm.setInt(6, bill.getTrip().getTripID());
+            stm.setString(7, bill.getAquiredDate());
+
+            stm.executeUpdate();
+            
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
+
+        public boolean deleteBill(String id) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "DELETE Bill where BillID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+
+            stm.setString(1, id);
+
+            stm.executeUpdate();
+            
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
 }

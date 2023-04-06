@@ -4,22 +4,22 @@
  */
 package com.oubus.pojo;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 /**
  *
  * @author PC
  */
-
 public class Bill {
-    
-    public static enum statePayment{
+
+    public static enum statePayment {
         PAID,
-        UNPAID,
-        CANCEL
+        BOOKED,
+        CANCELLED
     }
-    
+
     private String billID;
     private Customer customer;
     private Employee employee;
@@ -27,23 +27,23 @@ public class Bill {
     private int seat;
     private statePayment bookingState;
     private double totalDue;
-    private Date aquiredDate;
-    
+    private String aquiredDate;
+
     {
         setBillID(UUID.randomUUID().toString());
     }
-    
-    public Bill(Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, Date aquireDate){
+
+    public Bill(Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, String aquireDate) {
         this.customer = customerID;
         this.employee = employeeID;
         this.trip = tripID;
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
-        this.aquiredDate=aquireDate;
+        this.aquiredDate = aquireDate;
     }
-    
-    public Bill(String billID,Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, Date aquireDate){
+
+    public Bill(String billID, Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, String aquireDate) {
         this.billID = billID;
         this.customer = customerID;
         this.employee = employeeID;
@@ -51,10 +51,11 @@ public class Bill {
         this.seat = seat;
         this.bookingState = state;
         this.totalDue = totalPrice;
-        this.aquiredDate =aquireDate;
+        this.aquiredDate = aquireDate;
     }
-    
-    public Bill(){}
+
+    public Bill() {
+    }
 
     /**
      * @return the billID
@@ -80,7 +81,7 @@ public class Bill {
     /**
      * @param customer the customer to set
      */
-    public void setCustomerID(Customer customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -94,7 +95,7 @@ public class Bill {
     /**
      * @param employee the employee to set
      */
-    public void setEmployeeID(Employee employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 
@@ -108,9 +109,10 @@ public class Bill {
     /**
      * @param trip the trip to set
      */
-    public void setTripID(Trip trip) {
+    public void setTrip(Trip trip) {
         this.trip = trip;
     }
+
     /**
      * @return the bookingState
      */
@@ -156,16 +158,15 @@ public class Bill {
     /**
      * @return the aquiredDate
      */
-    public Date getAquiredDate() {
+    public String getAquiredDate() {
         return aquiredDate;
     }
 
     /**
      * @param aquiredDate the aquiredDate to set
      */
-    public void setAquiredDate(Date aquiredDate) {
+    public void setAquiredDate(String aquiredDate) {
         this.aquiredDate = aquiredDate;
     }
-    
-    
+
 }
