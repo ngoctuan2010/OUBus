@@ -26,8 +26,16 @@ public class Account {
         setAccountID(UUID.randomUUID().toString());
     }
     
-    public Account(String emloyeeID, String username, String password, level accessLevel) {
-        this.employeeID = emloyeeID;
+    public Account(String employeeID, String username, String password, level accessLevel) {
+        this.employeeID = employeeID;
+        this.username = username;
+        this.password = password;
+        this.accessLevel = accessLevel;
+    }
+    
+    public Account(String accountID,String employeeID,String username,String password, level accessLevel){
+        this.accountID = accountID;
+        this.employeeID = employeeID;
         this.username = username;
         this.password = password;
         this.accessLevel = accessLevel;

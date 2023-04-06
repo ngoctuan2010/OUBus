@@ -15,7 +15,7 @@ public class Employee {
 
     private String employeeID;
     private String name;
-    private int sex;
+    private boolean sex;
     private String DateOfBirth;
     private String nationality;
     private String nationalID;
@@ -28,7 +28,7 @@ public class Employee {
         employeeID = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String name, boolean sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.name = name;
         this.address = address;
         this.sex = sex;
@@ -41,7 +41,7 @@ public class Employee {
         this.position = position;
     }
 
-    public Employee(String id, String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String id, String name, boolean sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.employeeID = id;
         this.name = name;
         this.address = address;
@@ -128,11 +128,11 @@ public class Employee {
         this.telephone = telephone;
     }
     
-    public Date getDateOfBirth(){
+    public String getDateOfBirth(){
         return this.DateOfBirth; 
     }
     
-    public void setDateOfBirth( Date DateOfBirth){
+    public void setDateOfBirth( String DateOfBirth){
         this.DateOfBirth= this.DateOfBirth;
     }
     

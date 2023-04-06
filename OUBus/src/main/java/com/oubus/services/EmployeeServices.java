@@ -5,13 +5,16 @@
 package com.oubus.services;
 
 import com.oubus.pojo.Employee;
+import com.oubus.utils.MessageBox;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.PreparedStatement;
+import javafx.scene.control.Alert;
 
 
 /**
@@ -28,7 +31,7 @@ public class EmployeeServices {
             while(rs.next()){
                 String id = rs.getString("EmployeeID");
                 String name = rs.getString("name");
-                int sex = rs.getInt("sex");
+                boolean sex = rs.getBoolean("sex");
                 String dOb = rs.getString("DateOfBirth");
                 String nationlity = rs.getString("nationality");
                 String nationalID = rs.getString("nationalID");
@@ -42,15 +45,15 @@ public class EmployeeServices {
             }
         }
           return employees;
-
+    }
     
-     public static Employee getEmployeeByID(int ID) throws SQLException{
+    public  Employee getEmployeeByID(String ID) throws SQLException{
         Employee e = new Employee();
         try(Connection cnn = JdbcUtils.getConn()){
             
             String sql = "SELECT * FROM employee WHERE employeeID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setInt(1, ID);
+            stm.setString(1, ID);
             
             ResultSet rs = stm.executeQuery();
             
@@ -58,7 +61,7 @@ public class EmployeeServices {
                 e.setEmployeeID(rs.getString("employeeID"));
                 e.setName(rs.getString("name"));
                 e.setSex(rs.getBoolean("sex"));
-                e.setDateOfBirth(rs.getDate("DateOfBirth"));
+                e.setDateOfBirth(rs.getString("DateOfBirth"));
                 e.setNationality(rs.getString("nationality"));
                 e.setNationalID(rs.getString("nationalID"));
                 e.setAddress(rs.getString("address"));
@@ -70,5 +73,38 @@ public class EmployeeServices {
             return e;
         }
 
+    }
+    
+    public boolean addEmployee(Employee emp) throws SQLException{
+           
+          try(Connection cnn = JdbcUtils.getConn()){
+            cnn.setAutoCommit(false);
+            String sql = "INSERT INTO employee(employeeID, name, sex, DateOfBirth, nationality,nationalID,address,email,phoneNumber,position) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            
+            stm.setString(1, emp.getEmployeeID());
+            stm.setString(2, emp.getName());
+            stm.setBoolean(3, emp.getSex());
+            stm.setString(4, emp.getDateOfBirth()); 
+            stm.setString(5, emp.getNationality());
+            stm.setString(6, emp.getNationalID());
+            stm.setString(7, emp.getAddress());
+            stm.setString(8, emp.getEmail());
+            stm.setString(9, emp.getTelephone());
+            stm.setString(10, emp.getPosition());
+            
+            stm.executeUpdate();
+            
+            try{
+                cnn.commit();
+                MessageBox.getBox("Success", "Add employee completely", Alert.AlertType.CONFIRMATION).show();
+                return true;
+            }catch(SQLException ex){
+                MessageBox.getBox("Fail", "Add employee failure", Alert.AlertType.WARNING).show();
+                return false;
+            }
+          }
+            
+            
     }
 }

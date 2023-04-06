@@ -52,6 +52,7 @@ public class CustomersController implements Initializable {
         try {
             this.LoadTableColumn();
             this.LoadTable();
+            txtCustomerID.setEditable(false);
         } catch (SQLException ex) {
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,6 +102,7 @@ public class CustomersController implements Initializable {
     }
 
     public void addCustomer(ActionEvent e) throws SQLException {
+       
         String name = txtName.getText();
         String address = txtAddress.getText();
         String email = txtEmail.getText();
@@ -116,7 +118,26 @@ public class CustomersController implements Initializable {
         }
 
     }
-
+    
+    public void DeleteCustomer( ActionEvent e) throws SQLException{
+        String customerID =txtCustomerID.getText();
+        String name =txtName.getText();
+        String address = txtAddress.getText();
+        String email = txtEmail.getText();
+        String phoneNumber = txtPhone.getText();
+        
+        Customer cus =new Customer(customerID, name, address, email, email);
+        
+        try{
+            c.deleteCustomer(txtCustomerID.getText());
+             MessageBox.getBox("Success", "Delete data completely", Alert.AlertType.INFORMATION).show();
+             LoadTable();
+        } catch (SQLException ex){
+             MessageBox.getBox("Wrong", "Something wrong", Alert.AlertType.INFORMATION).show();
+            Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+    }
     public void searchCustomerHandler(ActionEvent e) throws SQLException {
 
         String phoneNumber = txtSearch.getText();
@@ -143,7 +164,7 @@ public class CustomersController implements Initializable {
                 LoadTable();
             } catch (SQLException ex) {
                 MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
-                Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }

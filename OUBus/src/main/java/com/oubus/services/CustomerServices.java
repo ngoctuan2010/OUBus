@@ -5,12 +5,14 @@
 package com.oubus.services;
 
 import com.oubus.pojo.Customer;
+import com.oubus.utils.MessageBox;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public class CustomerServices {
     
+    AccountServices ac =new AccountServices();
     public static Customer getCustomerByID(String ID) throws SQLException{
         Customer c = new Customer();
         try(Connection cnn = JdbcUtils.getConn()){
@@ -90,17 +93,16 @@ public class CustomerServices {
             
             try{
                 cnn.commit();
-//                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
+                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
                 return true;
             }catch(SQLException ex){
-//                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
+                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
                 return false;
             }}
             
             
     }
      
-    
     public boolean updateCustomer(Customer cus) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
@@ -114,6 +116,23 @@ public class CustomerServices {
             stm.setString(5, cus.getPhoneNumber());
             stm.setString(6, cus.getCustomerID());
            
+            stm.executeUpdate();
+
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
+
+    public boolean deleteCustomer(String id) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "DELETE FROM customer WHERE customerID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, id);
             stm.executeUpdate();
 
             try {

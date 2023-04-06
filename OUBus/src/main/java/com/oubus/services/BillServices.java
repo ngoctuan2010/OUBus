@@ -36,7 +36,7 @@ public class BillServices {
             while (rs.next()){
                 String billID = rs.getString("billID");
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
-                Employee emp = EmployeeServices.getEmployeeByID(rs.getInt("employeeID"));
+                Employee emp = EmployeeServices.getEmployeeByID(rs.getString("employeeID"));
                 Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
                 int seat=rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
