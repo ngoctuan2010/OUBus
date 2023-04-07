@@ -143,4 +143,8 @@ public class Trip {
     }
 
     
+    @Override
+    public String toString(){
+        return this.getTripID()+"";
+    }
 }

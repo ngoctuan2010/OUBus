@@ -12,7 +12,7 @@ CREATE TABLE Employee(
 	employeeID nvarchar(50) primary key,
     name nvarchar(50),
     sex boolean,
-    DateOfBirth datetime,
+    DateOfBirth date,
     nationality nvarchar(50),
     nationalID nvarchar(50),
     address nvarchar(50),
@@ -56,7 +56,7 @@ CREATE TABLE BILL (
     seatNo nvarchar(50),
     state int,
     totalDue Double,
-    aquiredDate datetime,
+    aquiredDate date,
     FOREIGN KEY (customerID) REFERENCES Customer(customerID),
     FOREIGN KEY (employeeID) REFERENCES Employee(employeeID),
     FOREIGN KEY (tripID) REFERENCES Trip(tripID)

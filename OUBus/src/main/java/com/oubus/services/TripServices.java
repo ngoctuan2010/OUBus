@@ -5,6 +5,7 @@
 package com.oubus.services;
 
 import com.oubus.services.JdbcUtils;
+import com.oubus.services.BusServices;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Location;
@@ -56,6 +57,7 @@ public class TripServices {
             while (rs.next()) {
                 int tripID = rs.getInt("tripID");
 
+
                 Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
                 Location departure = LocationServices.getLocationById(rs.getInt("departure"));
                 String tOd = rs.getString("time");
@@ -71,11 +73,34 @@ public class TripServices {
         }
 
     }
+    
+    public static Trip getTripByID(int ID) throws SQLException{
+        Trip t = new Trip();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM trip WHERE tripID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, ID);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                t.setTripID(rs.getInt("tripID"));
+                t.setBus(BusServices.getBusbyID(rs.getInt("busID")));
+                t.setDeparture(LocationServices.getLocationById(rs.getInt("departure")));
+                t.setTimeOfDeparture(rs.getString("TimeOfDeparture"));
+                t.setDateOfDeparture(rs.getString("DateOfDeparture"));
+                t.setDestination(LocationServices.getLocationById(rs.getInt("destination")));
+               
+            }  
+            return t;
+        }
+    }
 
     public List<Trip> searchTrip(Bus bus, Location departure, Location destination, String tOd, String dOd) throws SQLException {
         List<Trip> trips = new ArrayList<>();
         try (Connection cnn = JdbcUtils.getConn()) {
-            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination FROM trip WHERE";
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price FROM trip WHERE";
 
 //            stm.setInt(1, busID);
 //            stm.setInt(2, departureID);
@@ -137,8 +162,8 @@ public class TripServices {
                 String _time = rs.getString("time");
                 String _date = rs.getString("DateOfDeparture");
                 Location _destination = LocationServices.getLocationById(rs.getInt("destination"));
-
-                Trip trip = new Trip(tripID, _bus, _ideparture, _time, _date, _destination, 0);
+                int _price = rs.getInt("price");
+                Trip trip = new Trip(tripID, _bus, _ideparture, _time, _date, _destination, _price);
                 trips.add(trip);
             }
 
@@ -204,3 +229,4 @@ public class TripServices {
     }
 
 }
+
