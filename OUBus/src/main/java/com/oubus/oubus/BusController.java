@@ -25,6 +25,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -47,6 +48,7 @@ public class BusController implements Initializable {
     TextField txtSeat;
     @FXML
     TextField txtType;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

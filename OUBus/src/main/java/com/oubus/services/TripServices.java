@@ -24,7 +24,7 @@ public class TripServices {
     public boolean addTrip(Trip trip) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination) VALUE(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination, price) VALUE(?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setInt(1, trip.getBus().getBusID());
@@ -32,6 +32,7 @@ public class TripServices {
             stm.setString(3, trip.getTimeOfDeparture());
             stm.setString(4, trip.getDateOfDeparture());
             stm.setInt(5, trip.getDestination().getLocationID());
+            stm.setInt(6, trip.getPrice());
 
             stm.executeUpdate();
 
@@ -48,7 +49,7 @@ public class TripServices {
     public List<Trip> getTrip() throws SQLException {
         List<Trip> trips = new ArrayList<>();
         try (Connection cnn = JdbcUtils.getConn()) {
-            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination FROM trip";
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price FROM trip";
 
             PreparedStatement stm = cnn.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
@@ -60,8 +61,9 @@ public class TripServices {
                 String tOd = rs.getString("time");
                 String dOd = rs.getString("DateOfDeparture");
                 Location destination = LocationServices.getLocationById(rs.getInt("destination"));
+                int price = rs.getInt("price");
 
-                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination);
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination, price);
                 trips.add(trip);
             }
 
@@ -74,57 +76,57 @@ public class TripServices {
         List<Trip> trips = new ArrayList<>();
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination FROM trip WHERE";
-            
+
 //            stm.setInt(1, busID);
 //            stm.setInt(2, departureID);
 //            stm.setInt(3, destinationID);
 //            stm.setString(4, tOd);
 //            stm.setString(5, dOd);
             int i = 0;
-            if(bus != null){
+            if (bus != null) {
                 sql += " busID = ? and";
-                i+=1;
+                i += 1;
             }
-            if(departure != null){
+            if (departure != null) {
                 sql += " departure = ? and";
-                i+=1;
+                i += 1;
             }
-            if(destination != null){
+            if (destination != null) {
                 sql += " destination = ? and";
-                i+=1;
+                i += 1;
             }
-            if(tOd != null && !tOd.isEmpty()){
+            if (tOd != null && !tOd.isEmpty()) {
                 sql += " TIME_FORMAT(TimeOfDeparture, '%H:%i') = ? and";
-                i+=1;
+                i += 1;
             }
-            if(dOd!= null && !dOd.isEmpty()){
+            if (dOd != null && !dOd.isEmpty()) {
                 sql += " DateOfDeparture = ? and";
-                i+=1;
+                i += 1;
             }
-            
-            sql = sql.substring(0, sql.length()-3);
-            
+
+            sql = sql.substring(0, sql.length() - 3);
+
             PreparedStatement stm = cnn.prepareCall(sql);
-            if(dOd!= null && !dOd.isEmpty()){
+            if (dOd != null && !dOd.isEmpty()) {
                 stm.setString(i, dOd);
-                i-=1;
+                i -= 1;
             }
-            if(tOd != null &&!tOd.isEmpty()){
+            if (tOd != null && !tOd.isEmpty()) {
                 stm.setString(i, tOd);
-                i-=1;
+                i -= 1;
             }
-            if(destination != null){
+            if (destination != null) {
                 stm.setInt(i, destination.getLocationID());
-                i-=1;
+                i -= 1;
             }
-            if(departure != null){
+            if (departure != null) {
                 stm.setInt(i, departure.getLocationID());
-                i-=1;
+                i -= 1;
             }
-            if(bus != null){
+            if (bus != null) {
                 stm.setInt(i, bus.getBusID());
             }
-              
+
             stm.executeQuery();
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -136,7 +138,7 @@ public class TripServices {
                 String _date = rs.getString("DateOfDeparture");
                 Location _destination = LocationServices.getLocationById(rs.getInt("destination"));
 
-                Trip trip = new Trip(tripID, _bus, _ideparture, _time, _date, _destination);
+                Trip trip = new Trip(tripID, _bus, _ideparture, _time, _date, _destination, 0);
                 trips.add(trip);
             }
 
@@ -147,14 +149,15 @@ public class TripServices {
     public boolean updateTrip(Trip tr) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "UPDATE trip SET busID = ?, departure = ?, TimeOfDeparture = ?, DateOfDeparture = ?, destination = ? WHERE tripID = ?";
+            String sql = "UPDATE trip SET busID = ?, departure = ?, TimeOfDeparture = ?, DateOfDeparture = ?, destination = ?, price = ? WHERE tripID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, tr.getBus().getBusID());
             stm.setInt(2, tr.getDeparture().getLocationID());
             stm.setString(3, tr.getTimeOfDeparture());
             stm.setString(4, tr.getDateOfDeparture());
             stm.setInt(5, tr.getDestination().getLocationID());
-            stm.setInt(6, tr.getTripID());
+            stm.setInt(6, tr.getPrice());
+            stm.setInt(7, tr.getTripID());
 
             stm.executeUpdate();
 
@@ -183,4 +186,21 @@ public class TripServices {
             }
         }
     }
+
+    public static boolean checkUnique(Trip trip) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM trip WHERE busID = ? and departure = ? and destination = ? and TimeOfDeparture = ? and DateOfDeparture = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, trip.getBus().getBusID());
+            stm.setInt(2, trip.getDeparture().getLocationID());
+            stm.setInt(3, trip.getDestination().getLocationID());
+            stm.setString(4, trip.getTimeOfDeparture());
+            stm.setString(5, trip.getDateOfDeparture());
+
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
+        }
+    }
+
 }
