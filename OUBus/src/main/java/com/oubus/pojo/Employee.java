@@ -132,8 +132,9 @@ public class Employee {
         return this.DateOfBirth; 
     }
     
-    public void setDateOfBirth( String DateOfBirth){
-        this.DateOfBirth= this.DateOfBirth;
+    public void setDateOfBirth(String DateOfBirth){
+        this.DateOfBirth= DateOfBirth;
+
     }
     
     public String getNationality(){

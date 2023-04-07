@@ -20,22 +20,25 @@ public class Trip {
     private String TimeOfDeparture;
     private String  DateOfDeparture; 
     private Location destination;
+    private int price;
 
-    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price) {
         this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
+        this.price = price;
     }
 
-    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination) {
+    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price) {
         this.tripID = tripID;
         this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
+        this.price = price;
     }
     
     public Trip() {}
@@ -123,6 +126,20 @@ public class Trip {
      */
     public void setDateOfDeparture(String DateOfDeparture) {
         this.DateOfDeparture = DateOfDeparture;
+    }
+
+    /**
+     * @return the price
+     */
+    public int getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     

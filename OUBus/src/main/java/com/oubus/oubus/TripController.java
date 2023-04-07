@@ -15,18 +15,24 @@ import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;
 import com.oubus.services.LocationServices;
 import com.oubus.utils.MessageBox;
+import java.io.IOException;
 //import com.oubus.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -34,8 +40,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
 public class TripController implements Initializable {
@@ -53,6 +62,9 @@ public class TripController implements Initializable {
     ComboBox<String> cbTimeOfDeparture;
     @FXML
     DatePicker dpDateOfDeparture;
+    @FXML
+    TextField txtPrice;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,7 +77,7 @@ public class TripController implements Initializable {
             this.cbDeparture.setItems(FXCollections.observableList(locations));
             this.cbDestination.setItems(FXCollections.observableList(locations));
             this.cbTimeOfDeparture.setItems(FXCollections.observableList(loadTimes()));
-            
+
             this.loadTableColumns();
             this.loadTables();
         } catch (SQLException ex) {
@@ -98,6 +110,10 @@ public class TripController implements Initializable {
         TableColumn colDestination = new TableColumn("Destination");
         colDestination.setCellValueFactory(new PropertyValueFactory("destination"));
         colDestination.setStyle("-fx-alignment:center;");
+        
+        TableColumn colPrice = new TableColumn("Price");
+        colPrice.setCellValueFactory(new PropertyValueFactory("price"));
+        colPrice.setStyle("-fx-alignment:center");
 
         TableColumn colDelete = new TableColumn();
         colDelete.setPrefWidth(5);
@@ -131,7 +147,7 @@ public class TripController implements Initializable {
             return cell;
         });
 
-        this.tbTrips.getColumns().setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colDelete);
+        this.tbTrips.getColumns().setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colPrice, colDelete);
     }
 
     private void loadTables() throws SQLException {
@@ -148,17 +164,22 @@ public class TripController implements Initializable {
         Location destination = cbDestination.getSelectionModel().getSelectedItem();
         String time = cbTimeOfDeparture.getSelectionModel().getSelectedItem();
         String date = dpDateOfDeparture.getValue().toString();
+        int price = Integer.parseInt(txtPrice.getText());
 
-        Trip tr = new Trip(bus, departure, time, date, destination);
+        Trip tr = new Trip(bus, departure, time, date, destination, price);
 
         if (departure.getLocationID() == destination.getLocationID()) {
             MessageBox.getBox("Wrong", "Locations is not same", Alert.AlertType.WARNING).show();
         } else {
-            try {
-                t.addTrip(tr);
-                loadTables();
-            } catch (SQLException ex) {
-                Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+            if (!TripServices.checkUnique(tr)) {
+                try {
+                    t.addTrip(tr);
+                    loadTables();
+                } catch (SQLException ex) {
+                    Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                MessageBox.getBox("Something Wrong", "The trip is exist", Alert.AlertType.WARNING).show();
             }
         }
     }
@@ -172,6 +193,7 @@ public class TripController implements Initializable {
             cbDestination.getSelectionModel().select(t.getDestination());
             cbTimeOfDeparture.getSelectionModel().select(t.getTimeOfDeparture());
             dpDateOfDeparture.setValue(LocalDate.parse(t.getDateOfDeparture()));
+            txtPrice.setText(t.getPrice()+"");
         }
     }
 
@@ -185,10 +207,11 @@ public class TripController implements Initializable {
             updatedTrip.setTimeOfDeparture(cbTimeOfDeparture.getSelectionModel().getSelectedItem());
             updatedTrip.setDateOfDeparture(dpDateOfDeparture.getValue().toString());
             updatedTrip.setDestination(cbDestination.getSelectionModel().getSelectedItem());
+            updatedTrip.setPrice(Integer.parseInt(txtPrice.getText()));
 
             if (updatedTrip.getDeparture().getLocationID() == updatedTrip.getDestination().getLocationID()) {
                 MessageBox.getBox("Fail", "The locations must different", Alert.AlertType.WARNING).show();
-            } else {
+            } else if(!TripServices.checkUnique(updatedTrip)) {
                 try {
                     t.updateTrip(updatedTrip);
                     MessageBox.getBox("Success", "Update data completely", Alert.AlertType.INFORMATION).show();
@@ -197,6 +220,8 @@ public class TripController implements Initializable {
                     MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
                     Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }else{
+                MessageBox.getBox("Something wrong", "The trip is existed", Alert.AlertType.WARNING).show();
             }
 
         }
@@ -207,12 +232,16 @@ public class TripController implements Initializable {
         Location departure = cbDeparture.getSelectionModel().getSelectedItem();
         Location destination = cbDestination.getSelectionModel().getSelectedItem();
         String tOd = cbTimeOfDeparture.getSelectionModel().getSelectedItem();
-        String dOd="";
-        if(dpDateOfDeparture.getValue() != null)
+        String dOd = "";
+        if (dpDateOfDeparture.getValue() != null) {
             dOd = dpDateOfDeparture.getValue().toString();
-        
-        
-        
+
+        }
+
+        List<Trip> trips = t.searchTrip(b, departure, destination, tOd, dOd);
+        this.tbTrips.getItems().clear();
+        this.tbTrips.setItems(FXCollections.observableList(trips));
+
     }
 
     public void reload(ActionEvent e) throws SQLException {
@@ -222,6 +251,7 @@ public class TripController implements Initializable {
         cbDestination.getSelectionModel().select(null);
         cbTimeOfDeparture.getSelectionModel().select(null);
         dpDateOfDeparture.setValue(null);
+        txtPrice.setText(null);
     }
 
     private List<String> loadTimes() {
@@ -234,4 +264,6 @@ public class TripController implements Initializable {
         times.add("16:00");
         return times;
     }
+    
+   
 }
