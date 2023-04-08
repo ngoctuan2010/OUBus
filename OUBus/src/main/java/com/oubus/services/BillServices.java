@@ -23,6 +23,7 @@ public class BillServices {
     public List<Bill> getBill() throws SQLException{
         /*Create List Bill*/
         List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
         /* Connetion to SQL Database*/
         try (Connection cnn = JdbcUtils.getConn())
         {
@@ -34,7 +35,7 @@ public class BillServices {
             while (rs.next()){
                 String billID = rs.getString("billID");
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
-                Employee emp = EmployeeServices.getEmployeeByID(rs.getString("employeeID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
                 Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];

@@ -37,7 +37,6 @@ public class AccountServices {
             return null;
         }
     }
-    
     public boolean addAcount(Account ac) throws SQLException{
           try(Connection cnn = JdbcUtils.getConn()){
             cnn.setAutoCommit(false);
@@ -64,4 +63,5 @@ public class AccountServices {
             
             
     }
+
 }

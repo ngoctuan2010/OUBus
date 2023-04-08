@@ -15,7 +15,7 @@ public class Employee {
 
     private String employeeID;
     private String name;
-    private int sex;
+    private boolean sex;
     private String DateOfBirth;
     private String nationality;
     private String nationalID;
@@ -28,7 +28,7 @@ public class Employee {
         employeeID = UUID.randomUUID().toString();
     }
 
-    public Employee(String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String name, boolean sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.name = name;
         this.address = address;
         this.sex = sex;
@@ -41,7 +41,7 @@ public class Employee {
         this.position = position;
     }
 
-    public Employee(String id, String name, int sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
+    public Employee(String id, String name, boolean sex, String dOb, String nationality, String nationalID, String address, String email, String telephone, String position) {
         this.employeeID = id;
         this.name = name;
         this.address = address;
@@ -134,6 +134,7 @@ public class Employee {
     
     public void setDateOfBirth(String DateOfBirth){
         this.DateOfBirth= DateOfBirth;
+
     }
     
     public String getNationality(){
@@ -157,20 +158,19 @@ public class Employee {
     }
     
     public void setPosition( String position){
-        this.position = position;
+        this.position=position;
     }    
     
-    public int getSex(){
+    public boolean getSex(){
         return this.sex;
     }
     
-    public void setSex(int sex){
-        this.sex = sex;
+    public void setSex( boolean sex){
+        this.sex= sex;
     }
     
-        @Override
+    @Override
     public String toString(){
-        return employeeID;
+        return this.name;
     }
-   
 }
