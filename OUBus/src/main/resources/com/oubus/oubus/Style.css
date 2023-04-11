@@ -64,6 +64,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-opacity: 0.8; 
 }
 
+.dis-textfield-big{
+    -fx-opacity: 1;
+}
+
 
 TableColumn {
     -fx-alignment: CENTER;   
