@@ -27,6 +27,8 @@ import javafx.stage.Stage;
  * @author bthta
  */
 public class MainController {
+    
+    static Employee employ = new Employee();
 
     @FXML
     VBox scense;
@@ -35,8 +37,9 @@ public class MainController {
     @FXML 
     Button btnLogout;
 
-    private Account cur_user;
+    private static Account cur_user;
     EmployeeServices emp = new EmployeeServices();
+    
 
     public void initUser(Account user) throws SQLException {
         cur_user = user;

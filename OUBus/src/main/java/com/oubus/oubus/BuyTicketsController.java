@@ -5,16 +5,30 @@
 package com.oubus.oubus;
 
 import static com.oubus.oubus.CustomersController.c;
+import static com.oubus.oubus.TripController.t;
+import static com.oubus.oubus.MainController.employ;
 import com.oubus.pojo.Bill;
+import com.oubus.pojo.Bill.statePayment;
+import static com.oubus.pojo.Bill.statePayment.PAID;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Customer;
 import com.oubus.pojo.Location;
 import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
+import static com.oubus.services.BillServices.checkSeatUnique;
 import com.oubus.services.BusServices;
+import com.oubus.services.CustomerServices;
+import static com.oubus.services.CustomerServices.checkUnique;
 import com.oubus.services.LocationServices;
+import com.oubus.services.TripServices;
+import com.oubus.utils.MessageBox;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -23,6 +37,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,6 +51,8 @@ import javafx.scene.input.MouseEvent;
 public class BuyTicketsController implements Initializable{
     
     static BillServices b = new BillServices();
+    static CustomerServices c = new CustomerServices();
+    private Trip daTrip = new Trip();
     
     @FXML
     TextField TimeChoice;
@@ -147,5 +164,49 @@ public class BuyTicketsController implements Initializable{
             txtPhone.setText(ctm.getPhoneNumber() + "");
         }
     }
+    
+        public void addBillHandler(ActionEvent e) throws SQLException {
+            String name = txtName.getText();
+            String email = txtEmail.getText();
+            String phone = txtPhone.getText();
+            String address = txtAddress.getText();
+            int seat = parseInt(seatNo.getText());
+            statePayment bookingState = PAID;
+            double totalDue = daTrip.getPrice();
+            java.util.Date date = Calendar.getInstance().getTime();  
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+            String aDate = dateFormat.format(date);
+            
+            
+            Customer cus = new Customer(name, email, phone, address);
+            
+    
+                if (!checkUnique(cus)) {
+                    try {
+                        c.addCustomer(cus);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    cus = CustomerServices.getCustomerByPhone(phone);  
+                }
+               
+                
+                Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+                
+                 if (!checkSeatUnique(bill)) {
+                    try {
+                        b.addBill(bill);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+                }
+                
+        }
+      
 }
     
