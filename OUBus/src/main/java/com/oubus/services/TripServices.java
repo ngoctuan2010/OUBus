@@ -171,6 +171,8 @@ public class TripServices {
         }
     }
 
+   
+
     public boolean updateTrip(Trip tr) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
