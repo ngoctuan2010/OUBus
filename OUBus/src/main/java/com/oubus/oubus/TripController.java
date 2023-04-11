@@ -39,6 +39,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -66,7 +67,8 @@ public class TripController implements Initializable {
     DatePicker dpDateOfDeparture;
     @FXML
     TextField txtPrice;
-
+    @FXML 
+    VBox scense;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,38 +90,95 @@ public class TripController implements Initializable {
     }
 
     private void loadTableColumns() {
+        tbTrips.setRowFactory(e -> {
+            TableRow row = new TableRow();
+            row.setOnMouseClicked(evt -> {
+                if (evt.getClickCount() == 2 && !row.isEmpty()) {
+                   Trip t = tbTrips.getSelectionModel().getSelectedItem();
+                   FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookTickets.fxml"));
+                    try {
+                        Parent root = (Parent) fxmlLoader.load();
+                        BuyTicketsController btc = fxmlLoader.getController();
+                        btc.initTrip(t);
+                        scense.getChildren().setAll(root);               
+                    } catch (IOException ex) {
+                        Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                   
+                } else if (evt.getClickCount() == 1 && !row.isEmpty()) {
+                    if (tbTrips.getSelectionModel().getSelectedItem() != null) {
+                        Trip t = new Trip();
+                        t = tbTrips.getSelectionModel().getSelectedItem();
+                        cbBus.getSelectionModel().select(t.getBus());
+                        cbDeparture.getSelectionModel().select(t.getDeparture());
+                        cbDestination.getSelectionModel().select(t.getDestination());
+                        cbTimeOfDeparture.getSelectionModel().select(t.getTimeOfDeparture());
+                        dpDateOfDeparture.setValue(LocalDate.parse(t.getDateOfDeparture()));
+                        txtPrice.setText(t.getPrice() + "");
+                    }
+                }
+            }
+            );
+            return row;
+        });
+
         TableColumn colTrip = new TableColumn("Trip");
-        colTrip.setCellValueFactory(new PropertyValueFactory("tripID"));
-        colTrip.setPrefWidth(10);
-        colTrip.setStyle("-fx-alignment:center;");
+        colTrip.setCellValueFactory(
+                new PropertyValueFactory("tripID"));
+        colTrip.setPrefWidth(
+                10);
+        colTrip.setStyle(
+                "-fx-alignment:center;");
 
         TableColumn colBus = new TableColumn("Bus");
-        colBus.setCellValueFactory(new PropertyValueFactory("bus"));
-        colBus.setStyle("-fx-alignment:center;");
+
+        colBus.setCellValueFactory(
+                new PropertyValueFactory("bus"));
+        colBus.setStyle(
+                "-fx-alignment:center;");
 
         TableColumn colDeparture = new TableColumn("Departure");
-        colDeparture.setCellValueFactory(new PropertyValueFactory("departure"));
-        colDeparture.setStyle("-fx-alignment:center;");
+
+        colDeparture.setCellValueFactory(
+                new PropertyValueFactory("departure"));
+        colDeparture.setStyle(
+                "-fx-alignment:center;");
 
         TableColumn colTimeOfDeparture = new TableColumn("Time");
-        colTimeOfDeparture.setCellValueFactory(new PropertyValueFactory("TimeOfDeparture"));
-        colTimeOfDeparture.setStyle("-fx-alignment:center;");
+
+        colTimeOfDeparture.setCellValueFactory(
+                new PropertyValueFactory("TimeOfDeparture"));
+        colTimeOfDeparture.setStyle(
+                "-fx-alignment:center;");
 
         TableColumn colDateOfDeparture = new TableColumn("Date");
-        colDateOfDeparture.setCellValueFactory(new PropertyValueFactory("DateOfDeparture"));
-        colDateOfDeparture.setStyle("-fx-alignment:center;");
+
+        colDateOfDeparture.setCellValueFactory(
+                new PropertyValueFactory("DateOfDeparture"));
+        colDateOfDeparture.setStyle(
+                "-fx-alignment:center;");
 
         TableColumn colDestination = new TableColumn("Destination");
-        colDestination.setCellValueFactory(new PropertyValueFactory("destination"));
-        colDestination.setStyle("-fx-alignment:center;");
-        
+
+        colDestination.setCellValueFactory(
+                new PropertyValueFactory("destination"));
+        colDestination.setStyle(
+                "-fx-alignment:center;");
+
         TableColumn colPrice = new TableColumn("Price");
-        colPrice.setCellValueFactory(new PropertyValueFactory("price"));
-        colPrice.setStyle("-fx-alignment:center");
+
+        colPrice.setCellValueFactory(
+                new PropertyValueFactory("price"));
+        colPrice.setStyle(
+                "-fx-alignment:center");
 
         TableColumn colDelete = new TableColumn();
-        colDelete.setPrefWidth(5);
-        colDelete.setCellFactory(e -> {
+
+        colDelete.setPrefWidth(
+                5);
+        colDelete.setCellFactory(e
+                -> {
             Button btn = new Button("⌂");
 
             btn.setOnAction(evt -> {
@@ -147,9 +206,11 @@ public class TripController implements Initializable {
             TableCell cell = new TableCell();
             cell.setGraphic(btn);
             return cell;
-        });
+        }
+        );
 
-        this.tbTrips.getColumns().setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colPrice, colDelete);
+        this.tbTrips.getColumns()
+                .setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colPrice, colDelete);
     }
 
     private void loadTables() throws SQLException {
@@ -177,28 +238,29 @@ public class TripController implements Initializable {
                 try {
                     t.addTrip(tr);
                     loadTables();
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TripController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
+            } else {
                 MessageBox.getBox("Something Wrong", "The trip is exist", Alert.AlertType.WARNING).show();
             }
         }
     }
 
-    public void fetchDataHandler(MouseEvent e) {
-        if (tbTrips.getSelectionModel().getSelectedItem() != null) {
-            Trip t = new Trip();
-            t = tbTrips.getSelectionModel().getSelectedItem();
-            cbBus.getSelectionModel().select(t.getBus());
-            cbDeparture.getSelectionModel().select(t.getDeparture());
-            cbDestination.getSelectionModel().select(t.getDestination());
-            cbTimeOfDeparture.getSelectionModel().select(t.getTimeOfDeparture());
-            dpDateOfDeparture.setValue(LocalDate.parse(t.getDateOfDeparture()));
-            txtPrice.setText(t.getPrice()+"");
-        }
-    }
-
+//    public void fetchDataHandler(MouseEvent e) {
+//        if (tbTrips.getSelectionModel().getSelectedItem() != null) {
+//            Trip t = new Trip();
+//            t = tbTrips.getSelectionModel().getSelectedItem();
+//            cbBus.getSelectionModel().select(t.getBus());
+//            cbDeparture.getSelectionModel().select(t.getDeparture());
+//            cbDestination.getSelectionModel().select(t.getDestination());
+//            cbTimeOfDeparture.getSelectionModel().select(t.getTimeOfDeparture());
+//            dpDateOfDeparture.setValue(LocalDate.parse(t.getDateOfDeparture()));
+//            txtPrice.setText(t.getPrice()+"");
+//        }
+//    }
     public void updateTripHandler(ActionEvent e) throws SQLException {
         if (tbTrips.getSelectionModel().getSelectedItem() != null) {
             Trip updatedTrip = new Trip();
@@ -213,16 +275,18 @@ public class TripController implements Initializable {
 
             if (updatedTrip.getDeparture().getLocationID() == updatedTrip.getDestination().getLocationID()) {
                 MessageBox.getBox("Fail", "The locations must different", Alert.AlertType.WARNING).show();
-            } else if(!TripServices.checkUnique(updatedTrip)) {
+            } else if (!TripServices.checkUnique(updatedTrip)) {
                 try {
                     t.updateTrip(updatedTrip);
                     MessageBox.getBox("Success", "Update data completely", Alert.AlertType.INFORMATION).show();
                     loadTables();
                 } catch (SQLException ex) {
                     MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
-                    Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger
+                            .getLogger(TripController.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
+            } else {
                 MessageBox.getBox("Something wrong", "The trip is existed", Alert.AlertType.WARNING).show();
             }
 
@@ -264,6 +328,5 @@ public class TripController implements Initializable {
         times.add("16:00");
         return times;
     }
-    
-   
+
 }

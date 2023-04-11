@@ -7,6 +7,7 @@ package com.oubus.oubus;
 import com.oubus.pojo.Bill;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Location;
+import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
 import com.oubus.services.BusServices;
 import com.oubus.services.LocationServices;
@@ -31,6 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class BuyTicketsController implements Initializable{
     
     static BillServices b = new BillServices();
+    private Trip trip;
     
     @FXML
     ComboBox<String> TimeChoiceBox;
@@ -42,6 +44,10 @@ public class BuyTicketsController implements Initializable{
     ComboBox<Bus> busType;
     @FXML
     TableView<Bill> tbBill;
+    
+    public void initTrip(Trip trip){
+        this.trip = trip;
+    }
     
     private final String[] timeGo ={"0:00","0:30","1:00","1:30","2:00","2:30","3:00","3:30","4:00","4:30","5:00","5:30","6:30","7:00","7:30","8:00","8:30","9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"};
     @Override

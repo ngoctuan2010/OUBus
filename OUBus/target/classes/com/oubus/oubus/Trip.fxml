@@ -106,7 +106,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView id="tripTable" fx:id="tbTrips" onMouseClicked="#fetchDataHandler" prefHeight="367.0" prefWidth="679.0" stylesheets="@Style.css">
+      <TableView id="tripTable" fx:id="tbTrips" prefHeight="367.0" prefWidth="679.0" stylesheets="@Style.css">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
