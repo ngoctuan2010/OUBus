@@ -21,17 +21,19 @@ public class Trip {
     private String  DateOfDeparture; 
     private Location destination;
     private int price;
+    private int state;
 
-    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price) {
+    public Trip(Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price, int state) {
         this.bus = bus;
         this.departure = departure;
         this.TimeOfDeparture = TimeOfDeparture;
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
         this.price = price;
+        this.state = state;
     }
 
-    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price) {
+    public Trip(int tripID, Bus bus, Location departure, String TimeOfDeparture, String  DateOfDeparture, Location destination, int price, int state) {
         this.tripID = tripID;
         this.bus = bus;
         this.departure = departure;
@@ -39,10 +41,21 @@ public class Trip {
         this.DateOfDeparture = DateOfDeparture;
         this.destination = destination;
         this.price = price;
+        this.state = state;
     }
     
-    public Trip() {}
+    public Trip(Trip tr) {
+        this.tripID = tr.tripID;
+        this.bus = tr.bus;
+        this.departure = tr.departure;
+        this.TimeOfDeparture = tr.TimeOfDeparture;
+        this.DateOfDeparture = tr.DateOfDeparture;
+        this.destination = tr.destination;
+        this.price = tr.price;
+        this.state = tr.state;
+    }
 
+    public Trip(){}
     /**
      * @return the tripID
      */
