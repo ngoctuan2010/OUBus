@@ -9,12 +9,15 @@ import static com.oubus.oubus.TripController.t;
 import static com.oubus.oubus.MainController.employ;
 import com.oubus.pojo.Bill;
 import com.oubus.pojo.Bill.statePayment;
+import static com.oubus.pojo.Bill.statePayment.BOOKED;
+import static com.oubus.pojo.Bill.statePayment.CANCELLED;
 import static com.oubus.pojo.Bill.statePayment.PAID;
 import com.oubus.pojo.Bus;
 import com.oubus.pojo.Customer;
 import com.oubus.pojo.Location;
 import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
+import static com.oubus.services.BillServices.checkExist;
 import static com.oubus.services.BillServices.checkSeatUnique;
 import com.oubus.services.BusServices;
 import com.oubus.services.CustomerServices;
@@ -204,9 +207,78 @@ public class BuyTicketsController implements Initializable{
                     }
                 }else{
                     MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
-                }
-                
+                }     
         }
-      
+        
+        public void orderBillHandler(ActionEvent e) throws SQLException {
+            String name = txtName.getText();
+            String email = txtEmail.getText();
+            String phone = txtPhone.getText();
+            String address = txtAddress.getText();
+            int seat = parseInt(seatNo.getText());
+            statePayment bookingState = BOOKED;
+            double totalDue = daTrip.getPrice();
+            java.util.Date date = Calendar.getInstance().getTime();  
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+            String aDate = dateFormat.format(date);
+            
+            
+            Customer cus = new Customer(name, email, phone, address);
+            
+    
+                if (!checkUnique(cus)) {
+                    try {
+                        c.addCustomer(cus);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    cus = CustomerServices.getCustomerByPhone(phone);  
+                }
+               
+                
+                Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+                
+                 if (!checkSeatUnique(bill)) {
+                    try {
+                        b.addBill(bill);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+                }     
+        }
+        
+        public void deleteBillHandler(ActionEvent e) throws SQLException {
+            String name = txtName.getText();
+            String email = txtEmail.getText();
+            String phone = txtPhone.getText();
+            String address = txtAddress.getText();
+            int seat = parseInt(seatNo.getText());
+            statePayment bookingState = CANCELLED;
+            double totalDue = daTrip.getPrice();
+            java.util.Date date = Calendar.getInstance().getTime();  
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+            String aDate = dateFormat.format(date);
+            
+            Customer cus = new Customer(name, email, phone, address);
+                
+            Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+                
+                if (checkExist(bill)) {
+                    try {
+                        b.updateBill(bill);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
+                }     
+        }
+        
 }
     

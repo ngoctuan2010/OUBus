@@ -101,24 +101,24 @@ public class BillServices {
         }
     }
 
-        public boolean deleteBill(String id) throws SQLException {
-        try (Connection cnn = JdbcUtils.getConn()) {
-            cnn.setAutoCommit(false);
-            String sql = "DELETE Bill where BillID = ?";
-            PreparedStatement stm = cnn.prepareCall(sql);
-
-            stm.setString(1, id);
-
-            stm.executeUpdate();
-            
-            try {
-                cnn.commit();
-                return true;
-            } catch (SQLException ex) {
-                return false;
-            }
-        }
-    }
+//        public boolean deleteBill(String id) throws SQLException {
+//        try (Connection cnn = JdbcUtils.getConn()) {
+//            cnn.setAutoCommit(false);
+//            String sql = "DELETE Bill where BillID = ?";
+//            PreparedStatement stm = cnn.prepareCall(sql);
+//
+//            stm.setString(1, id);
+//
+//            stm.executeUpdate();
+//            
+//            try {
+//                cnn.commit();
+//                return true;
+//            } catch (SQLException ex) {
+//                return false;
+//            }
+//        }
+//    }
         
         public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
@@ -127,6 +127,18 @@ public class BillServices {
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, bill.getTrip().getTripID());
             stm.setInt(2, bill.getSeat());
+            
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
+        }
+    }
+        
+        public static boolean checkExist(Bill bill) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM bill WHERE billID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, bill.getBillID());
             
             ResultSet rs = stm.executeQuery();
             return rs.next();

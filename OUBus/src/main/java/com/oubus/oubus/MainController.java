@@ -48,7 +48,7 @@ public class MainController {
     }
 
     public void loadBookTickets(ActionEvent e) throws IOException {
-        VBox f = FXMLLoader.load(getClass().getResource("BookTickets.fxml"));
+        VBox f = FXMLLoader.load(getClass().getResource("BookTickets_Edit.fxml"));
         scense.getChildren().setAll(f);
     }
 
