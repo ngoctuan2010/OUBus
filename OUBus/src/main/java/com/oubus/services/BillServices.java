@@ -78,7 +78,7 @@ public class BillServices {
         public boolean updateBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seat = ?, state = ?, totalPrice = ?, aquireDate = ?";
+            String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seat = ?, state = ?, totalPrice = ?, aquireDate = ? WHERE billID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setString(1, bill.getCustomer().getCustomerID());
@@ -88,6 +88,7 @@ public class BillServices {
             stm.setInt(5, bill.getBookingState().ordinal());
             stm.setInt(6, bill.getTrip().getTripID());
             stm.setString(7, bill.getAquiredDate());
+            stm.setString(8, bill.getBillID());
 
             stm.executeUpdate();
             
@@ -100,22 +101,47 @@ public class BillServices {
         }
     }
 
-        public boolean deleteBill(String id) throws SQLException {
+//        public boolean deleteBill(String id) throws SQLException {
+//        try (Connection cnn = JdbcUtils.getConn()) {
+//            cnn.setAutoCommit(false);
+//            String sql = "DELETE Bill where BillID = ?";
+//            PreparedStatement stm = cnn.prepareCall(sql);
+//
+//            stm.setString(1, id);
+//
+//            stm.executeUpdate();
+//            
+//            try {
+//                cnn.commit();
+//                return true;
+//            } catch (SQLException ex) {
+//                return false;
+//            }
+//        }
+//    }
+        
+        public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
-            cnn.setAutoCommit(false);
-            String sql = "DELETE Bill where BillID = ?";
+
+            String sql = "SELECT * FROM bill WHERE tripID = ? and seat = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-
-            stm.setString(1, id);
-
-            stm.executeUpdate();
+            stm.setInt(1, bill.getTrip().getTripID());
+            stm.setInt(2, bill.getSeat());
             
-            try {
-                cnn.commit();
-                return true;
-            } catch (SQLException ex) {
-                return false;
-            }
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
+        }
+    }
+        
+        public static boolean checkExist(Bill bill) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM bill WHERE billID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, bill.getBillID());
+            
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
         }
     }
 }

@@ -43,6 +43,28 @@ public class CustomerServices {
         }
     }
     
+    public static Customer getCustomerByPhone(String phoneNumber) throws SQLException{
+        Customer c = new Customer();
+        try(Connection cnn = JdbcUtils.getConn()){
+            
+            String sql = "SELECT * FROM customer WHERE phoneNumber = ?)";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, phoneNumber);
+            
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()){
+                c.setCustomerID(rs.getString("customerID"));
+                c.setName(rs.getString("name"));
+                c.setAddress(rs.getString("address"));
+                c.setEmail(rs.getString("Email"));
+                c.setPhoneNumber(rs.getString("phoneNumber"));
+              
+            }  
+            return c;
+        }
+    }
+    
     public List<Customer> getCustomer(String phoneNumber) throws SQLException{
             List<Customer> customers = new ArrayList<>();
             try (Connection cnn = JdbcUtils.getConn()) { 
@@ -141,6 +163,21 @@ public class CustomerServices {
             } catch (SQLException ex) {
                 return false;
             }
+        }
+    }
+    
+    public static boolean checkUnique(Customer cus) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM customer WHERE name = ? and address = ? and email = ? and phoneNumber = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, cus.getName());
+            stm.setString(2, cus.getAddress());
+            stm.setString(3, cus.getEmail());
+            stm.setString(4, cus.getPhoneNumber());
+
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
         }
     }
 }

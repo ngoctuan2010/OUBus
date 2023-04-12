@@ -32,7 +32,7 @@ public class Customer {
         this.phoneNumber =telephone;
     }
 
-    public Customer ( String name, String address, String email, String telephone)
+    public Customer (String name, String address, String email, String telephone)
     {
         this.name = name;
         this.address = address;

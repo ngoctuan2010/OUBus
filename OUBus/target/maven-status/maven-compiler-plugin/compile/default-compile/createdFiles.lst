@@ -16,7 +16,6 @@ com\oubus\utils\MessageBox.class
 com\oubus\services\CustomerServices.class
 com\oubus\pojo\Customer.class
 com\oubus\pojo\Employee.class
-com\oubus\oubus\BuyTicketsController.class
 com\oubus\pojo\Job.class
 com\oubus\oubus\EmployeeController.class
 com\oubus\oubus\MainController.class
