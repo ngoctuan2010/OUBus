@@ -85,7 +85,7 @@ public class BillServices {
             stm.setInt(3, bill.getTrip().getTripID());
             stm.setInt(4, bill.getSeat());
             stm.setInt(5, bill.getBookingState().ordinal());
-            stm.setInt(6, bill.getTrip().getTripID());
+            stm.setInt(6, bill.getTrip().getPrice());
             stm.setString(7, bill.getAquiredDate());
             stm.setString(8, bill.getBillID());
 
