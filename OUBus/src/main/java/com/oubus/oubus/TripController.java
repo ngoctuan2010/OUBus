@@ -65,8 +65,7 @@ public class TripController implements Initializable {
     DatePicker dpDateOfDeparture;
     @FXML
     TextField txtPrice;
-    @FXML 
-    VBox scense;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,18 +91,23 @@ public class TripController implements Initializable {
             TableRow row = new TableRow();
             row.setOnMouseClicked(evt -> {
                 if (evt.getClickCount() == 2 && !row.isEmpty()) {
-                   Trip t = tbTrips.getSelectionModel().getSelectedItem();
-                   FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BookTickets.fxml"));
                     try {
-                        Parent root = (Parent) fxmlLoader.load();
-                        BuyTicketsController btc = fxmlLoader.getController();
-                        btc.initTrip(t);
-                        scense.getChildren().setAll(root);               
+                        //handler
+                        Trip tr = new Trip(tbTrips.getSelectionModel().getSelectedItem());
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTickets.fxml"));
+                        Parent main = (Parent) loader.load();
+                        BuyTicketsController btc = loader.getController();
+                        btc.initTrip(tr);
+                        
+                        Stage stg = new Stage();
+                        stg.setScene(new Scene(main));
+                        
+                        stg.show();
+                                     
                     } catch (IOException ex) {
                         Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                   
-                   
+                                  
                 } else if (evt.getClickCount() == 1 && !row.isEmpty()) {
                     if (tbTrips.getSelectionModel().getSelectedItem() != null) {
                         Trip t = new Trip();
@@ -227,7 +231,7 @@ public class TripController implements Initializable {
         String date = dpDateOfDeparture.getValue().toString();
         int price = Integer.parseInt(txtPrice.getText());
 
-        Trip tr = new Trip(bus, departure, time, date, destination, price);
+        Trip tr = new Trip(bus, departure, time, date, destination, price, 0);
 
         if (departure.getLocationID() == destination.getLocationID()) {
             MessageBox.getBox("Wrong", "Locations is not same", Alert.AlertType.WARNING).show();
