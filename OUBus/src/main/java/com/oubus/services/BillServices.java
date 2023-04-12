@@ -20,19 +20,19 @@ import java.util.List;
  * @author PC
  */
 public class BillServices {
-    public List<Bill> getBill() throws SQLException{
+
+    public List<Bill> getBill() throws SQLException {
         /*Create List Bill*/
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
         /* Connetion to SQL Database*/
-        try (Connection cnn = JdbcUtils.getConn())
-        {
-            String sql ="SELECT * FROM bill";
-            
-            PreparedStatement stm =cnn.prepareCall(sql);
-            ResultSet rs =stm.executeQuery();
-            
-            while (rs.next()){
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM bill";
+
+            PreparedStatement stm = cnn.prepareCall(sql);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
                 String billID = rs.getString("billID");
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
                 Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
@@ -40,17 +40,16 @@ public class BillServices {
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
-                String aquiredDate =rs.getString("aquiredDate");
-              
-             
+                String aquiredDate = rs.getString("aquiredDate");
+
                 Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
                 bills.add(bill);
             }
             return bills;
         }
     }
-   
-        public boolean addBill(Bill bill) throws SQLException {
+
+    public boolean addBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
             String sql = "INSERT INTO Bill(customerID, employeeID, tripID, seat, state, totalPrice, aquireDate) VALUE(?, ?, ?, ?, ?, ?, ?)";
@@ -59,13 +58,13 @@ public class BillServices {
             stm.setString(1, bill.getCustomer().getCustomerID());
             stm.setString(2, bill.getEmployee().getEmployeeID());
             stm.setInt(3, bill.getTrip().getTripID());
-            stm.setInt (4, bill.getSeat());
+            stm.setInt(4, bill.getSeat());
             stm.setInt(5, bill.getBookingState().ordinal());
             stm.setInt(6, bill.getTrip().getTripID());
             stm.setString(7, bill.getAquiredDate());
 
             stm.executeUpdate();
-            
+
             try {
                 cnn.commit();
                 return true;
@@ -74,8 +73,8 @@ public class BillServices {
             }
         }
     }
-        
-        public boolean updateBill(Bill bill) throws SQLException {
+
+    public boolean updateBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
             String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seat = ?, state = ?, totalPrice = ?, aquireDate = ? WHERE billID = ?";
@@ -84,14 +83,14 @@ public class BillServices {
             stm.setString(1, bill.getCustomer().getCustomerID());
             stm.setString(2, bill.getEmployee().getEmployeeID());
             stm.setInt(3, bill.getTrip().getTripID());
-            stm.setInt (4, bill.getSeat());
+            stm.setInt(4, bill.getSeat());
             stm.setInt(5, bill.getBookingState().ordinal());
             stm.setInt(6, bill.getTrip().getTripID());
             stm.setString(7, bill.getAquiredDate());
             stm.setString(8, bill.getBillID());
 
             stm.executeUpdate();
-            
+
             try {
                 cnn.commit();
                 return true;
@@ -119,27 +118,53 @@ public class BillServices {
 //            }
 //        }
 //    }
-        
-        public static boolean checkSeatUnique(Bill bill) throws SQLException {
+    public static List<Bill> searchBillByCus(Customer cust) throws SQLException {
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM bill WHERE customerID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, cust.getCustomerID());
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+
+                Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+            return bills;
+        }
+    }
+
+    public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
             String sql = "SELECT * FROM bill WHERE tripID = ? and seat = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, bill.getTrip().getTripID());
             stm.setInt(2, bill.getSeat());
-            
+
             ResultSet rs = stm.executeQuery();
             return rs.next();
         }
     }
-        
-        public static boolean checkExist(Bill bill) throws SQLException {
+
+    public static boolean checkExist(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
             String sql = "SELECT * FROM bill WHERE billID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setString(1, bill.getBillID());
-            
+
             ResultSet rs = stm.executeQuery();
             return rs.next();
         }

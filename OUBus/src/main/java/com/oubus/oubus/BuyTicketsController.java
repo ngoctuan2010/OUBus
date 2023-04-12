@@ -55,7 +55,7 @@ public class BuyTicketsController implements Initializable{
     
     static BillServices b = new BillServices();
     static CustomerServices c = new CustomerServices();
-    private Trip daTrip = new Trip();
+    static Trip daTrip = new Trip();
     
     @FXML
     TextField TimeChoice;
@@ -77,6 +77,8 @@ public class BuyTicketsController implements Initializable{
     TextField seatNo;
     @FXML
     TextField txtAddress;
+    @FXML
+    TextField txtSearch;
     @FXML
     TableView<Bill> tbBill;
     
@@ -278,6 +280,13 @@ public class BuyTicketsController implements Initializable{
                 }else{
                     MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
                 }     
+        }
+        
+        public void searchBillHandler(ActionEvent e) throws SQLException {
+            String search = txtSearch.getText();
+            
+            Customer cus = CustomerServices.getCustomerByPhone(search);
+            BillServices.searchBillByCus(cus);
         }
         
 }
