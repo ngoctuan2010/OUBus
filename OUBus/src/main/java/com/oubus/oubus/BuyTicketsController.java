@@ -58,9 +58,8 @@ import javafx.stage.Stage;
  *
  * @author bthta
  */
+public class BuyTicketsController implements Initializable {
 
-public class BuyTicketsController implements Initializable{
-    
 //    private TripController tc;
     static BillServices b = new BillServices();
     static CustomerServices c = new CustomerServices();
@@ -92,7 +91,7 @@ public class BuyTicketsController implements Initializable{
     @FXML
     TableView<Bill> tbBill;
     @FXML
-    Button btnTrip; 
+    Button btnTrip;
 
 //    public void setTripController(TripController tc){
 //        this.tc = tc;
@@ -104,14 +103,14 @@ public class BuyTicketsController implements Initializable{
         goLocation.setText(trip.getDeparture() + "");
         desLocation.setText(trip.getDestination() + "");
         busType.setText(trip.getBus() + "");
-        
+
         this.orderTrip = trip;
-       
+
     }
-    
-    public void initSearchTrip(Trip trip){
+
+    public void initSearchTrip(Trip trip) {
         this.searchingTrip = trip;
-        btnTrip.setText(searchingTrip.getTripID()+"");
+        btnTrip.setText(searchingTrip.getTripID() + "");
     }
 
     private final String[] timeGo = {"0:00", "0:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:30", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"};
@@ -131,8 +130,7 @@ public class BuyTicketsController implements Initializable{
         tbBill.setRowFactory(e -> {
             TableRow row = new TableRow();
             row.setOnMouseClicked(evt -> {
-                if(evt.getClickCount() == 1 && !row.isEmpty())
-                {
+                if (evt.getClickCount() == 1 && !row.isEmpty()) {
                     Bill bill = new Bill();
                     Customer ctm = new Customer();
                     Trip trip = new Trip();
@@ -153,13 +151,10 @@ public class BuyTicketsController implements Initializable{
                     }
                 }
             });
-            
+
             return row;
         });
-        
-        
-        
-        
+
         TableColumn colBill = new TableColumn("BillID");
         colBill.setCellValueFactory(new PropertyValueFactory("billID"));
         colBill.setPrefWidth(50);
@@ -231,135 +226,121 @@ public class BuyTicketsController implements Initializable{
     }
 
     public void addBillHandler(ActionEvent e) throws SQLException {
-            String name = txtName.getText();
-            String email = txtEmail.getText();
-            String phone = txtPhone.getText();
-            String address = txtAddress.getText();
-            int seat = parseInt(seatNo.getText());
-            statePayment bookingState = PAID;
-            double totalDue = orderTrip.getPrice();
-            java.util.Date date = Calendar.getInstance().getTime();  
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
-            String aDate = dateFormat.format(date);
-            
-            
-            Customer cus = new Customer(name, address, email, phone);
-            
-    
-                if (!checkUnique(cus)) {
-                    try {
-                        c.addCustomer(cus);
-                        loadTableColumn();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    cus = CustomerServices.getCustomerByPhone(phone);  
-                }
-               
-                
-                Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
-                
-                 if (!checkSeatUnique(bill)) {
-                    try {
-                        b.addBill(bill);
-                        loadTableColumn();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
-                }     
+        String name = txtName.getText();
+        String email = txtEmail.getText();
+        String phone = txtPhone.getText();
+        String address = txtAddress.getText();
+        int seat = parseInt(seatNo.getText());
+        statePayment bookingState = PAID;
+        double totalDue = orderTrip.getPrice();
+        java.util.Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String aDate = dateFormat.format(date);
+
+        Customer cus = new Customer(name, address, email, phone);
+
+        if (!checkUnique(cus)) {
+            try {
+                c.addCustomer(cus);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            cus = CustomerServices.getCustomerByPhone(phone);
         }
-        
+
+        Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
+
+        if (!checkSeatUnique(bill)) {
+            try {
+                b.addBill(bill);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+        }
+    }
+
     public void orderBillHandler(ActionEvent e) throws SQLException {
-            String name = txtName.getText();
-            String email = txtEmail.getText();
-            String phone = txtPhone.getText();
-            String address = txtAddress.getText();
-            int seat = parseInt(seatNo.getText());
-            statePayment bookingState = BOOKED;
-            double totalDue = orderTrip.getPrice();
-            java.util.Date date = Calendar.getInstance().getTime();  
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
-            String aDate = dateFormat.format(date);
-            
-            
-            Customer cus = new Customer(name, email, phone, address);
-            
-    
-                if (!checkUnique(cus)) {
-                    try {
-                        c.addCustomer(cus);
-                        loadTableColumn();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    cus = CustomerServices.getCustomerByPhone(phone);  
-                }
-               
-                
-                Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
-                
-                 if (!checkSeatUnique(bill)) {
-                    try {
-                        b.addBill(bill);
-                        loadTableColumn();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
-                }     
+        String name = txtName.getText();
+        String email = txtEmail.getText();
+        String phone = txtPhone.getText();
+        String address = txtAddress.getText();
+        int seat = parseInt(seatNo.getText());
+        statePayment bookingState = BOOKED;
+        double totalDue = orderTrip.getPrice();
+        java.util.Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String aDate = dateFormat.format(date);
+
+        Customer cus = new Customer(name, email, phone, address);
+
+        if (!checkUnique(cus)) {
+            try {
+                c.addCustomer(cus);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            cus = CustomerServices.getCustomerByPhone(phone);
         }
-        
+
+        Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
+
+        if (!checkSeatUnique(bill)) {
+            try {
+                b.addBill(bill);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+        }
+    }
+
     public void deleteBillHandler(ActionEvent e) throws SQLException {
-            String name = txtName.getText();
-            String email = txtEmail.getText();
-            String phone = txtPhone.getText();
-            String address = txtAddress.getText();
-            int seat = parseInt(seatNo.getText());
-            statePayment bookingState = CANCELLED;
-            double totalDue = orderTrip.getPrice();
-            java.util.Date date = Calendar.getInstance().getTime();  
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
-            String aDate = dateFormat.format(date);
-            
-            Customer cus = new Customer(name, email, phone, address);
-                
-            Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
-                
-                if (checkExist(bill)) {
-                    try {
-                        b.updateBill(bill);
-                        loadTableColumn();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }else{
-                    MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
-                }     
+        statePayment bookingState = CANCELLED;
+        java.util.Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String aDate = dateFormat.format(date);
+
+        Bill bill = tbBill.getSelectionModel().getSelectedItem();
+        bill.setBookingState(bookingState);
+        bill.setAquiredDate(aDate);
+        if (checkExist(bill)) {
+            try {
+                b.updateBill(bill);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
         }
-    
-    public void searchTripHandler(ActionEvent e) throws IOException{
+    }
+
+    public void searchTripHandler(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Trip_Search.fxml"));
         Parent ts = loader.load();
         SearchTripController stc = loader.getController();
         stc.setMainController(this);
-        
 
         Stage newStage = new Stage();
         newStage.setScene(new Scene(ts));
         newStage.show();
-        
+
     }
 
-        public void searchBillHandler(ActionEvent e) throws SQLException {
-            String search = txtSearch.getText();
-            
-            Customer cus = CustomerServices.getCustomerByPhone(search);
-            BillServices.searchBillByCus(cus);
-        }
+    public void searchBillHandler(ActionEvent e) throws SQLException {
+        String search = txtSearch.getText();
+
+        Customer cus = CustomerServices.getCustomerByPhone(search);
+        BillServices.searchBillByCus(cus);
+    }
 
 }

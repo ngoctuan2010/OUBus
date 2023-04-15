@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  */
 public class MainController {
     
-    static Employee employ = new Employee();
+    
 
     @FXML
     VBox scense;
@@ -37,14 +37,15 @@ public class MainController {
     @FXML 
     Button btnLogout;
 
-    private static Account cur_user;
+    static Account cur_user;
     EmployeeServices emp = new EmployeeServices();
+    static Employee employ;
     
 
     public void initUser(Account user) throws SQLException {
         cur_user = user;
-        Employee login = emp.getEmployeeByID(cur_user.getEmployeeID());
-        this.user.setText(login.toString());
+        employ = emp.getEmployeeByID(cur_user.getEmployeeID());
+        this.user.setText(employ.toString());
     }
 
     public void loadBookTickets(ActionEvent e) throws IOException {

@@ -53,7 +53,7 @@ public class BillServices {
             cnn.setAutoCommit(false);
             String sql = "INSERT INTO Bill(billID, customerID, employeeID, tripID, seatNo, state, totalDue, aquiredDate) VALUE(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setString(1, bill.getCustomer().getCustomerID());
+            stm.setString(1, bill.getBillID());
             stm.setString(2, bill.getCustomer().getCustomerID());
             stm.setString(3, bill.getEmployee().getEmployeeID());
             stm.setInt(4, bill.getTrip().getTripID());
