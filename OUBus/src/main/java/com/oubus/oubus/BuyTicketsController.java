@@ -88,6 +88,8 @@ public class BuyTicketsController implements Initializable{
     @FXML
     TextField txtAddress;
     @FXML
+    TextField txtSearch;
+    @FXML
     TableView<Bill> tbBill;
     @FXML
     Button btnTrip; 
@@ -339,9 +341,18 @@ public class BuyTicketsController implements Initializable{
         SearchTripController stc = loader.getController();
         stc.setMainController(this);
         
+
         Stage newStage = new Stage();
         newStage.setScene(new Scene(ts));
         newStage.show();
         
     }
+
+        public void searchBillHandler(ActionEvent e) throws SQLException {
+            String search = txtSearch.getText();
+            
+            Customer cus = CustomerServices.getCustomerByPhone(search);
+            BillServices.searchBillByCus(cus);
+        }
+
 }
