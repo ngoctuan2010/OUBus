@@ -9,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
-import static com.oubus.oubus.BuyTicketsController.daTrip;
-
 import com.oubus.pojo.Location;
 import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;

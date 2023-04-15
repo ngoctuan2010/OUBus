@@ -8,11 +8,13 @@ com\oubus\pojo\Location.class
 com\oubus\oubus\LoginController.class
 com\oubus\services\BillServices.class
 com\oubus\pojo\Bill$statePayment.class
+com\oubus\oubus\SearchTripController.class
 com\oubus\services\AccountServices.class
 com\oubus\services\JobServices.class
 com\oubus\pojo\Trip.class
 module-info.class
 com\oubus\utils\MessageBox.class
+com\oubus\oubus\BuyTicketsController2.class
 com\oubus\services\CustomerServices.class
 com\oubus\pojo\Customer.class
 com\oubus\pojo\Employee.class
