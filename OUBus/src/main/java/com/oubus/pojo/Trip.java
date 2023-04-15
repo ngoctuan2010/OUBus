@@ -156,8 +156,23 @@ public class Trip {
     }
 
     
+    
     @Override
     public String toString(){
         return this.getTripID()+"";
+    }
+
+    /**
+     * @return the state
+     */
+    public int getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(int state) {
+        this.state = state;
     }
 }

@@ -1,3 +1,4 @@
+com\oubus\oubus\TripController.class
 com\oubus\oubus\App.class
 com\oubus\pojo\Account.class
 com\oubus\services\BusServices.class
@@ -16,10 +17,12 @@ com\oubus\utils\MessageBox.class
 com\oubus\services\CustomerServices.class
 com\oubus\pojo\Customer.class
 com\oubus\pojo\Employee.class
+com\oubus\oubus\BuyTicketsController.class
 com\oubus\pojo\Job.class
 com\oubus\oubus\EmployeeController.class
 com\oubus\oubus\MainController.class
 com\oubus\oubus\CustomersController.class
+com\oubus\oubus\TripController$1.class
 com\oubus\oubus\BusController.class
 com\oubus\pojo\Bus.class
 com\oubus\pojo\Account$level.class

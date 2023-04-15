@@ -40,7 +40,7 @@ public class BillServices {
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
-                String aquiredDate =rs.getString("aquiredDate");
+                String aquiredDate = rs.getString("aquiredDate");
               
              
                 Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
