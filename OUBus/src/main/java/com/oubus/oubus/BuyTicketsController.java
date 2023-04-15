@@ -203,26 +203,33 @@ public class BuyTicketsController implements Initializable{
     }
 
     public void fetchData(MouseEvent e) {
-//        Bill bill = new Bill();
-//        Customer ctm = new Customer();
-//        Trip trip = new Trip();
-//        if (tbBill.getSelectionModel().getSelectedItem() != null) {
-//            bill = tbBill.getSelectionModel().getSelectedItem();
-//            ctm = tbBill.getSelectionModel().getSelectedItem().getCustomer();
-//            trip = tbBill.getSelectionModel().getSelectedItem().getTrip();
-//            TimeChoice.setText(trip.getTimeOfDeparture() + "");
-//            DateGo.setText(trip.getDateOfDeparture() + "");
-//            goLocation.setText(trip.getDeparture() + "");
-//            desLocation.setText(trip.getDestination() + "");
-//            busType.setText(trip.getBus() + "");
-//            seatNo.setText(bill.getSeat() + "");
-//            txtName.setText(ctm.getName() + "");
-//            txtAddress.setText(ctm.getAddress() + "");
-//            txtEmail.setText(ctm.getEmail() + "");
-//            txtPhone.setText(ctm.getPhoneNumber() + "");
-//        }
+        Bill bill = new Bill();
+        Customer ctm = new Customer();
+        Trip trip = new Trip();
+        if (tbBill.getSelectionModel().getSelectedItem() != null) {
+            bill = tbBill.getSelectionModel().getSelectedItem();
+            ctm = tbBill.getSelectionModel().getSelectedItem().getCustomer();
+            trip = tbBill.getSelectionModel().getSelectedItem().getTrip();
+            TimeChoice.setText(trip.getTimeOfDeparture() + "");
+            DateGo.setText(trip.getDateOfDeparture() + "");
+            goLocation.setText(trip.getDeparture() + "");
+            desLocation.setText(trip.getDestination() + "");
+            busType.setText(trip.getBus() + "");
+            seatNo.setText(bill.getSeat() + "");
+            txtName.setText(ctm.getName() + "");
+            txtAddress.setText(ctm.getAddress() + "");
+            txtEmail.setText(ctm.getEmail() + "");
+            txtPhone.setText(ctm.getPhoneNumber() + "");
+        }
     }
-    
+
+    public void fetchCustomerHandler(ActionEvent e) throws SQLException {
+        Customer ctm = CustomerServices.getCustomerByPhone(txtPhone.getText());
+        txtName.setText(ctm.getName() + "");
+        txtAddress.setText(ctm.getAddress() + "");
+        txtEmail.setText(ctm.getEmail() + "");
+    }
+
     public void addBillHandler(ActionEvent e) throws SQLException {
             String name = txtName.getText();
             String email = txtEmail.getText();
@@ -232,11 +239,11 @@ public class BuyTicketsController implements Initializable{
             statePayment bookingState = PAID;
             double totalDue = orderTrip.getPrice();
             java.util.Date date = Calendar.getInstance().getTime();  
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
             String aDate = dateFormat.format(date);
             
             
-            Customer cus = new Customer(name, email, phone, address);
+            Customer cus = new Customer(name, address, email, phone);
             
     
                 if (!checkUnique(cus)) {
@@ -274,7 +281,7 @@ public class BuyTicketsController implements Initializable{
             statePayment bookingState = BOOKED;
             double totalDue = orderTrip.getPrice();
             java.util.Date date = Calendar.getInstance().getTime();  
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
             String aDate = dateFormat.format(date);
             
             
