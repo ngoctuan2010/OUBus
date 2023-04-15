@@ -25,6 +25,7 @@ import static com.oubus.services.CustomerServices.checkUnique;
 import com.oubus.services.LocationServices;
 import com.oubus.services.TripServices;
 import com.oubus.utils.MessageBox;
+import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.Date;
@@ -39,13 +40,19 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  *
@@ -54,10 +61,12 @@ import javafx.scene.input.MouseEvent;
 
 public class BuyTicketsController implements Initializable{
     
+//    private TripController tc;
     static BillServices b = new BillServices();
     static CustomerServices c = new CustomerServices();
-    static Trip daTrip = new Trip();
-    
+    private Trip searchingTrip;
+    private Trip orderTrip;
+
     @FXML
     TextField TimeChoice;
     @FXML
@@ -82,33 +91,34 @@ public class BuyTicketsController implements Initializable{
     TextField txtSearch;
     @FXML
     TableView<Bill> tbBill;
+    @FXML
+    Button btnTrip; 
 
+//    public void setTripController(TripController tc){
+//        this.tc = tc;
+//    }
+//    
     public void initTrip(Trip trip) {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
         DateGo.setText(trip.getDateOfDeparture() + "");
         goLocation.setText(trip.getDeparture() + "");
         desLocation.setText(trip.getDestination() + "");
         busType.setText(trip.getBus() + "");
+        
+        this.orderTrip = trip;
+       
+    }
+    
+    public void initSearchTrip(Trip trip){
+        this.searchingTrip = trip;
+        btnTrip.setText(searchingTrip.getTripID()+"");
     }
 
     private final String[] timeGo = {"0:00", "0:30", "1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:30", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"};
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-//        TimeChoice.getItems().addAll(timeGo);
-//         LocationServices l = new LocationServices();
-//         BusServices bs = new BusServices();
-        /* Get location name go */
         try {
-//            
-//            this.goLocation.setItems(FXCollections.observableList(localgo));
-//       
-//        
-//            this.desLocation.setItems(FXCollections.observableList(localdes));
-//        
-//            this.busType.setItems(FXCollections.observableList(bus));
-
-
             loadTableColumn();
             loadTable();
 
@@ -118,6 +128,38 @@ public class BuyTicketsController implements Initializable{
     }
 
     private void loadTableColumn() throws SQLException {
+        tbBill.setRowFactory(e -> {
+            TableRow row = new TableRow();
+            row.setOnMouseClicked(evt -> {
+                if(evt.getClickCount() == 1 && !row.isEmpty())
+                {
+                    Bill bill = new Bill();
+                    Customer ctm = new Customer();
+                    Trip trip = new Trip();
+                    if (tbBill.getSelectionModel().getSelectedItem() != null) {
+                        bill = tbBill.getSelectionModel().getSelectedItem();
+                        ctm = tbBill.getSelectionModel().getSelectedItem().getCustomer();
+                        trip = tbBill.getSelectionModel().getSelectedItem().getTrip();
+                        TimeChoice.setText(trip.getTimeOfDeparture() + "");
+                        DateGo.setText(trip.getDateOfDeparture() + "");
+                        goLocation.setText(trip.getDeparture() + "");
+                        desLocation.setText(trip.getDestination() + "");
+                        busType.setText(trip.getBus() + "");
+                        seatNo.setText(bill.getSeat() + "");
+                        txtName.setText(ctm.getName() + "");
+                        txtAddress.setText(ctm.getAddress() + "");
+                        txtEmail.setText(ctm.getEmail() + "");
+                        txtPhone.setText(ctm.getPhoneNumber() + "");
+                    }
+                }
+            });
+            
+            return row;
+        });
+        
+        
+        
+        
         TableColumn colBill = new TableColumn("BillID");
         colBill.setCellValueFactory(new PropertyValueFactory("billID"));
         colBill.setPrefWidth(50);
@@ -147,8 +189,8 @@ public class BuyTicketsController implements Initializable{
         colDue.setPrefWidth(100);
 
         TableColumn colDate = new TableColumn("AquireDate");
-        colDate.setCellValueFactory(new PropertyValueFactory("aquireDate"));
-        colDate.setPrefWidth(100);
+        colDate.setCellValueFactory(new PropertyValueFactory("aquiredDate"));
+        colDate.setPrefWidth(200);
 
         this.tbBill.getColumns().setAll(colBill, colCustomer, colEmployee, colTrip, colSeat, colState, colDue, colDate);
         loadTable();
@@ -161,34 +203,34 @@ public class BuyTicketsController implements Initializable{
     }
 
     public void fetchData(MouseEvent e) {
-        Bill bill = new Bill();
-        Customer ctm = new Customer();
-        Trip trip = new Trip();
-        if (tbBill.getSelectionModel().getSelectedItem() != null) {
-            bill = tbBill.getSelectionModel().getSelectedItem();
-            ctm = tbBill.getSelectionModel().getSelectedItem().getCustomer();
-            trip = tbBill.getSelectionModel().getSelectedItem().getTrip();
-            TimeChoice.setText(trip.getTimeOfDeparture() + "");
-            DateGo.setText(trip.getDateOfDeparture() + "");
-            goLocation.setText(trip.getDeparture() + "");
-            desLocation.setText(trip.getDestination() + "");
-            busType.setText(trip.getBus() + "");
-            seatNo.setText(bill.getSeat() + "");
-            txtName.setText(ctm.getName() + "");
-            txtAddress.setText(ctm.getAddress() + "");
-            txtEmail.setText(ctm.getEmail() + "");
-            txtPhone.setText(ctm.getPhoneNumber() + "");
-        }
+//        Bill bill = new Bill();
+//        Customer ctm = new Customer();
+//        Trip trip = new Trip();
+//        if (tbBill.getSelectionModel().getSelectedItem() != null) {
+//            bill = tbBill.getSelectionModel().getSelectedItem();
+//            ctm = tbBill.getSelectionModel().getSelectedItem().getCustomer();
+//            trip = tbBill.getSelectionModel().getSelectedItem().getTrip();
+//            TimeChoice.setText(trip.getTimeOfDeparture() + "");
+//            DateGo.setText(trip.getDateOfDeparture() + "");
+//            goLocation.setText(trip.getDeparture() + "");
+//            desLocation.setText(trip.getDestination() + "");
+//            busType.setText(trip.getBus() + "");
+//            seatNo.setText(bill.getSeat() + "");
+//            txtName.setText(ctm.getName() + "");
+//            txtAddress.setText(ctm.getAddress() + "");
+//            txtEmail.setText(ctm.getEmail() + "");
+//            txtPhone.setText(ctm.getPhoneNumber() + "");
+//        }
     }
     
-        public void addBillHandler(ActionEvent e) throws SQLException {
+    public void addBillHandler(ActionEvent e) throws SQLException {
             String name = txtName.getText();
             String email = txtEmail.getText();
             String phone = txtPhone.getText();
             String address = txtAddress.getText();
             int seat = parseInt(seatNo.getText());
             statePayment bookingState = PAID;
-            double totalDue = daTrip.getPrice();
+            double totalDue = orderTrip.getPrice();
             java.util.Date date = Calendar.getInstance().getTime();  
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
             String aDate = dateFormat.format(date);
@@ -209,7 +251,7 @@ public class BuyTicketsController implements Initializable{
                 }
                
                 
-                Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+                Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
                 
                  if (!checkSeatUnique(bill)) {
                     try {
@@ -223,14 +265,14 @@ public class BuyTicketsController implements Initializable{
                 }     
         }
         
-        public void orderBillHandler(ActionEvent e) throws SQLException {
+    public void orderBillHandler(ActionEvent e) throws SQLException {
             String name = txtName.getText();
             String email = txtEmail.getText();
             String phone = txtPhone.getText();
             String address = txtAddress.getText();
             int seat = parseInt(seatNo.getText());
             statePayment bookingState = BOOKED;
-            double totalDue = daTrip.getPrice();
+            double totalDue = orderTrip.getPrice();
             java.util.Date date = Calendar.getInstance().getTime();  
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
             String aDate = dateFormat.format(date);
@@ -251,7 +293,7 @@ public class BuyTicketsController implements Initializable{
                 }
                
                 
-                Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+                Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
                 
                  if (!checkSeatUnique(bill)) {
                     try {
@@ -265,21 +307,21 @@ public class BuyTicketsController implements Initializable{
                 }     
         }
         
-        public void deleteBillHandler(ActionEvent e) throws SQLException {
+    public void deleteBillHandler(ActionEvent e) throws SQLException {
             String name = txtName.getText();
             String email = txtEmail.getText();
             String phone = txtPhone.getText();
             String address = txtAddress.getText();
             int seat = parseInt(seatNo.getText());
             statePayment bookingState = CANCELLED;
-            double totalDue = daTrip.getPrice();
+            double totalDue = orderTrip.getPrice();
             java.util.Date date = Calendar.getInstance().getTime();  
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
             String aDate = dateFormat.format(date);
             
             Customer cus = new Customer(name, email, phone, address);
                 
-            Bill bill = new Bill(cus, employ, daTrip, seat, bookingState, totalDue, aDate);
+            Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
                 
                 if (checkExist(bill)) {
                     try {
@@ -292,12 +334,25 @@ public class BuyTicketsController implements Initializable{
                     MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
                 }     
         }
+    
+    public void searchTripHandler(ActionEvent e) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Trip_Search.fxml"));
+        Parent ts = loader.load();
+        SearchTripController stc = loader.getController();
+        stc.setMainController(this);
         
+
+        Stage newStage = new Stage();
+        newStage.setScene(new Scene(ts));
+        newStage.show();
+        
+    }
+
         public void searchBillHandler(ActionEvent e) throws SQLException {
             String search = txtSearch.getText();
             
             Customer cus = CustomerServices.getCustomerByPhone(search);
             BillServices.searchBillByCus(cus);
         }
-        
+
 }

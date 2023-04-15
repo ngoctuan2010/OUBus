@@ -41,7 +41,6 @@ public class BillServices {
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
                 String aquiredDate = rs.getString("aquiredDate");
-
                 Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
                 bills.add(bill);
             }
@@ -85,7 +84,7 @@ public class BillServices {
             stm.setInt(3, bill.getTrip().getTripID());
             stm.setInt(4, bill.getSeat());
             stm.setInt(5, bill.getBookingState().ordinal());
-            stm.setInt(6, bill.getTrip().getTripID());
+            stm.setInt(6, bill.getTrip().getPrice());
             stm.setString(7, bill.getAquiredDate());
             stm.setString(8, bill.getBillID());
 

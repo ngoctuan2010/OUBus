@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="scense" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oubus.oubus.TripController">
+<VBox fx:id="scense" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oubus.oubus.SearchTripController">
    <children>
       <Label text="Quản lí chuyến xe" textFill="#07689f">
          <font>
@@ -90,7 +90,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView id="tripTable" fx:id="tbTrips" onMouseClicked="#fetchDataHandler" prefHeight="367.0" prefWidth="679.0" stylesheets="@Style.css">
+      <TableView id="tripTable" fx:id="tbTrips" prefHeight="367.0" prefWidth="679.0" stylesheets="@Style.css">
          <columns>
             <TableColumn prefWidth="75.0" />
             <TableColumn prefWidth="75.0" />
