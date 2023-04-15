@@ -22,16 +22,15 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -44,8 +43,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -87,7 +84,7 @@ public class TripController implements Initializable {
         }
     }
 
-    private void loadTableColumns() {
+    protected void loadTableColumns() {
         tbTrips.setRowFactory(e -> {
             TableRow row = new TableRow();
             row.setOnMouseClicked(evt -> {
@@ -95,13 +92,17 @@ public class TripController implements Initializable {
                     try {
                         //handler
                         Trip tr = new Trip(tbTrips.getSelectionModel().getSelectedItem());
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTickets.fxml"));
-                        Parent main = (Parent) loader.load();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTicket_Buy.fxml"));
+                        Parent main = loader.load();
+                        
                         BuyTicketsController btc = loader.getController();
                         btc.initTrip(tr);
                         
+                        
                         Stage stg = new Stage();
                         stg.setScene(new Scene(main));
+                        
+                        
                         
                         stg.show();
                                      
@@ -175,48 +176,59 @@ public class TripController implements Initializable {
                 new PropertyValueFactory("price"));
         colPrice.setStyle(
                 "-fx-alignment:center");
+        
+        TableColumn colState = new TableColumn("State");
+        colState.setCellValueFactory(new PropertyValueFactory("state"));
 
-        TableColumn colDelete = new TableColumn();
-
+        TableColumn<Trip, Trip> colDelete = new TableColumn();
+        colDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         colDelete.setPrefWidth(
                 5);
-        colDelete.setCellFactory(e
-                -> {
+        colDelete.setCellFactory(e -> new TableCell<Trip, Trip>(){
             Button btn = new Button("⌂");
+            
+            @Override
+            protected void updateItem(Trip trip, boolean empty){
+                super.updateItem(trip, empty);
+                
+                if(trip == null){
+                    setGraphic(null);
+                    return;
+                }
+                
+                setGraphic(btn);
+                btn.setOnAction(evt -> {
+                    Alert a = MessageBox.getBox("Question", "Are you sure to delete this trip?", Alert.AlertType.CONFIRMATION);
+                    a.showAndWait().ifPresent((ButtonType res) -> {
+                        if (res == ButtonType.OK) {
+                            Button b = (Button) evt.getSource();
+                            TableCell cell = (TableCell) b.getParent();
+                            Trip tr = (Trip) cell.getTableRow().getItem();
 
-            btn.setOnAction(evt -> {
-                Alert a = MessageBox.getBox("Question", "Are you sure to delete this trip?", Alert.AlertType.CONFIRMATION);
-                a.showAndWait().ifPresent((ButtonType res) -> {
-                    if (res == ButtonType.OK) {
-                        Button b = (Button) evt.getSource();
-                        TableCell cell = (TableCell) b.getParent();
-                        Trip tr = (Trip) cell.getTableRow().getItem();
-
-                        try {
-                            if (t.deleteTrip(tr.getTripID()) == true) {
-                                MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
-                                this.loadTables();
-                            } else {
-                                MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+                            try {
+                                if (t.deleteTrip(tr.getTripID()) == true) {
+                                    MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
+                                    loadTables();
+                                } else {
+                                    MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } catch (SQLException ex) {
-                            Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+                    });
                 });
-            });
+            }
+            
+            
 
-            TableCell cell = new TableCell();
-            cell.setGraphic(btn);
-            return cell;
         }
         );
 
-        this.tbTrips.getColumns()
-                .setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colPrice, colDelete);
+        this.tbTrips.getColumns().setAll(colTrip, colBus, colDeparture, colTimeOfDeparture, colDateOfDeparture, colDestination, colPrice, colState, colDelete);
     }
 
-    private void loadTables() throws SQLException {
+    protected void loadTables() throws SQLException {
         List<Trip> trips = t.getTrip();
 
 //        this.tbTrips.set
