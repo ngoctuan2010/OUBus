@@ -168,4 +168,49 @@ public class BillServices {
             return rs.next();
         }
     }
+
+    public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+        int i = 0;
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM bill WHERE";
+            if (cus != null) {
+                sql += " customerID = ? AND";
+                i++;
+            }
+            if (tr != null) {
+                sql += " tripID = ? AND";
+                i++;
+            }
+            sql = sql.substring(0, sql.length() - 3);
+            PreparedStatement stm = cnn.prepareCall(sql);
+            if (tr != null) {
+                stm.setInt(i, tr.getTripID());
+                i--;
+            }
+            if (cus != null) {
+                stm.setString(i, cus.getCustomerID());
+                i--;
+            }
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+
+                Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+
+        }
+
+        return bills;
+    }
 }
