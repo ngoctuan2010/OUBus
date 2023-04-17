@@ -199,7 +199,7 @@ public class TripController implements Initializable {
         colDelete.setPrefWidth(
                 5);
         colDelete.setCellFactory(e -> new TableCell<Trip, Trip>(){
-            Button btn = new Button("⌂");
+            Button btn = new Button("🗑");
             
             @Override
             protected void updateItem(Trip trip, boolean empty){

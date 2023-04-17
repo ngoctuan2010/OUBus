@@ -51,16 +51,16 @@ public class BillServices {
     public boolean addBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "INSERT INTO Bill(customerID, employeeID, tripID, seat, state, totalPrice, aquireDate) VALUE(?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Bill(billID, customerID, employeeID, tripID, seatNo, state, totalDue, aquiredDate) VALUE(?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
-
-            stm.setString(1, bill.getCustomer().getCustomerID());
-            stm.setString(2, bill.getEmployee().getEmployeeID());
-            stm.setInt(3, bill.getTrip().getTripID());
-            stm.setInt(4, bill.getSeat());
-            stm.setInt(5, bill.getBookingState().ordinal());
-            stm.setInt(6, bill.getTrip().getTripID());
-            stm.setString(7, bill.getAquiredDate());
+            stm.setString(1, bill.getBillID());
+            stm.setString(2, bill.getCustomer().getCustomerID());
+            stm.setString(3, bill.getEmployee().getEmployeeID());
+            stm.setInt(4, bill.getTrip().getTripID());
+            stm.setInt(5, bill.getSeat());
+            stm.setInt(6, bill.getBookingState().ordinal());
+            stm.setInt(7, bill.getTrip().getPrice());
+            stm.setString(8, bill.getAquiredDate());
 
             stm.executeUpdate();
 
@@ -76,7 +76,7 @@ public class BillServices {
     public boolean updateBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seat = ?, state = ?, totalPrice = ?, aquireDate = ? WHERE billID = ?";
+            String sql = "UPDATE Bill set customerID = ?, employeeID = ?, tripID = ?, seatNo = ?, state = ?, totalDue = ?, aquiredDate = ? WHERE billID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setString(1, bill.getCustomer().getCustomerID());
@@ -147,7 +147,7 @@ public class BillServices {
     public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
-            String sql = "SELECT * FROM bill WHERE tripID = ? and seat = ?";
+            String sql = "SELECT * FROM bill WHERE tripID = ? and seatNo = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, bill.getTrip().getTripID());
             stm.setInt(2, bill.getSeat());

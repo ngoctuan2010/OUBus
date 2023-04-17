@@ -58,8 +58,7 @@ public class CustomerServices {
                 c.setName(rs.getString("name"));
                 c.setAddress(rs.getString("address"));
                 c.setEmail(rs.getString("Email"));
-                c.setPhoneNumber(rs.getString("phoneNumber"));
-              
+                c.setPhoneNumber(rs.getString("phoneNumber")); 
             }  
             return c;
         }
@@ -169,12 +168,9 @@ public class CustomerServices {
     public static boolean checkUnique(Customer cus) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
-            String sql = "SELECT * FROM customer WHERE name = ? and address = ? and email = ? and phoneNumber = ?";
+            String sql = "SELECT * FROM customer WHERE phoneNumber = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setString(1, cus.getName());
-            stm.setString(2, cus.getAddress());
-            stm.setString(3, cus.getEmail());
-            stm.setString(4, cus.getPhoneNumber());
+            stm.setString(1, cus.getPhoneNumber());
 
             ResultSet rs = stm.executeQuery();
             return rs.next();

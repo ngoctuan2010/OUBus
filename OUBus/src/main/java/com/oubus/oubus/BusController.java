@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.oubus.oubus;
+
 /*
 import static com.oubus.oubus.TripController.t;
-*/
+ */
 import com.oubus.services.BusServices;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -50,7 +52,6 @@ public class BusController implements Initializable {
     @FXML
     TextField txtType;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -81,38 +82,48 @@ public class BusController implements Initializable {
 
         TableColumn colType = new TableColumn("Type");
         colType.setCellValueFactory(new PropertyValueFactory("busType"));
-        
-        TableColumn colDelete = new TableColumn();
-        
-        
-        colDelete.setCellFactory(e -> {
-            Button btn = new Button("⌂");
-            btn.setOnAction(evt -> {
-                Alert a = MessageBox.getBox("Question", "Are you sure to delete this bus?", Alert.AlertType.CONFIRMATION);
-                a.showAndWait().ifPresent((ButtonType res) -> {
-                    if (res == ButtonType.OK) {
-                        Button b = (Button) evt.getSource();
-                        TableCell cell = (TableCell) b.getParent();
-                        Bus curBus = (Bus) cell.getTableRow().getItem();
 
-                        try {
-                            if (bs.deleteBus(curBus.getBusID()) == true) {
-                                MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
-                                this.loadTables();
-                            } else {
-                                MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+        TableColumn<Bus, Bus> colDelete = new TableColumn();
+        colDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        colDelete.setPrefWidth(
+                5);
+        colDelete.setCellFactory(e -> new TableCell<Bus, Bus>() {
+            Button btn = new Button("🗑");
+
+            @Override
+            protected void updateItem(Bus bus, boolean empty) {
+                super.updateItem(bus, empty);
+
+                if (bus == null) {
+                    setGraphic(null);
+                    return;
+                }
+                setGraphic(btn);
+                btn.setOnAction(evt -> {
+                    Alert a = MessageBox.getBox("Question", "Are you sure to delete this bus?", Alert.AlertType.CONFIRMATION);
+                    a.showAndWait().ifPresent((ButtonType res) -> {
+                        if (res == ButtonType.OK) {
+                            Button b = (Button) evt.getSource();
+                            TableCell cell = (TableCell) b.getParent();
+                            Bus tr = (Bus) cell.getTableRow().getItem();
+
+                            try {
+                                if (bs.deleteBus(tr.getBusID()) == true) {
+                                    MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
+                                    loadTables();
+                                } else {
+                                    MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } catch (SQLException ex) {
-                            Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+                    });
                 });
-            });
+            }
 
-            TableCell cell = new TableCell();
-            cell.setGraphic(btn);
-            return cell;
-        });
+        }
+        );
 
         this.tbBus.getColumns().setAll(colBusID, colName, colManufacturer, colLicensePlate, colSeat, colType, colDelete);
     }

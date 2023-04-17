@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  */
 public class MainController {
     
-    static Employee employ = new Employee();
+    
 
     @FXML
     VBox scense;
@@ -51,7 +51,9 @@ public class MainController {
 
     static Account cur_user;
     EmployeeServices emp = new EmployeeServices();
+    static Employee employ;
     
+
 
     public void init(Account user) throws SQLException {
         this.cur_user = user;
@@ -63,7 +65,7 @@ public class MainController {
             btnEmploy.visibleProperty().set(false);
             btnCus.visibleProperty().set(false);
         }
-    }
+
     
     public void loadBookTickets(ActionEvent e) throws IOException {
         VBox f = FXMLLoader.load(getClass().getResource("BookTickets_Edit.fxml"));

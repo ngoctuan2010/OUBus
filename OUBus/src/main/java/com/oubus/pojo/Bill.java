@@ -30,7 +30,7 @@ public class Bill {
     private String aquiredDate;
 
     {
-        setBillID(UUID.randomUUID().toString());
+        billID = UUID.randomUUID().toString();
     }
 
     public Bill(Customer customerID, Employee employeeID, Trip tripID, int seat, statePayment state, double totalPrice, String aquireDate) {

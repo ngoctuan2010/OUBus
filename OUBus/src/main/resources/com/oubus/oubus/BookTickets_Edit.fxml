@@ -132,9 +132,11 @@
             </Button>
             <TextField fx:id="txtSearch" alignment="CENTER" prefHeight="26.0" prefWidth="147.0" promptText="---Tìm kiếm---">
                <HBox.margin>
-                  <Insets left="240.0" />
+                  <Insets left="170.0" />
                </HBox.margin>
             </TextField>
+
+
 
 
             <Button mnemonicParsing="false" onAction="#searchBillHandler" prefHeight="23.0" prefWidth="150.0" styleClass="btn-buyticket" text="Tìm kiếm" textFill="WHITE">
@@ -145,6 +147,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
+
             
             <Button fx:id="btnTrip" mnemonicParsing="false" onAction="#searchTripHandler" prefHeight="25.0" prefWidth="175.0" styleClass="btn-buyticket" text="Tìm chuyến" textFill="WHITE">
                <HBox.margin>
