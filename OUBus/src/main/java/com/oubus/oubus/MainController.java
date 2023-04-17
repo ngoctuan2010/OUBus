@@ -36,17 +36,35 @@ public class MainController {
     Label user;
     @FXML 
     Button btnLogout;
+    
+    @FXML
+    Button btnTicket;
+    @FXML
+    Button btnBus;
+    @FXML
+    Button btnEmploy;
+    @FXML
+    Button btnTrip;
+    @FXML
+    Button btnCus;
+    
 
-    private static Account cur_user;
+    static Account cur_user;
     EmployeeServices emp = new EmployeeServices();
     
 
-    public void initUser(Account user) throws SQLException {
-        cur_user = user;
-        Employee login = emp.getEmployeeByID(cur_user.getEmployeeID());
-        this.user.setText(login.toString());
+    public void init(Account user) throws SQLException {
+        this.cur_user = user;
+        this.employ = emp.getEmployeeByID(cur_user.getEmployeeID());
+        this.user.setText(this.employ.toString());
+        
+        if(cur_user.getAccessLevel() == Account.level.EMPLOYEE){
+            btnBus.visibleProperty().set(false);
+            btnEmploy.visibleProperty().set(false);
+            btnCus.visibleProperty().set(false);
+        }
     }
-
+    
     public void loadBookTickets(ActionEvent e) throws IOException {
         VBox f = FXMLLoader.load(getClass().getResource("BookTickets_Edit.fxml"));
         scense.getChildren().setAll(f);

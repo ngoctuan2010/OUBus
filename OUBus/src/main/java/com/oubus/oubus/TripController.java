@@ -5,11 +5,11 @@
 
 package com.oubus.oubus;
 
+import com.oubus.pojo.Account;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
-import static com.oubus.oubus.BuyTicketsController.daTrip;
 
 import com.oubus.pojo.Location;
 import com.oubus.services.TripServices;
@@ -49,6 +49,8 @@ import javafx.stage.Stage;
 public class TripController implements Initializable {
 
     static TripServices t = new TripServices();
+    private Account cur_user = MainController.cur_user;
+    
     @FXML
     TableView<Trip> tbTrips;
     @FXML
@@ -63,10 +65,22 @@ public class TripController implements Initializable {
     DatePicker dpDateOfDeparture;
     @FXML
     TextField txtPrice;
+    @FXML
+    Button btnAdd;
+    @FXML
+    Button btnUpdate;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        if(cur_user.getAccessLevel() == Account.level.EMPLOYEE){
+            if(btnAdd != null)
+                btnAdd.visibleProperty().set(false);
+            if(btnUpdate != null)
+                btnUpdate.visibleProperty().set(false);
+        }
+        
         LocationServices ls = new LocationServices();
         BusServices bs = new BusServices();
         try {

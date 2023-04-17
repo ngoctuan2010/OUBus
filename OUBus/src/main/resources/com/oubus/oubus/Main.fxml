@@ -21,32 +21,32 @@
                   <Font name="Arial Bold" size="12.0" />
                </font>
             </Label>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadBookTickets" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Bán Vé" textFill="#07689f">
+            <Button fx:id="btnTicket" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadBookTickets" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Bán Vé" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadBus" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý xe" textFill="#07689f">
+            <Button fx:id="btnTrip" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadTrip" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lí chuyến xe" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadEmployee" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý nhân viên" textFill="#07689f">
+            <Button fx:id="btnBus" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadBus" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý xe" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadTrip" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lí chuyến xe" textFill="#07689f">
+            <Button fx:id="btnEmploy" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadEmployee" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý nhân viên" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadCustomers" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý khách hàng" textFill="#07689f">
+            <Button fx:id="btnCus" alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#loadCustomers" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Quản lý khách hàng" textFill="#07689f">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Thống kê báo cáo" textFill="#07689f">
+            <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="42.0" prefWidth="200.0" styleClass="btn-button" text="Thống kê báo cáo" textFill="#07689f" visible="false">
             
                <font>
                   <Font name="Arial" size="12.0" />

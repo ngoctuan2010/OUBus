@@ -25,7 +25,7 @@ public class TripServices {
     public boolean addTrip(Trip trip) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination, price) VALUE(?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Trip(busID, departure, TimeOfDeparture, DateOfDeparture, destination, price, state) VALUE(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setInt(1, trip.getBus().getBusID());

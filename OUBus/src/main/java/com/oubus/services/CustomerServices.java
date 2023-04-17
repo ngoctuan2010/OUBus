@@ -47,7 +47,7 @@ public class CustomerServices {
         Customer c = new Customer();
         try(Connection cnn = JdbcUtils.getConn()){
             
-            String sql = "SELECT * FROM customer WHERE phoneNumber = ?)";
+            String sql = "SELECT * FROM customer WHERE phoneNumber = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setString(1, phoneNumber);
             

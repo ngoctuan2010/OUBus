@@ -94,10 +94,7 @@ public class BuyTicketsController implements Initializable{
     @FXML
     Button btnTrip; 
 
-//    public void setTripController(TripController tc){
-//        this.tc = tc;
-//    }
-//    
+
     public void initTrip(Trip trip) {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
         DateGo.setText(trip.getDateOfDeparture() + "");
@@ -120,7 +117,8 @@ public class BuyTicketsController implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
             loadTableColumn();
-            loadTable();
+            List<Bill> bills = b.getBill();
+            loadTable(bills);
 
         } catch (SQLException ex) {
             Logger.getLogger(BuyTicketsController.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,13 +191,13 @@ public class BuyTicketsController implements Initializable{
         colDate.setPrefWidth(200);
 
         this.tbBill.getColumns().setAll(colBill, colCustomer, colEmployee, colTrip, colSeat, colState, colDue, colDate);
-        loadTable();
+       
     }
 
-    private void loadTable() throws SQLException {
-        List<Bill> bills = b.getBill();
+    private void loadTable(List<Bill> bill) throws SQLException {
+        
         this.tbBill.getItems().clear();
-        this.tbBill.setItems(FXCollections.observableList(bills));
+        this.tbBill.setItems(FXCollections.observableList(bill));
     }
 
     public void fetchData(MouseEvent e) {
@@ -348,11 +346,33 @@ public class BuyTicketsController implements Initializable{
         
     }
 
-        public void searchBillHandler(ActionEvent e) throws SQLException {
+    public void searchBillHandler(ActionEvent e) throws SQLException {
             String search = txtSearch.getText();
             
             Customer cus = CustomerServices.getCustomerByPhone(search);
             BillServices.searchBillByCus(cus);
+            
+            BillServices bs = new BillServices();
+            CustomerServices cs = new CustomerServices();
+            TripServices ts = new TripServices();
+            
+            Customer sCus = null;
+            List<Customer> Cus = cs.getCustomer(txtSearch.getText());
+            if(Cus != null && !Cus.isEmpty() )
+                sCus = Cus.get(0);
+            
+           
+            String id = btnTrip.getText();
+            Trip tr;
+            if(!id.contains("Tìm chuyến"))
+               tr = TripServices.getTripByID(Integer.parseInt(id));
+            else
+                tr = null;
+            
+
+            
+            List<Bill> bills = bs.searchBill(sCus, tr);
+            loadTable(bills);
         }
 
 }
