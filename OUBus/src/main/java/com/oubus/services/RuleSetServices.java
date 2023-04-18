@@ -32,7 +32,7 @@ public class RuleSetServices {
         int i = (int) (long) diffSeconds;
         return i;
     }
-    
+
     public static boolean CheckTime(int timeVal, int timeRes){
 //        buy ticket 300 sec
 //        book ticket 3600 sec
@@ -42,4 +42,5 @@ public class RuleSetServices {
         
         return timeVal>timeRes;
     }
+
 }
