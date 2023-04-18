@@ -4,32 +4,28 @@
  */
 package com.oubus.oubus;
 
-import static com.oubus.oubus.CustomersController.c;
-import static com.oubus.oubus.TripController.t;
 import static com.oubus.oubus.MainController.employ;
 import com.oubus.pojo.Bill;
 import com.oubus.pojo.Bill.statePayment;
-import static com.oubus.pojo.Bill.statePayment.BOOKED;
-import static com.oubus.pojo.Bill.statePayment.CANCELLED;
-import static com.oubus.pojo.Bill.statePayment.PAID;
-import com.oubus.pojo.Bus;
+
 import com.oubus.pojo.Customer;
 import com.oubus.pojo.Employee;
-import com.oubus.pojo.Location;
+
 import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
 import static com.oubus.services.BillServices.checkExist;
 import static com.oubus.services.BillServices.checkSeatUnique;
-import com.oubus.services.BusServices;
+
 import com.oubus.services.CustomerServices;
 import static com.oubus.services.CustomerServices.checkUnique;
-import com.oubus.services.LocationServices;
+import com.oubus.services.RuleSetServices;
+
 import com.oubus.services.TripServices;
 import com.oubus.utils.MessageBox;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -96,7 +92,7 @@ public class BuyTicketsController implements Initializable {
     Button btnTrip;
     @FXML
     Button btnCheck;
-    @FXML 
+    @FXML
     Button btnChangeTrip;
 
     public void initTrip(Trip trip) {
@@ -191,11 +187,11 @@ public class BuyTicketsController implements Initializable {
         colDate.setPrefWidth(200);
 
         this.tbBill.getColumns().setAll(colBill, colCustomer, colEmployee, colTrip, colSeat, colState, colDue, colDate);
-       
+
     }
 
     private void loadTable(List<Bill> bill) throws SQLException {
-        
+
         this.tbBill.getItems().clear();
         this.tbBill.setItems(FXCollections.observableList(bill));
     }
@@ -234,7 +230,7 @@ public class BuyTicketsController implements Initializable {
         String phone = txtPhone.getText();
         String address = txtAddress.getText();
         int seat = parseInt(seatNo.getText());
-        statePayment bookingState = PAID;
+        statePayment bookingState = Bill.statePayment.PAID;
         double totalDue = orderTrip.getPrice();
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -254,26 +250,30 @@ public class BuyTicketsController implements Initializable {
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 300)) {
 
-        if (!checkSeatUnique(bill)) {
-            try {
-                b.addBill(bill);
-                loadTableColumn();
-            } catch (SQLException ex) {
-                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            if (!checkSeatUnique(bill)) {
+                try {
+                    b.addBill(bill);
+                    loadTableColumn();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
             }
         } else {
-            MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
-    public void orderBillHandler(ActionEvent e) throws SQLException {
+    public void bookBillHandler(ActionEvent e) throws SQLException {
         String name = txtName.getText();
         String email = txtEmail.getText();
         String phone = txtPhone.getText();
         String address = txtAddress.getText();
         int seat = parseInt(seatNo.getText());
-        statePayment bookingState = BOOKED;
+        statePayment bookingState = Bill.statePayment.BOOKED;
         double totalDue = orderTrip.getPrice();
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -293,37 +293,45 @@ public class BuyTicketsController implements Initializable {
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 3600)) {
 
-        if (!checkSeatUnique(bill)) {
-            try {
-                b.addBill(bill);
-                loadTableColumn();
-            } catch (SQLException ex) {
-                Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+            if (!checkSeatUnique(bill)) {
+                try {
+                    b.addBill(bill);
+                    loadTableColumn();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
             }
         } else {
-            MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
     public void deleteBillHandler(ActionEvent e) throws SQLException {
-        statePayment bookingState = CANCELLED;
+        statePayment bookingState = Bill.statePayment.CANCELLED;
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String aDate = dateFormat.format(date);
 
         Bill bill = tbBill.getSelectionModel().getSelectedItem();
-        bill.setBookingState(bookingState);
-        bill.setAquiredDate(aDate);
-        if (checkExist(bill)) {
-            try {
-                b.updateBill(bill);
-                loadTableColumn();
-            } catch (SQLException ex) {
-                Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 300)) {
+            bill.setBookingState(bookingState);
+            bill.setAquiredDate(aDate);
+            if (checkExist(bill)) {
+                try {
+                    b.updateBill(bill);
+                    loadTableColumn();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
             }
         } else {
-            MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
@@ -340,47 +348,46 @@ public class BuyTicketsController implements Initializable {
     }
 
     public void searchBillHandler(ActionEvent e) throws SQLException {
-            String search = txtSearch.getText();
-            
-            Customer cus = CustomerServices.getCustomerByPhone(search);
-            BillServices.searchBillByCus(cus);
-            
-            BillServices bs = new BillServices();
-            CustomerServices cs = new CustomerServices();
-            TripServices ts = new TripServices();
-            
-            Customer sCus = null;
-            List<Customer> Cus = cs.getCustomer(txtSearch.getText());
-            if(Cus != null && !Cus.isEmpty() )
-                sCus = Cus.get(0);
-            
-           
-            String id = btnTrip.getText();
-            Trip tr;
-            if(!id.contains("Tìm chuyến"))
-               tr = ts.getTripByID(Integer.parseInt(id));
-            else
-                tr = null;
-            
+        String search = txtSearch.getText();
 
-            
-            List<Bill> bills = bs.searchBill(sCus, tr);
-            loadTable(bills);
+        Customer cus = CustomerServices.getCustomerByPhone(search);
+        BillServices.searchBillByCus(cus);
+
+        BillServices bs = new BillServices();
+        CustomerServices cs = new CustomerServices();
+        TripServices ts = new TripServices();
+
+        Customer sCus = null;
+        List<Customer> Cus = cs.getCustomer(txtSearch.getText());
+        if (Cus != null && !Cus.isEmpty()) {
+            sCus = Cus.get(0);
         }
 
-     public void updateBillHandler(ActionEvent e) throws SQLException {
+        String id = btnTrip.getText();
+        Trip tr;
+        if (!id.contains("Tìm chuyến")) {
+            tr = ts.getTripByID(Integer.parseInt(id));
+        } else {
+            tr = null;
+        }
+
+        List<Bill> bills = bs.searchBill(sCus, tr);
+        loadTable(bills);
+    }
+
+    public void updateBillHandler(ActionEvent e) throws SQLException {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
-           // Employee emp = new Employee();
-            
+            // Employee emp = new Employee();
+
             Trip trip = new Trip();
-            
+
             String id = tbBill.getSelectionModel().getSelectedItem().getBillID();
             Customer cusID = tbBill.getSelectionModel().getSelectedItem().getCustomer();
             Employee emID = tbBill.getSelectionModel().getSelectedItem().getEmployee();
-          //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
-            
+            //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
+
             Trip tripID = tbBill.getSelectionModel().getSelectedItem().getTrip();
             bill.setBillID(id);
             bill.setCustomer(cusID);
@@ -390,14 +397,13 @@ public class BuyTicketsController implements Initializable {
             bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
             bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
             bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
-            
+
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
             cus.setEmail(txtEmail.getText());
             cus.setPhoneNumber(txtPhone.getText());
             cus.setAddress(txtAddress.getText());
-            
-            
+
             try {
                 c.updateCustomer(cus);
                 b.updateBill(bill);
@@ -410,22 +416,22 @@ public class BuyTicketsController implements Initializable {
             }
 
         }
-        
+
     }
-    
-     public void ChangeTripBill(ActionEvent e) throws SQLException {
+
+    public void ChangeTripBill(ActionEvent e) throws SQLException {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
-           // Employee emp = new Employee();
-            
+            // Employee emp = new Employee();
+
             Trip trip = new Trip();
-            
+
             String id = tbBill.getSelectionModel().getSelectedItem().getBillID();
             Customer cusID = tbBill.getSelectionModel().getSelectedItem().getCustomer();
             Employee emID = tbBill.getSelectionModel().getSelectedItem().getEmployee();
-          //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
-            
+            //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
+
             Trip tripID = t.getTripByID(parseInt(btnTrip.getText()));
             bill.setBillID(id);
             bill.setCustomer(cusID);
@@ -435,14 +441,13 @@ public class BuyTicketsController implements Initializable {
             bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
             bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
             bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
-            
+
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
             cus.setEmail(txtEmail.getText());
             cus.setPhoneNumber(txtPhone.getText());
             cus.setAddress(txtAddress.getText());
-            
-            
+
             try {
                 c.updateCustomer(cus);
                 b.updateBill(bill);
@@ -455,17 +460,18 @@ public class BuyTicketsController implements Initializable {
             }
 
         }
-        
-    } 
-     public void CheckExitSeat(ActionEvent e) throws SQLException{
-         
-         int seat = parseInt(seatNo.getText());
-          String tripID = btnTrip.getText();
-          
-          if (BillServices.checkSeatBill(seat, tripID) ){
-              MessageBox.getBox("", "Ghế đã tồn tại",Alert.AlertType.INFORMATION).show();
-          }
-          else
-               MessageBox.getBox("", "Ghế đang trống",Alert.AlertType.INFORMATION).show();
-     } 
+
+    }
+
+    public void CheckExitSeat(ActionEvent e) throws SQLException {
+
+        int seat = parseInt(seatNo.getText());
+        String tripID = btnTrip.getText();
+
+        if (BillServices.checkSeatBill(seat, tripID)) {
+            MessageBox.getBox("", "Ghế đã tồn tại", Alert.AlertType.INFORMATION).show();
+        } else {
+            MessageBox.getBox("", "Ghế đang trống", Alert.AlertType.INFORMATION).show();
+        }
+    }
 }
