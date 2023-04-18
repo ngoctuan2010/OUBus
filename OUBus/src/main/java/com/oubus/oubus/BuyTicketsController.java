@@ -96,7 +96,8 @@ public class BuyTicketsController implements Initializable {
     Button btnTrip;
     @FXML
     Button btnCheck;
-
+    @FXML 
+    Button btnChangeTrip;
 
     public void initTrip(Trip trip) {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
@@ -380,7 +381,7 @@ public class BuyTicketsController implements Initializable {
             Employee emID = tbBill.getSelectionModel().getSelectedItem().getEmployee();
           //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
             
-            Trip tripID = t.getTripByID(Integer.valueOf(btnTrip.getText()));
+            Trip tripID = tbBill.getSelectionModel().getSelectedItem().getTrip();
             bill.setBillID(id);
             bill.setCustomer(cusID);
             bill.setEmployee(emID);
@@ -411,7 +412,51 @@ public class BuyTicketsController implements Initializable {
         }
         
     }
-     
+    
+     public void ChangeTripBill(ActionEvent e) throws SQLException {
+        if (tbBill.getSelectionModel().getSelectedItem() != null) {
+            Bill bill = new Bill();
+            Customer cus = new Customer();
+           // Employee emp = new Employee();
+            
+            Trip trip = new Trip();
+            
+            String id = tbBill.getSelectionModel().getSelectedItem().getBillID();
+            Customer cusID = tbBill.getSelectionModel().getSelectedItem().getCustomer();
+            Employee emID = tbBill.getSelectionModel().getSelectedItem().getEmployee();
+          //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
+            
+            Trip tripID = t.getTripByID(parseInt(btnTrip.getText()));
+            bill.setBillID(id);
+            bill.setCustomer(cusID);
+            bill.setEmployee(emID);
+            bill.setTrip(tripID);
+            bill.setSeat(parseInt(seatNo.getText()));
+            bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
+            bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
+            bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
+            
+            cus.setCustomerID(cusID.getCustomerID());
+            cus.setName(txtName.getText());
+            cus.setEmail(txtEmail.getText());
+            cus.setPhoneNumber(txtPhone.getText());
+            cus.setAddress(txtAddress.getText());
+            
+            
+            try {
+                c.updateCustomer(cus);
+                b.updateBill(bill);
+                MessageBox.getBox("Success", "Change Trip completely", Alert.AlertType.INFORMATION).show();
+                List<Bill> bills = b.getBill();
+                loadTable(bills);
+            } catch (SQLException ex) {
+                MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
+                Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        
+    } 
      public void CheckExitSeat(ActionEvent e) throws SQLException{
          
          int seat = parseInt(seatNo.getText());

@@ -122,7 +122,7 @@
       </HBox>
       <HBox prefHeight="46.0" prefWidth="700.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#updateBillHandler" prefHeight="23.0" prefWidth="133.0" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#updateBillHandler" prefHeight="23.0" prefWidth="150.0" styleClass="btn-buyticket" text="Cập nhật" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
@@ -130,7 +130,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#deleteBillHandler" prefHeight="23.0" prefWidth="133.0" styleClass="btn-buyticket" text="Hủy vé" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#deleteBillHandler" prefHeight="23.0" prefWidth="150.0" styleClass="btn-buyticket" text="Hủy vé" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
@@ -138,7 +138,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#redeemBillHandler" prefHeight="23.0" prefWidth="134.0" styleClass="btn-buyticket" text="Xuất vé" textFill="WHITE">
+            <Button fx:id="btnChangeTrip" mnemonicParsing="false" onAction="#ChangeTripBill" prefHeight="23.0" prefWidth="176.0" styleClass="btn-buyticket" text="Đổi chuyến" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font>
@@ -148,7 +148,7 @@
             </Button>
             <TextField fx:id="txtSearch" alignment="CENTER" prefHeight="26.0" prefWidth="147.0" promptText="---Tìm kiếm---">
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="100.0" />
                </HBox.margin>
             </TextField>
 
