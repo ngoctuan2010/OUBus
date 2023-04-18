@@ -25,7 +25,7 @@ public class BillServices {
         /*Create List Bill*/
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
-        TripServices  ts= new TripServices();
+        TripServices ts = new TripServices();
         /* Connetion to SQL Database*/
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill";
@@ -100,28 +100,29 @@ public class BillServices {
         }
     }
 
-//        public boolean deleteBill(String id) throws SQLException {
-//        try (Connection cnn = JdbcUtils.getConn()) {
-//            cnn.setAutoCommit(false);
-//            String sql = "DELETE Bill where BillID = ?";
-//            PreparedStatement stm = cnn.prepareCall(sql);
-//
-//            stm.setString(1, id);
-//
-//            stm.executeUpdate();
-//            
-//            try {
-//                cnn.commit();
-//                return true;
-//            } catch (SQLException ex) {
-//                return false;
-//            }
-//        }
-//    }
+    public boolean deleteBill(String id) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "DELETE Bill where BillID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+
+            stm.setString(1, id);
+
+            stm.executeUpdate();
+
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
+
     public static List<Bill> searchBillByCus(Customer cust) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
-         TripServices  ts= new TripServices();
+        TripServices ts = new TripServices();
 
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill WHERE customerID = ?";
@@ -148,7 +149,7 @@ public class BillServices {
 
     public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
-             
+
             String sql = "SELECT * FROM bill WHERE tripID = ? and seatNo = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, bill.getTrip().getTripID());
@@ -158,25 +159,27 @@ public class BillServices {
             return rs.next();
         }
     }
-    public static boolean checkSeatBill(int seat, String tripID) throws SQLException{
-                    Bill b = new Bill();
-                    try(Connection cnn =JdbcUtils.getConn()){
-                        String sql ="SELECT seatNo FROM bill WHERE tripID = ?";
-                        PreparedStatement stm =cnn.prepareCall(sql);
-                        stm.setString(1,tripID );
-                        
-                        ResultSet rs = stm.executeQuery();
-                        while (rs.next())
-                        {
-                           if (seat == rs.getInt("seatNo"))
-                                return true;
-                          
-                        }
-                        
-                                return false;
-                    }
-                   
+
+    public static boolean checkSeatBill(int seat, String tripID) throws SQLException {
+        Bill b = new Bill();
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT seatNo FROM bill WHERE tripID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, tripID);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                if (seat == rs.getInt("seatNo")) {
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
+
     }
+
     public static boolean checkExist(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
@@ -188,12 +191,15 @@ public class BillServices {
             return rs.next();
         }
     }
- 
-    
+
+    public static boolean checkOverSeat(Bill bill) throws SQLException {
+        return (bill.getTrip().getBus().getTotalSeat()-bill.getSeat())>=0;
+    }
+
     public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
-         TripServices  ts= new TripServices();
+        TripServices ts = new TripServices();
         int i = 0;
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill WHERE";
@@ -230,9 +236,8 @@ public class BillServices {
                 Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
                 bills.add(bill);
             }
-
         }
-
         return bills;
     }
+
 }
