@@ -15,3 +15,5 @@ public class RuleSet {
     private String ticketSwapingTimeLimit;
     private String ticketInterationTimeLimit;
 }
+
+

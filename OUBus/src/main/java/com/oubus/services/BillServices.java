@@ -99,24 +99,6 @@ public class BillServices {
         }
     }
 
-//        public boolean deleteBill(String id) throws SQLException {
-//        try (Connection cnn = JdbcUtils.getConn()) {
-//            cnn.setAutoCommit(false);
-//            String sql = "DELETE Bill where BillID = ?";
-//            PreparedStatement stm = cnn.prepareCall(sql);
-//
-//            stm.setString(1, id);
-//
-//            stm.executeUpdate();
-//            
-//            try {
-//                cnn.commit();
-//                return true;
-//            } catch (SQLException ex) {
-//                return false;
-//            }
-//        }
-//    }
     public static List<Bill> searchBillByCus(Customer cust) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();

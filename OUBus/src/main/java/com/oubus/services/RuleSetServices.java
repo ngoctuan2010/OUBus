@@ -10,4 +10,14 @@ package com.oubus.services;
  */
 public class RuleSetServices {
     
+    public static boolean CheckTime(int timeVal, int timeRes){
+//        buy ticket 300 sec (Thịnh)
+//        book ticket 3600 sec (Thịnh)
+//        redeem ticket 1800 sec (Tâm)
+//        change ticket 3600 sec (Tâm)
+//        interaction lock 300 sec (Tuấn)
+        
+        return timeVal>timeRes;
+    }
+
 }
