@@ -376,6 +376,9 @@ public class BuyTicketsController implements Initializable {
     }
 
     public void updateBillHandler(ActionEvent e) throws SQLException {
+        
+       
+        
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
