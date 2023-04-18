@@ -342,6 +342,22 @@ public class BuyTicketsController implements Initializable {
                 MessageBox.getBox("ERROR", "Đã hết thời gian tương tác!!!", Alert.AlertType.ERROR).show();
             }
     }
+    
+    public void getBillHandler(ActionEvent e) throws SQLException {
+        Bill bill = tbBill.getSelectionModel().getSelectedItem();
+        java.util.Date date = Calendar.getInstance().getTime();
+        String aDate = dateFormat.format(date);
+        Bill.statePayment bookingState = Bill.statePayment.PAID;
+        bill.setBookingState(bookingState);
+        bill.setAquiredDate(aDate);
+            try {
+                b.updateBill(bill);
+                loadTableColumn();
+            } catch (SQLException ex) {
+                Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            MessageBox.getBox("SUCCESS", "Đã xuất vé thành công!!!", Alert.AlertType.INFORMATION).show();
+        }
 
     public void searchTripHandler(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Trip_Search.fxml"));
