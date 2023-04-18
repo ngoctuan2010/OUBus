@@ -68,8 +68,8 @@ public class ChangeTripController implements Initializable {
     DatePicker dpDateOfDeparture;
     @FXML
     TextField txtPrice;
-    @FXML 
-    Button btnChange;
+//    @FXML 
+//    Button btnChange;
 
     
      public void initTripInformation(Trip tr){

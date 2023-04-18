@@ -5,7 +5,6 @@ com\oubus\services\RuleSetServices.class
 com\oubus\pojo\RuleSet.class
 com\oubus\oubus\SearchTripController.class
 com\oubus\pojo\Trip.class
-com\oubus\oubus\BuyTicketsController2.class
 com\oubus\services\CustomerServices.class
 com\oubus\pojo\Customer.class
 com\oubus\oubus\BuyTicketsController.class
