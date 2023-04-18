@@ -6,8 +6,8 @@ package com.oubus.oubus;
 
 /**
  *
- * @author PC
+ * @author bthta
  */
-public class BuyTicketsController2 extends BuyTicketsController{
+class JOptionPane {
     
 }

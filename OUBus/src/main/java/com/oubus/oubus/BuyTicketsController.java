@@ -4,33 +4,28 @@
  */
 package com.oubus.oubus;
 
-import static com.oubus.oubus.CustomersController.c;
-import static com.oubus.oubus.TripController.t;
 import static com.oubus.oubus.MainController.employ;
 import com.oubus.pojo.Bill;
 import com.oubus.pojo.Bill.statePayment;
-import static com.oubus.pojo.Bill.statePayment.BOOKED;
-import static com.oubus.pojo.Bill.statePayment.CANCELLED;
-import static com.oubus.pojo.Bill.statePayment.PAID;
-import com.oubus.pojo.Bus;
+
 import com.oubus.pojo.Customer;
 import com.oubus.pojo.Employee;
-import com.oubus.pojo.Location;
+
 import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
 import static com.oubus.services.BillServices.checkExist;
 import static com.oubus.services.BillServices.checkSeatUnique;
-import com.oubus.services.BusServices;
+
 import com.oubus.services.CustomerServices;
 import static com.oubus.services.CustomerServices.checkUnique;
-import com.oubus.services.LocationServices;
 import com.oubus.services.RuleSetServices;
+
 import com.oubus.services.TripServices;
 import com.oubus.utils.MessageBox;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -235,7 +230,7 @@ public class BuyTicketsController implements Initializable {
         String phone = txtPhone.getText();
         String address = txtAddress.getText();
         int seat = parseInt(seatNo.getText());
-        statePayment bookingState = PAID;
+        statePayment bookingState = Bill.statePayment.PAID;
         double totalDue = orderTrip.getPrice();
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -255,8 +250,8 @@ public class BuyTicketsController implements Initializable {
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
-
         if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 300)) {
+
             if (!checkSeatUnique(bill)) {
                 try {
                     b.addBill(bill);
@@ -268,7 +263,7 @@ public class BuyTicketsController implements Initializable {
                 MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
             }
         } else {
-            MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
@@ -278,7 +273,7 @@ public class BuyTicketsController implements Initializable {
         String phone = txtPhone.getText();
         String address = txtAddress.getText();
         int seat = parseInt(seatNo.getText());
-        statePayment bookingState = BOOKED;
+        statePayment bookingState = Bill.statePayment.BOOKED;
         double totalDue = orderTrip.getPrice();
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -298,7 +293,8 @@ public class BuyTicketsController implements Initializable {
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
-        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 300)) {
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 3600)) {
+
             if (!checkSeatUnique(bill)) {
                 try {
                     b.addBill(bill);
@@ -309,14 +305,17 @@ public class BuyTicketsController implements Initializable {
             } else {
                 MessageBox.getBox("Bruh", "Có vé nì rồi ní!!!", Alert.AlertType.INFORMATION).show();
             }
+        } else {
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
     public void deleteBillHandler(ActionEvent e) throws SQLException {
-        statePayment bookingState = CANCELLED;
+        statePayment bookingState = Bill.statePayment.CANCELLED;
         java.util.Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String aDate = dateFormat.format(date);
+
         Bill bill = tbBill.getSelectionModel().getSelectedItem();
         if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, bill.getAquiredDate()), 300)) {
             bill.setBookingState(bookingState);
@@ -332,7 +331,7 @@ public class BuyTicketsController implements Initializable {
                 MessageBox.getBox("Bruh", "Có vé nì đâu ní!!!", Alert.AlertType.INFORMATION).show();
             }
         } else {
-            MessageBox.getBox("Bruh", "Đã quá thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Bruh", "Đã hết thời gian tương tác!!!", Alert.AlertType.INFORMATION).show();
         }
     }
 
@@ -378,9 +377,6 @@ public class BuyTicketsController implements Initializable {
 
     public void updateBillHandler(ActionEvent e) throws SQLException {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
-            java.util.Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String aDate = dateFormat.format(date);
             Bill bill = new Bill();
             Customer cus = new Customer();
             // Employee emp = new Employee();
@@ -400,7 +396,7 @@ public class BuyTicketsController implements Initializable {
             bill.setSeat(seatNo.getLength());
             bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
             bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
-            bill.setAquiredDate(aDate);
+            bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
 
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
@@ -418,14 +414,13 @@ public class BuyTicketsController implements Initializable {
                 MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
                 Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
+
     }
 
     public void ChangeTripBill(ActionEvent e) throws SQLException {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
-            java.util.Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String aDate = dateFormat.format(date);
             Bill bill = new Bill();
             Customer cus = new Customer();
             // Employee emp = new Employee();
@@ -445,7 +440,7 @@ public class BuyTicketsController implements Initializable {
             bill.setSeat(parseInt(seatNo.getText()));
             bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
             bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
-            bill.setAquiredDate(aDate);
+            bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
 
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
@@ -468,7 +463,7 @@ public class BuyTicketsController implements Initializable {
 
     }
 
-    public void CheckExistSeat(ActionEvent e) throws SQLException {
+    public void CheckExitSeat(ActionEvent e) throws SQLException {
 
         int seat = parseInt(seatNo.getText());
         String tripID = btnTrip.getText();

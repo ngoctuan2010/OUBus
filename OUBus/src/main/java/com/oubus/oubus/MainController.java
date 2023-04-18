@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  */
 public class MainController {
     
-    static Employee employ = new Employee();
+    
 
     @FXML
     VBox scense;
@@ -36,17 +36,37 @@ public class MainController {
     Label user;
     @FXML 
     Button btnLogout;
-
-    private static Account cur_user;
-    EmployeeServices emp = new EmployeeServices();
+    
+    @FXML
+    Button btnTicket;
+    @FXML
+    Button btnBus;
+    @FXML
+    Button btnEmploy;
+    @FXML
+    Button btnTrip;
+    @FXML
+    Button btnCus;
     
 
-    public void initUser(Account user) throws SQLException {
-        cur_user = user;
-        Employee login = emp.getEmployeeByID(cur_user.getEmployeeID());
-        this.user.setText(login.toString());
-    }
+    static Account cur_user;
+    EmployeeServices emp = new EmployeeServices();
+    static Employee employ;
+    
 
+
+    public void init(Account user) throws SQLException {
+        this.cur_user = user;
+        this.employ = emp.getEmployeeByID(cur_user.getEmployeeID());
+        this.user.setText(this.employ.toString());
+        
+        if(cur_user.getAccessLevel() == Account.level.EMPLOYEE){
+            btnBus.visibleProperty().set(false);
+            btnEmploy.visibleProperty().set(false);
+            btnCus.visibleProperty().set(false);
+        }
+    }
+    
     public void loadBookTickets(ActionEvent e) throws IOException {
         VBox f = FXMLLoader.load(getClass().getResource("BookTickets_Edit.fxml"));
         scense.getChildren().setAll(f);
