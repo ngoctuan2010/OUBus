@@ -111,13 +111,12 @@ public class TripController implements Initializable {
                     try {
                         //handler
                         java.util.Date date = Calendar.getInstance().getTime();
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String aDate = dateFormat.format(date);
-                        
                         //
                         Trip tr = new Trip(tbTrips.getSelectionModel().getSelectedItem());
                         String tDate = tr.getDateOfDeparture() + " " + tr.getTimeOfDeparture()+ ":00";
-                        MessageBox.getBox("A", tDate, Alert.AlertType.INFORMATION).show();
+                  
                         
                         if(RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 300)){          
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTicket_Buy.fxml"));
