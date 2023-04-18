@@ -4,7 +4,7 @@
  */
 package com.oubus.services;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +32,7 @@ public class RuleSetServices {
         int i = (int) (long) diffSeconds;
         return i;
     }
-    
+
     public static boolean CheckTime(int timeVal, int timeRes){
 //        buy ticket 300 sec
 //        book ticket 3600 sec
@@ -42,4 +42,5 @@ public class RuleSetServices {
         
         return timeVal>timeRes;
     }
+
 }
