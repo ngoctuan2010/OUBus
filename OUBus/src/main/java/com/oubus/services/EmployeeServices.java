@@ -92,7 +92,7 @@ public class EmployeeServices {
             stm.setString(7, emp.getAddress());
             stm.setString(8, emp.getEmail());
             stm.setString(9, emp.getTelephone());
-            stm.setString(10, emp.getPosition());
+            stm.setInt(10, 0);
             
             stm.executeUpdate();
             
@@ -107,6 +107,41 @@ public class EmployeeServices {
           }
             
             
+    }
+    
+    public Employee getEmployeeByPhone(String phone) throws SQLException{
+        try(Connection cnn = JdbcUtils.getConn()){
+            Employee emp = null;
+            
+            String sql = "SELECT * FROM employee WHERE phoneNumber = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, phone);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                String id = rs.getString("employeeID");
+                String name = rs.getString("name");
+                int iSex = rs.getInt("sex");
+                boolean sex;
+                if(iSex == 1)
+                    sex = true;
+                else
+                    sex = false;
+                String dOd = rs.getString("DateOfBirth");
+                String nationality = rs.getString("nationality");
+                String nationalID = rs.getString("nationalID");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                String phoneNumber = rs.getString("phoneNumber");
+                int pos = rs.getInt("position");
+                
+                emp = new Employee(id, name, sex, dOd, nationality, nationalID, address, email, phoneNumber, "Employee");
+                
+            }
+            
+            return emp;
+        
+        }
     }
 
 }

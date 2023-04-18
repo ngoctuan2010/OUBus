@@ -93,8 +93,8 @@
       <HBox prefHeight="100.0" prefWidth="200.0" />
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <TextField prefWidth="300.0" promptText="Username" />
-            <TextField accessibleRole="PASSWORD_FIELD" prefWidth="247.0" promptText="Password">
+            <TextField fx:id="txtUsername" prefWidth="300.0" promptText="Username" />
+            <TextField fx:id="txtPassword" accessibleRole="PASSWORD_FIELD" prefWidth="247.0" promptText="Password">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

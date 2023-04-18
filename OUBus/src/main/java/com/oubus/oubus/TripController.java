@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.oubus.oubus;
 
 import com.oubus.pojo.Account;
@@ -15,13 +14,17 @@ import com.oubus.pojo.Location;
 import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;
 import com.oubus.services.LocationServices;
+import com.oubus.services.RuleSetServices;
 import com.oubus.utils.MessageBox;
 import java.io.IOException;
 //import com.oubus.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -43,14 +46,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
-
 
 public class TripController implements Initializable {
 
     static TripServices t = new TripServices();
     private Account cur_user = MainController.cur_user;
-    
+
     @FXML
     TableView<Trip> tbTrips;
     @FXML
@@ -70,17 +73,19 @@ public class TripController implements Initializable {
     @FXML
     Button btnUpdate;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        if(cur_user.getAccessLevel() == Account.level.EMPLOYEE){
-            if(btnAdd != null)
+
+        if (cur_user.getAccessLevel() == Account.level.EMPLOYEE) {
+            if (btnAdd != null) {
                 btnAdd.visibleProperty().set(false);
-            if(btnUpdate != null)
+            }
+            if (btnUpdate != null) {
                 btnUpdate.visibleProperty().set(false);
+            }
         }
-        
+
+       
         LocationServices ls = new LocationServices();
         BusServices bs = new BusServices();
         try {
@@ -105,25 +110,35 @@ public class TripController implements Initializable {
                 if (evt.getClickCount() == 2 && !row.isEmpty()) {
                     try {
                         //handler
+                        java.util.Date date = Calendar.getInstance().getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        String aDate = dateFormat.format(date);
+                        
+                        //
                         Trip tr = new Trip(tbTrips.getSelectionModel().getSelectedItem());
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTicket_Buy.fxml"));
-                        Parent main = loader.load();
+                        String tDate = tr.getDateOfDeparture() + " " + tr.getTimeOfDeparture()+ ":00";
+                        MessageBox.getBox("A", tDate, Alert.AlertType.INFORMATION).show();
                         
-                        BuyTicketsController btc = loader.getController();
-                        btc.initTrip(tr);
+                        if(RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 300)){          
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTicket_Buy.fxml"));
+                            Parent main = loader.load();
+
+                            BuyTicketsController btc = loader.getController();
+                            btc.initTrip(tr);
+
+                            Stage stg = new Stage();
+                            stg.setScene(new Scene(main));
+
+                            stg.show();
+                        }else{
+                            MessageBox.getBox("A","Đã quá thời gian tương tác" , Alert.AlertType.INFORMATION).show();
+                        }
                         
-                        
-                        Stage stg = new Stage();
-                        stg.setScene(new Scene(main));
-                        
-                        
-                        
-                        stg.show();
-                                     
+
                     } catch (IOException ex) {
                         Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                                  
+
                 } else if (evt.getClickCount() == 1 && !row.isEmpty()) {
                     if (tbTrips.getSelectionModel().getSelectedItem() != null) {
                         Trip t = new Trip();
@@ -190,7 +205,7 @@ public class TripController implements Initializable {
                 new PropertyValueFactory("price"));
         colPrice.setStyle(
                 "-fx-alignment:center");
-        
+
         TableColumn colState = new TableColumn("State");
         colState.setCellValueFactory(new PropertyValueFactory("state"));
 
@@ -198,18 +213,18 @@ public class TripController implements Initializable {
         colDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
         colDelete.setPrefWidth(
                 5);
-        colDelete.setCellFactory(e -> new TableCell<Trip, Trip>(){
+        colDelete.setCellFactory(e -> new TableCell<Trip, Trip>() {
             Button btn = new Button("🗑");
-            
+
             @Override
-            protected void updateItem(Trip trip, boolean empty){
+            protected void updateItem(Trip trip, boolean empty) {
                 super.updateItem(trip, empty);
-                
-                if(trip == null){
+
+                if (trip == null) {
                     setGraphic(null);
                     return;
                 }
-                
+
                 setGraphic(btn);
                 btn.setOnAction(evt -> {
                     Alert a = MessageBox.getBox("Question", "Are you sure to delete this trip?", Alert.AlertType.CONFIRMATION);
@@ -233,8 +248,6 @@ public class TripController implements Initializable {
                     });
                 });
             }
-            
-            
 
         }
         );

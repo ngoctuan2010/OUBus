@@ -172,18 +172,22 @@ public class BillServices {
     public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
-        int i = 0;
+        
         try (Connection cnn = JdbcUtils.getConn()) {
+            int i = 0;
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
                 sql += " customerID = ? AND";
                 i++;
             }
+            
             if (tr != null) {
                 sql += " tripID = ? AND";
                 i++;
             }
+            
             sql = sql.substring(0, sql.length() - 3);
+            
             PreparedStatement stm = cnn.prepareCall(sql);
             if (tr != null) {
                 stm.setInt(i, tr.getTripID());

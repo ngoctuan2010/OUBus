@@ -104,9 +104,6 @@ public class EmployeeController implements Initializable{
     }
     
     private void loadTableColumn(){
-        TableColumn colUsername = new TableColumn("Username");
-        colUsername.setCellValueFactory(new PropertyValueFactory("username"));
-        
         TableColumn colEmployeeID = new TableColumn("ID");
         colEmployeeID.setCellValueFactory(new PropertyValueFactory("employeeID"));
         
@@ -137,7 +134,7 @@ public class EmployeeController implements Initializable{
         TableColumn colPosition = new TableColumn("Position");
         colPosition.setCellValueFactory(new PropertyValueFactory("Position"));
         
-        this.tbEmployee.getColumns().setAll(colUsername,colEmployeeID, colName, colSex, colDoB, colNationality, colNationalID, colAddress, colEmail, colPhone, colPosition );
+        this.tbEmployee.getColumns().setAll(colEmployeeID, colName, colSex, colDoB, colNationality, colNationalID, colAddress, colEmail, colPhone, colPosition );
     }
     
     private void loadTableData() throws SQLException{
@@ -146,9 +143,10 @@ public class EmployeeController implements Initializable{
         this.tbEmployee.setItems(FXCollections.observableList(employees));
     }
     
-     public void fetchData(MouseEvent e) {
+     public void fetchData(MouseEvent e) throws SQLException {
+         AccountServices ac = new AccountServices();
         Employee emp = new Employee();
-        Account ac =new Account();
+        Account acc = ac.getAccountByEmployee(txtEmployeeID.getText());
         if (tbEmployee.getSelectionModel().getSelectedItem() != null) {
             emp = tbEmployee.getSelectionModel().getSelectedItem();
             txtEmployeeID.setText(emp.getEmployeeID());
@@ -164,7 +162,8 @@ public class EmployeeController implements Initializable{
                 cbSex.setValue("Nam");
             else
                 cbSex.setValue("Nữ");
-            txtUsername.setText(ac.getAccountID());
+            txtUsername.setText(acc.getUsername());
+            txtPassword.setText(acc.getPassword());
 
         }
     }
@@ -192,6 +191,10 @@ public class EmployeeController implements Initializable{
         Employee emp = new Employee(name,sex,dOb,nationality,nationalID,address,email,phoneNumber,position);
         try {
             es.addEmployee(emp);
+            Employee employ = es.getEmployeeByPhone(phoneNumber);
+            Account acc = new Account(employ.getEmployeeID(), txtUsername.getText(), txtPassword.getText(), Account.level.EMPLOYEE);
+            AccountServices as = new AccountServices();
+            as.addAcount(acc);
             loadTableData();
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);

@@ -93,7 +93,6 @@ public class BuyTicketsController implements Initializable {
     @FXML
     Button btnTrip;
 
-
     public void initTrip(Trip trip) {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
         DateGo.setText(trip.getDateOfDeparture() + "");
@@ -186,11 +185,11 @@ public class BuyTicketsController implements Initializable {
         colDate.setPrefWidth(200);
 
         this.tbBill.getColumns().setAll(colBill, colCustomer, colEmployee, colTrip, colSeat, colState, colDue, colDate);
-       
+
     }
 
     private void loadTable(List<Bill> bill) throws SQLException {
-        
+
         this.tbBill.getItems().clear();
         this.tbBill.setItems(FXCollections.observableList(bill));
     }
@@ -274,7 +273,7 @@ public class BuyTicketsController implements Initializable {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String aDate = dateFormat.format(date);
 
-        Customer cus = new Customer(name, email, phone, address);
+        Customer cus = new Customer(name, address, email, phone);
 
         if (!checkUnique(cus)) {
             try {
@@ -335,33 +334,32 @@ public class BuyTicketsController implements Initializable {
     }
 
     public void searchBillHandler(ActionEvent e) throws SQLException {
-            String search = txtSearch.getText();
-            
-            Customer cus = CustomerServices.getCustomerByPhone(search);
-            BillServices.searchBillByCus(cus);
-            
-            BillServices bs = new BillServices();
-            CustomerServices cs = new CustomerServices();
-            TripServices ts = new TripServices();
-            
-            Customer sCus = null;
-            List<Customer> Cus = cs.getCustomer(txtSearch.getText());
-            if(Cus != null && !Cus.isEmpty() )
-                sCus = Cus.get(0);
-            
-           
-            String id = btnTrip.getText();
-            Trip tr;
-            if(!id.contains("Tìm chuyến"))
-               tr = TripServices.getTripByID(Integer.parseInt(id));
-            else
-                tr = null;
-            
+//            String search = txtSearch.getText();
+//            
+//            Customer cus = CustomerServices.getCustomerByPhone(search);
+//            BillServices.searchBillByCus(cus);
 
-            
-            List<Bill> bills = bs.searchBill(sCus, tr);
-            loadTable(bills);
+        BillServices bs = new BillServices();
+        CustomerServices cs = new CustomerServices();
+        TripServices ts = new TripServices();
+
+        Customer sCus = null;
+        if (txtSearch.getText() != null && !txtSearch.getText().isEmpty()) {
+            sCus = cs.getCustomer(txtSearch.getText()).get(0);
         }
 
+        String id = btnTrip.getText();
+        Trip tr;
+        if (!id.contains("Tìm chuyến")) {
+            MessageBox.getBox("A", id, Alert.AlertType.INFORMATION).show();
+            tr = TripServices.getTripByID(Integer.parseInt(id));
+        } else {
+            tr = null;
+        }
+
+        List<Bill> bills = bs.searchBill(sCus, tr);
+        loadTable(bills);
+
+    }
 
 }
