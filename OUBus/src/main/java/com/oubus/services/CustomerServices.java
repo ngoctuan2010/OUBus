@@ -114,14 +114,13 @@ public class CustomerServices {
             
             try{
                 cnn.commit();
-                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
+//                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
                 return true;
             }catch(SQLException ex){
-                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
+//                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
                 return false;
-            }}
-            
-            
+            }
+        }       
     }
      
     public boolean updateCustomer(Customer cus) throws SQLException {

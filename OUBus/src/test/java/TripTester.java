@@ -41,17 +41,17 @@ public class TripTester {
         bs = new BusServices();
         ls = new LocationServices();
     }
-//    
-//    @AfterAll
-//    public static void afterAll(){
-//        if(cnn != null)
-//            try {
-//                cnn.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(TripTester.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//    
+    
+    @AfterAll
+    public static void afterAll(){
+        if(cnn != null)
+            try {
+                cnn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(TripTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Test
     public void testAddTrip(){
 

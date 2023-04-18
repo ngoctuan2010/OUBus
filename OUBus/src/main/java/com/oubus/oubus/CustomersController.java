@@ -112,8 +112,10 @@ public class CustomersController implements Initializable {
 
         try {
             c.addCustomer(cus);
+            MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
             LoadTable();
         } catch (SQLException ex) {
+            MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
             Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
