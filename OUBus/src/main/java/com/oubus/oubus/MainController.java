@@ -65,7 +65,7 @@ public class MainController {
             btnEmploy.visibleProperty().set(false);
             btnCus.visibleProperty().set(false);
         }
-
+    }
     
     public void loadBookTickets(ActionEvent e) throws IOException {
         VBox f = FXMLLoader.load(getClass().getResource("BookTickets_Edit.fxml"));

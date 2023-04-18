@@ -74,7 +74,7 @@ public class TripServices {
 
     }
 
-    public static Trip getTripByID(int ID) throws SQLException {
+    public Trip getTripByID(int ID) throws SQLException {
         Trip t = new Trip();
         try (Connection cnn = JdbcUtils.getConn()) {
 

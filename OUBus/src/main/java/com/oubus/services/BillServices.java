@@ -25,6 +25,7 @@ public class BillServices {
         /*Create List Bill*/
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
+        TripServices  ts= new TripServices();
         /* Connetion to SQL Database*/
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill";
@@ -36,7 +37,7 @@ public class BillServices {
                 String billID = rs.getString("billID");
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
                 Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
-                Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
@@ -120,6 +121,7 @@ public class BillServices {
     public static List<Bill> searchBillByCus(Customer cust) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
+         TripServices  ts= new TripServices();
 
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill WHERE customerID = ?";
@@ -131,7 +133,7 @@ public class BillServices {
                 String billID = rs.getString("billID");
                 Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
                 Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
-                Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
@@ -146,7 +148,7 @@ public class BillServices {
 
     public static boolean checkSeatUnique(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
-
+             
             String sql = "SELECT * FROM bill WHERE tripID = ? and seatNo = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, bill.getTrip().getTripID());
@@ -156,7 +158,25 @@ public class BillServices {
             return rs.next();
         }
     }
-
+    public static boolean checkSeatBill(int seat, String tripID) throws SQLException{
+                    Bill b = new Bill();
+                    try(Connection cnn =JdbcUtils.getConn()){
+                        String sql ="SELECT seatNo FROM bill WHERE tripID = ?";
+                        PreparedStatement stm =cnn.prepareCall(sql);
+                        stm.setString(1,tripID );
+                        
+                        ResultSet rs = stm.executeQuery();
+                        while (rs.next())
+                        {
+                           if (seat == rs.getInt("seatNo"))
+                                return true;
+                          
+                        }
+                        
+                                return false;
+                    }
+                   
+    }
     public static boolean checkExist(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
@@ -168,10 +188,12 @@ public class BillServices {
             return rs.next();
         }
     }
-
+ 
+    
     public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
+         TripServices  ts= new TripServices();
         int i = 0;
         try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM bill WHERE";
@@ -199,7 +221,7 @@ public class BillServices {
                 String billID = rs.getString("billID");
                 Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
                 Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
-                Trip trip = TripServices.getTripByID(rs.getInt("tripID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
                 int seat = rs.getInt("seatNo");
                 Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
                 Double totalDue = rs.getDouble("totalDue");
