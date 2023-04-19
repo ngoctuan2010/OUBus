@@ -356,6 +356,7 @@ public class TripController implements Initializable {
         times.add("10:00");
         times.add("12:00");
         times.add("14:00");
+        times.add("18:00");
         times.add("20:00");
         times.add("21:00");
         times.add("22:00");

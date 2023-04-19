@@ -457,27 +457,39 @@ public class BuyTicketsController implements Initializable {
             String id = tbBill.getSelectionModel().getSelectedItem().getBillID();
             Customer cusID = tbBill.getSelectionModel().getSelectedItem().getCustomer();
             Employee emID = tbBill.getSelectionModel().getSelectedItem().getEmployee();
+            Trip thisTrip = tbBill.getSelectionModel().getSelectedItem().getTrip();
             //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
 
-            Trip tripID = t.getTripByID(parseInt(btnTrip.getText()));
-            bill.setBillID(id);
-            bill.setCustomer(cusID);
-            bill.setEmployee(emID);
-            bill.setTrip(tripID);
-            bill.setSeat(parseInt(seatNo.getText()));
-            bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
-            bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
-            bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
-
+           
+            
+            Bill checkbill = new Bill();
+            checkbill.setBillID(tbBill.getSelectionModel().getSelectedItem().getBillID());
+            checkbill.setCustomer(cusID);
+            checkbill.setEmployee(emID);
+            checkbill.setTrip(thisTrip);
+            checkbill.setSeat(parseInt(seatNo.getText()));
+            checkbill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
+            checkbill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
+            checkbill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
+            
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
             cus.setEmail(txtEmail.getText());
             cus.setPhoneNumber(txtPhone.getText());
             cus.setAddress(txtAddress.getText());
 
-            String tripTime = bill.getTrip().getDateOfDeparture() + " " + bill.getTrip().getTimeOfDeparture() + ":00";
+            String tripTime = checkbill.getTrip().getDateOfDeparture() + " " + checkbill.getTrip().getTimeOfDeparture() + ":00";
             if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 3600)) {
                 try {
+                    Trip tripID = t.getTripByID(parseInt(btnTrip.getText()));
+                    bill.setBillID(id);
+                    bill.setCustomer(cusID);
+                    bill.setEmployee(emID);
+                    bill.setTrip(tripID);
+                    bill.setSeat(parseInt(seatNo.getText()));
+                    bill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
+                    bill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
+                    bill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
                     c.updateCustomer(cus);
                     b.updateBill(bill);
                     MessageBox.getBox("Success", "Change Trip completely", Alert.AlertType.INFORMATION).show();
@@ -488,7 +500,7 @@ public class BuyTicketsController implements Initializable {
                     Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
                 }    
             } else {
-                MessageBox.getBox("", "Khong duoc doi ve sau 60 phut ", Alert.AlertType.NONE).show();
+                MessageBox.getBox("", "Khong duoc doi ve sau 60 phut ", Alert.AlertType.ERROR).show();
 
             }
         }
