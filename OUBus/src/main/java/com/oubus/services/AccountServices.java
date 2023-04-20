@@ -40,14 +40,14 @@ public class AccountServices {
     public boolean addAcount(Account ac) throws SQLException{
           try(Connection cnn = JdbcUtils.getConn()){
             cnn.setAutoCommit(false);
-            String sql = "INSERT INTO account(accountID, employeeID,username, password,accessedLevel) VALUE(?, ?, ?, ?, EMPLOYEE)";
+            String sql = "INSERT INTO accounts(accountID, employeeID,username, password,accessedLevel) VALUE(?, ?, ?, ?, ?)";
             PreparedStatement stm = cnn.prepareCall(sql);
             
             stm.setString(1, ac.getAccountID());
             stm.setString(2, ac.getEmployeeID());
             stm.setString(3, ac.getUsername());
             stm.setString(4, ac.getPassword());
-            stm.setInt(5, ac.getAccessLevel().ordinal());
+            stm.setInt(5, 1);
            
             stm.executeUpdate();
             
@@ -61,4 +61,25 @@ public class AccountServices {
             }
           }  
     }
+
+
+    public Account getAccountByEmployee(String id) throws SQLException{
+        try(Connection cnn = JdbcUtils.getConn()){
+            Account acc;
+            String sql = "SELECT * FROM accounts WHERE employeeID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1,id);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                acc = new Account(rs.getString("accountID"), rs.getString("employeeID"), rs.getString("username"), rs.getString("password"), Account.level.values()[rs.getInt("accessedLevel")]);
+                return acc;
+            }
+            
+            return null;
+            }
+            
+        }
+    }
+
 }

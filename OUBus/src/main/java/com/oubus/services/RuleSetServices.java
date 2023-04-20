@@ -4,6 +4,7 @@
  */
 package com.oubus.services;
 
+
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author PC
  */
 public class RuleSetServices {
+
     public static int timeCalculator(String dateStart, String aDate){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");    
         Date d1 = null;

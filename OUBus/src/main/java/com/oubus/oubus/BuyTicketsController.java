@@ -376,21 +376,18 @@ public class BuyTicketsController implements Initializable {
     }
 
     public void searchBillHandler(ActionEvent e) throws SQLException {
-        String search = txtSearch.getText();
-
-        Customer cus = CustomerServices.getCustomerByPhone(search);
-        BillServices.searchBillByCus(cus);
+//            String search = txtSearch.getText();
+//            
+//            Customer cus = CustomerServices.getCustomerByPhone(search);
+//            BillServices.searchBillByCus(cus);
 
         BillServices bs = new BillServices();
         CustomerServices cs = new CustomerServices();
         TripServices ts = new TripServices();
 
         Customer sCus = null;
-        List<Customer> Cus = cs.getCustomer(txtSearch.getText());
-        if (Cus != null && !Cus.isEmpty()) {
-            sCus = Cus.get(0);
-        }
-
+        if (txtSearch.getText() != null && !txtSearch.getText().isEmpty()) {
+            sCus = cs.getCustomer(txtSearch.getText()).get(0);
         String id = btnTrip.getText();
         Trip tr;
         if (!id.contains("Tìm chuyến")) {
@@ -403,10 +400,7 @@ public class BuyTicketsController implements Initializable {
         loadTable(bills);
     }
 
-    public void updateBillHandler(ActionEvent e) throws SQLException {
-        
-       
-        
+    public void updateBillHandler(ActionEvent e) throws SQLException {     
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
@@ -511,7 +505,6 @@ public class BuyTicketsController implements Initializable {
     }
 
     public void CheckExitSeat(ActionEvent e) throws SQLException {
-
         int seat = parseInt(seatNo.getText());
         String tripID = btnTrip.getText();
 

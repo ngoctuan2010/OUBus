@@ -17,11 +17,7 @@ public class Bus {
     private String licensePlate;
     private int totalSeat;
     private String busType;
-    
-
-    
-
-   
+       
     public Bus(String vehicleName, String manufacturer, String licensePlate, int totalSeat, String busType){
         this.vehicleName = vehicleName;
         this.manufacturer = manufacturer;
