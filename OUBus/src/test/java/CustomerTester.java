@@ -115,4 +115,12 @@ public class CustomerTester {
      boolean actual = CustomerServices.checkUnique(c);
      Assertions.assertTrue(actual);
     }
+    
+    @Test
+    public void testCheckExitPhone() throws SQLException{
+        String phone = "012345678";
+        boolean actual = CustomerServices.checkExitedPhone(phone);
+        Assertions.assertTrue(actual);
+    }
+    
 }
