@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import com.oubus.pojo.Trip;
 import com.oubus.pojo.Bus;
-
 import com.oubus.pojo.Location;
 import com.oubus.services.TripServices;
 import com.oubus.services.BusServices;
@@ -21,10 +20,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -53,6 +54,7 @@ public class TripController implements Initializable {
 
     static TripServices t = new TripServices();
     private Account cur_user = MainController.cur_user;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @FXML
     TableView<Trip> tbTrips;
@@ -85,7 +87,6 @@ public class TripController implements Initializable {
             }
         }
 
-       
         LocationServices ls = new LocationServices();
         BusServices bs = new BusServices();
         try {
@@ -111,14 +112,12 @@ public class TripController implements Initializable {
                     try {
                         //handler
                         java.util.Date date = Calendar.getInstance().getTime();
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String aDate = dateFormat.format(date);
                         //
                         Trip tr = new Trip(tbTrips.getSelectionModel().getSelectedItem());
-                        String tDate = tr.getDateOfDeparture() + " " + tr.getTimeOfDeparture()+ ":00";
-                  
-                        
-                        if(RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 300)){          
+                        String tDate = tr.getDateOfDeparture() + " " + tr.getTimeOfDeparture() + ":00";
+
+                        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 300)) {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookTicket_Buy.fxml"));
                             Parent main = loader.load();
 
@@ -129,10 +128,9 @@ public class TripController implements Initializable {
                             stg.setScene(new Scene(main));
 
                             stg.show();
-                        }else{
-                            MessageBox.getBox("A","Đã quá thời gian tương tác" , Alert.AlertType.INFORMATION).show();
+                        } else {
+                            MessageBox.getBox("A", "Đã quá thời gian tương tác", Alert.AlertType.INFORMATION).show();
                         }
-                        
 
                     } catch (IOException ex) {
                         Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,16 +268,67 @@ public class TripController implements Initializable {
         String date = dpDateOfDeparture.getValue().toString();
         int price = Integer.parseInt(txtPrice.getText());
 
+        java.util.Date today = Calendar.getInstance().getTime();
+        String aDate = dateFormat.format(today);
+        String tDate = date + " " + time + ":00";
+
+        Date nDate, pDate;
+        String nextDate = null, previousDate = null;
+        try {
+            nDate = dateFormat.parse(tDate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nDate);
+            cal.add(Calendar.DATE, 1);
+            nDate = cal.getTime();
+            nextDate = dateFormat.format(nDate).substring(0, 10);
+
+            pDate = dateFormat.parse(tDate);
+            cal.setTime(pDate);
+            cal.add(Calendar.DATE, -1);
+            pDate = cal.getTime();
+            previousDate = dateFormat.format(pDate).substring(0, 10);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //
         Trip tr = new Trip(bus, departure, time, date, destination, price, 0);
 
-        if (departure.getLocationID() == destination.getLocationID()) {
+        Trip afterTrip = null, beforeTrip = null;
+        String afterDate = null, beforeDate = null;
+        if (t.getAfterTrip(tr) != null) {
+            afterTrip = t.getAfterTrip(tr);
+            afterDate = afterTrip.getDateOfDeparture() + " " + afterTrip.getTimeOfDeparture() + ":00";
+        } else if (t.getFirstTripOfBus(tr.getBus().getBusID(), nextDate) != null) {
+            afterTrip = t.getFirstTripOfBus(tr.getBus().getBusID(), nextDate);
+            afterDate = afterTrip.getDateOfDeparture() + " " + afterTrip.getTimeOfDeparture() + ":00";
+        }
+        if (t.getBeforeTrip(tr) != null) {
+            beforeTrip = t.getBeforeTrip(tr);
+            beforeDate = beforeTrip.getDateOfDeparture() + " " + beforeTrip.getTimeOfDeparture() + ":00";
+        } else if (t.getLastTripOfBus(tr.getBus().getBusID(), previousDate) != null) {
+            beforeTrip = t.getLastTripOfBus(tr.getBus().getBusID(), previousDate);
+            beforeDate = beforeTrip.getDateOfDeparture() + " " + beforeTrip.getTimeOfDeparture() + ":00";
+        }
+
+        boolean flag1 = afterTrip != null && !RuleSetServices.CheckTime(RuleSetServices.timeCalculator(tDate, afterDate), 28799);
+        boolean flag2 = beforeTrip != null && !RuleSetServices.CheckTime(RuleSetServices.timeCalculator(beforeDate, tDate), 28799);
+
+        if(flag1 || flag2){
+            MessageBox.getBox("Something wrong", "The bus is working in another trip", Alert.AlertType.INFORMATION).show();
+        }else if (departure.getLocationID() == destination.getLocationID()) {
             MessageBox.getBox("Wrong", "Locations is not same", Alert.AlertType.WARNING).show();
+        } else if (!RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 0)) {
+            MessageBox.getBox("Something Wrong", "This trip has happened", Alert.AlertType.INFORMATION).show();
+        } else if (price < 0) {
+            MessageBox.getBox("Something wrong", "Price is not negative", Alert.AlertType.INFORMATION).show();
         } else {
             if (!TripServices.checkUnique(tr)) {
                 try {
                     t.addTrip(tr);
+                    MessageBox.getBox("Success", "Add trip completed", Alert.AlertType.INFORMATION).show();
                     loadTables();
-
                 } catch (SQLException ex) {
                     Logger.getLogger(TripController.class
                             .getName()).log(Level.SEVERE, null, ex);
@@ -314,7 +363,59 @@ public class TripController implements Initializable {
             updatedTrip.setDestination(cbDestination.getSelectionModel().getSelectedItem());
             updatedTrip.setPrice(Integer.parseInt(txtPrice.getText()));
 
-            if (updatedTrip.getDeparture().getLocationID() == updatedTrip.getDestination().getLocationID()) {
+            java.util.Date today = Calendar.getInstance().getTime();
+            String aDate = dateFormat.format(today);
+            String tDate = updatedTrip.getDateOfDeparture() + " " + updatedTrip.getTimeOfDeparture() + ":00";
+
+            Date nDate, pDate;
+            String nextDate = null, previousDate = null;
+            try {
+                nDate = dateFormat.parse(tDate);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nDate);
+                cal.add(Calendar.DATE, 1);
+                nDate = cal.getTime();
+                nextDate = dateFormat.format(nDate).substring(0, 10);
+
+                pDate = dateFormat.parse(tDate);
+                cal.setTime(pDate);
+                cal.add(Calendar.DATE, -1);
+                pDate = cal.getTime();
+                previousDate = dateFormat.format(pDate).substring(0, 10);
+
+            } catch (ParseException ex) {
+                Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //
+            Trip afterTrip = null, beforeTrip = null;
+            String afterDate = null, beforeDate = null;
+            if (t.getAfterTrip(updatedTrip) != null) {
+                afterTrip = t.getAfterTrip(updatedTrip);
+                afterDate = afterTrip.getDateOfDeparture() + " " + afterTrip.getTimeOfDeparture() + ":00";
+            } else if (t.getFirstTripOfBus(updatedTrip.getBus().getBusID(), nextDate) != null) {
+                afterTrip = t.getFirstTripOfBus(updatedTrip.getBus().getBusID(), nextDate);
+                afterDate = afterTrip.getDateOfDeparture() + " " + afterTrip.getTimeOfDeparture() + ":00";
+            }
+            if (t.getBeforeTrip(updatedTrip) != null) {
+                beforeTrip = t.getBeforeTrip(updatedTrip);
+                beforeDate = beforeTrip.getDateOfDeparture() + " " + beforeTrip.getTimeOfDeparture() + ":00";
+            } else if (t.getLastTripOfBus(updatedTrip.getBus().getBusID(), previousDate) != null) {
+                beforeTrip = t.getLastTripOfBus(updatedTrip.getBus().getBusID(), previousDate);
+                beforeDate = beforeTrip.getDateOfDeparture() + " " + beforeTrip.getTimeOfDeparture() + ":00";
+            }
+
+            boolean flag1 = afterTrip != null && !RuleSetServices.CheckTime(RuleSetServices.timeCalculator(tDate, afterDate), 28799);
+            boolean flag2 = beforeTrip != null && !RuleSetServices.CheckTime(RuleSetServices.timeCalculator(beforeDate, tDate), 28799);
+
+            //
+            if (flag1 || flag2) {
+                MessageBox.getBox("Something wrong", "The bus is working in another trip", Alert.AlertType.INFORMATION).show();
+            } else if (!RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 0)) {
+                MessageBox.getBox("Something wrong", "InvalidDate", Alert.AlertType.INFORMATION).show();
+            } else if (updatedTrip.getPrice() < 0) {
+                MessageBox.getBox("Something wrong", "The price is not negative", Alert.AlertType.INFORMATION).show();
+            } else if (updatedTrip.getDeparture().getLocationID() == updatedTrip.getDestination().getLocationID()) {
                 MessageBox.getBox("Fail", "The locations must different", Alert.AlertType.WARNING).show();
             } else if (!TripServices.checkUnique(updatedTrip)) {
                 try {

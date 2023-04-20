@@ -215,13 +215,14 @@ public class TripServices {
     public static boolean checkUnique(Trip trip) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
 
-            String sql = "SELECT * FROM trip WHERE busID = ? and departure = ? and destination = ? and TimeOfDeparture = ? and DateOfDeparture = ?";
+            String sql = "SELECT * FROM trip WHERE busID = ? and departure = ? and destination = ? and TimeOfDeparture = ? and DateOfDeparture = ? and price = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, trip.getBus().getBusID());
             stm.setInt(2, trip.getDeparture().getLocationID());
             stm.setInt(3, trip.getDestination().getLocationID());
             stm.setString(4, trip.getTimeOfDeparture());
             stm.setString(5, trip.getDateOfDeparture());
+            stm.setInt(6, trip.getPrice());
 
             ResultSet rs = stm.executeQuery();
             return rs.next();
@@ -229,21 +230,149 @@ public class TripServices {
     }
 
     public int checkState(Trip tr) throws SQLException {
-        try(Connection cnn = JdbcUtils.getConn())
-        {
+        try (Connection cnn = JdbcUtils.getConn()) {
             String sql = "SELECT billID, count(billID) as amount FROM bill WHERE tripID = ? GROUP BY billID";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, tr.getTripID());
-            
+
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 int total = rs.getInt("amount");
-                if(total > tr.getBus().getTotalSeat())
+                if (total > tr.getBus().getTotalSeat()) {
                     return 1;
-                else 
+                } else {
                     return 0;
+                }
             }
         }
         return 0;
+    }
+
+    public Trip getAfterTrip(Trip tr) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price, state FROM trip WHERE tripID != ? AND busID = ? AND DateOfDeparture = ? AND TIME_FORMAT(TimeOfDeparture, '%H:%i') > ? ORDER BY time LIMIT 1";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, tr.getTripID());
+            stm.setInt(2, tr.getBus().getBusID());
+            stm.setString(3, tr.getDateOfDeparture());
+            stm.setString(4, tr.getTimeOfDeparture());
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int tripID = rs.getInt("tripID");
+                Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
+                Location departure = LocationServices.getLocationById(rs.getInt("departure"));
+                Location destination = LocationServices.getLocationById(rs.getInt("destination"));
+                String tOd = rs.getString("time");
+                String dOd = rs.getString("DateOfDeparture");
+                int price = rs.getInt("price");
+                int state = rs.getInt("state");
+
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination, price, state);
+                return trip;
+            }
+            return null;
+        }
+    }
+
+    public Trip getBeforeTrip(Trip tr) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price, state FROM trip WHERE tripID != ? AND busID = ? AND DateOfDeparture = ? and TIME_FORMAT(TimeOfDeparture, '%H:%i') < ? ORDER BY time DESC LIMIT 1";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, tr.getTripID());
+            stm.setInt(2, tr.getBus().getBusID());
+            stm.setString(3, tr.getDateOfDeparture());
+            stm.setString(4, tr.getTimeOfDeparture());
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int tripID = rs.getInt("tripID");
+                Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
+                Location departure = LocationServices.getLocationById(rs.getInt("departure"));
+                Location destination = LocationServices.getLocationById(rs.getInt("destination"));
+                String tOd = rs.getString("time");
+                String dOd = rs.getString("DateOfDeparture");
+                int price = rs.getInt("price");
+                int state = rs.getInt("state");
+
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination, price, state);
+                return trip;
+            }
+            return null;
+        }
+    }
+
+    public Trip getFirstTripOfBus(int busID, String date) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price, state FROM trip WHERE busID = ? AND DateOfDeparture = ? ORDER BY time LIMIT 1";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, busID);
+            stm.setString(2, date);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int tripID = rs.getInt("tripID");
+                Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
+                Location departure = LocationServices.getLocationById(rs.getInt("departure"));
+                Location destination = LocationServices.getLocationById(rs.getInt("destination"));
+                String tOd = rs.getString("time");
+                String dOd = rs.getString("DateOfDeparture");
+                int price = rs.getInt("price");
+                int state = rs.getInt("state");
+
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination, price, state);
+                return trip;
+            }
+            return null;
+        }
+    }
+
+    public Trip getLastTripOfBus(int busID, String date) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT tripID, busID, departure, TIME_FORMAT(TimeOfDeparture, '%H:%i') as time, DateOfDeparture, destination, price, state FROM trip WHERE busID = ? AND DateOfDeparture = ? ORDER BY time DESC LIMIT 1";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, busID);
+            stm.setString(2, date);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int tripID = rs.getInt("tripID");
+                Bus bus = BusServices.getBusbyID(rs.getInt("busID"));
+                Location departure = LocationServices.getLocationById(rs.getInt("departure"));
+                Location destination = LocationServices.getLocationById(rs.getInt("destination"));
+                String tOd = rs.getString("time");
+                String dOd = rs.getString("DateOfDeparture");
+                int price = rs.getInt("price");
+                int state = rs.getInt("state");
+
+                Trip trip = new Trip(tripID, bus, departure, tOd, dOd, destination, price, state);
+                return trip;
+            }
+            return null;
+        }
+    }
+
+    public List<Trip> getTripByBusID(int busID) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            List<Trip> trips = new ArrayList<>();
+            String sql = "SELECT * FROM trip WHERE busID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, busID);
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Trip t = new Trip();
+                t.setTripID(rs.getInt("tripID"));
+                t.setBus(BusServices.getBusbyID(rs.getInt("busID")));
+                t.setDeparture(LocationServices.getLocationById(rs.getInt("departure")));
+                t.setTimeOfDeparture(rs.getString("TimeOfDeparture"));
+                t.setDateOfDeparture(rs.getString("DateOfDeparture"));
+                t.setDestination(LocationServices.getLocationById(rs.getInt("destination")));
+
+                trips.add(t);
+            }
+            return trips;
+        }
     }
 }
