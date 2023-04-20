@@ -11,7 +11,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" styleClass="bg-option" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.oubus.oubus.BuyTicketsController">
    <children>
-      <Label text="Bán Vé" textFill="#07689f">
+      <Label text="Quản lý vé xe" textFill="#07689f">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
