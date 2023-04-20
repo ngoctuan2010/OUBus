@@ -114,14 +114,13 @@ public class CustomerServices {
             
             try{
                 cnn.commit();
-                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
+//                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
                 return true;
             }catch(SQLException ex){
-                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
+//                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
                 return false;
-            }}
-            
-            
+            }
+        }       
     }
      
     public boolean updateCustomer(Customer cus) throws SQLException {
@@ -171,6 +170,18 @@ public class CustomerServices {
             String sql = "SELECT * FROM customer WHERE phoneNumber = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setString(1, cus.getPhoneNumber());
+
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
+        }
+    }
+     
+    public static boolean checkExitedPhone(String phone) throws SQLException{
+         try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM customer WHERE phoneNumber = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, phone);
 
             ResultSet rs = stm.executeQuery();
             return rs.next();

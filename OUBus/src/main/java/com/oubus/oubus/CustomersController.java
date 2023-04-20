@@ -102,21 +102,32 @@ public class CustomersController implements Initializable {
     }
 
     public void addCustomer(ActionEvent e) throws SQLException {
-       
-        String name = txtName.getText();
-        String address = txtAddress.getText();
-        String email = txtEmail.getText();
-        String phoneNumber = txtPhone.getText();
 
-        Customer cus = new Customer(name, address, email, phoneNumber);
+        if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty()) {
+            MessageBox.getBox("Waring", "Vui lòng nhập đầy đủ thông tin!", Alert.AlertType.WARNING).show();
+        } else {
+            
+            if (CustomerServices.checkExitedPhone(txtPhone.getText()))
+                MessageBox.getBox("Waring", "Số điện thoại bị trùng!", Alert.AlertType.WARNING).show();
+            else{
+            
+            String name = txtName.getText();
+            String address = txtAddress.getText();
+            String email = txtEmail.getText();
+            String phoneNumber = txtPhone.getText();
 
-        try {
-            c.addCustomer(cus);
-            LoadTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+            Customer cus = new Customer(name, address, email, phoneNumber);
+
+            try {
+                c.addCustomer(cus);
+                MessageBox.getBox("Success", "Add customer completely", Alert.AlertType.CONFIRMATION).show();
+                LoadTable();
+            } catch (SQLException ex) {
+                MessageBox.getBox("Fail", "Add customer failure", Alert.AlertType.WARNING).show();
+                Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
         }
-
     }
     
     public void DeleteCustomer( ActionEvent e) throws SQLException{
@@ -149,24 +160,35 @@ public class CustomersController implements Initializable {
     }
 
     public void updateCustomerHandler(ActionEvent e) throws SQLException {
-        if (tbCustomer.getSelectionModel().getSelectedItem() != null) {
-            Customer updatedCustomer = new Customer();
-            String id = tbCustomer.getSelectionModel().getSelectedItem().getCustomerID();
-            updatedCustomer.setCustomerID(id);
-            updatedCustomer.setName(txtName.getText());
-            updatedCustomer.setAddress(txtAddress.getText());
-            updatedCustomer.setEmail(txtEmail.getText());
-            updatedCustomer.setPhoneNumber(txtPhone.getText());
+        if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty()) {
+            MessageBox.getBox("Waring", "Vui lòng nhập đầy đủ thông tin khi cập nhật!", Alert.AlertType.WARNING).show();
+        } else {
 
-            try {
-                c.updateCustomer(updatedCustomer);
-                MessageBox.getBox("Success", "Update data completely", Alert.AlertType.INFORMATION).show();
-                LoadTable();
-            } catch (SQLException ex) {
-                MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
-                Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+            if (CustomerServices.checkExitedPhone(txtPhone.getText())) {
+                MessageBox.getBox("Waring", "Số điện thoại bị trùng!", Alert.AlertType.WARNING).show();
+            } else {
+
+                if (tbCustomer.getSelectionModel().getSelectedItem() != null) {
+                    Customer updatedCustomer = new Customer();
+                    String id = tbCustomer.getSelectionModel().getSelectedItem().getCustomerID();
+                    updatedCustomer.setCustomerID(id);
+                    updatedCustomer.setName(txtName.getText());
+                    updatedCustomer.setAddress(txtAddress.getText());
+                    updatedCustomer.setEmail(txtEmail.getText());
+                    updatedCustomer.setPhoneNumber(txtPhone.getText());
+
+                    try {
+                        c.updateCustomer(updatedCustomer);
+                        MessageBox.getBox("Success", "Update data completely", Alert.AlertType.INFORMATION).show();
+                        LoadTable();
+                    } catch (SQLException ex) {
+                        MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
+                        Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
 
         }
     }
 }
+    

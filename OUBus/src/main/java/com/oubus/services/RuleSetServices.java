@@ -4,10 +4,11 @@
  */
 package com.oubus.services;
 
+
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RuleSetServices {
 
-    public static int timeCalculator(String dateStart, String aDate) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public static int timeCalculator(String dateStart, String aDate){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");    
         Date d1 = null;
         Date d2 = null;
         try {
@@ -34,13 +35,14 @@ public class RuleSetServices {
         return i;
     }
 
-    public static boolean CheckTime(int timeVal, int timeRes) {
-//        buy ticket 300 sec (Thịnh)
-//        book ticket 3600 sec (Thịnh)
-//        redeem ticket 1800 sec (Tâm)
-//        change ticket 3600 sec (Tâm)
-//        interaction lock 300 sec (Tuấn)
-
-        return timeVal > timeRes;
+    public static boolean CheckTime(int timeVal, int timeRes){
+//        buy ticket 300 sec
+//        book ticket 3600 sec
+//        redeem ticket 1800 sec
+//        change ticket 3600 sec
+//        interaction lock 300 sec
+        
+        return timeVal>timeRes;
     }
+
 }

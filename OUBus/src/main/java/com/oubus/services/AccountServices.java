@@ -59,10 +59,9 @@ public class AccountServices {
               
                 return false;
             }
-          }
-            
-            
+          }  
     }
+
 
     public Account getAccountByEmployee(String id) throws SQLException{
         try(Connection cnn = JdbcUtils.getConn()){
@@ -83,3 +82,4 @@ public class AccountServices {
         }
     }
 
+}
