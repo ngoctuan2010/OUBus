@@ -6,6 +6,7 @@ package com.oubus.oubus;
 
 import com.oubus.pojo.Account;
 import com.oubus.services.AccountServices;
+import com.oubus.utils.Executor;
 import com.oubus.utils.MessageBox;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -26,7 +28,7 @@ import javafx.stage.Stage;
 public class LoginController {
 
     AccountServices as = new AccountServices();
-    
+
     @FXML
     TextField txtUsername;
     @FXML
@@ -45,7 +47,10 @@ public class LoginController {
             Parent main = (Parent) fxmlLoader.load();
             MainController mc = fxmlLoader.getController();
             mc.init(as.getAccount(username, password));
-            Stage openStage = new Stage();  
+            Stage openStage = new Stage();
+            openStage.setOnCloseRequest((WindowEvent event) -> {
+                Executor.getInstance().shutDownExecutor();
+            });
             openStage.setScene(new Scene(main));
             Stage closeStage = (Stage) btnLogin.getScene().getWindow();
             closeStage.close();

@@ -88,7 +88,7 @@ public class BuyTicketsController implements Initializable {
     @FXML
     Button btnChangeTrip;
 
-    public void initTrip(Trip trip) {
+    public void initTrip(Trip trip) throws SQLException {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
         DateGo.setText(trip.getDateOfDeparture() + "");
         goLocation.setText(trip.getDeparture() + "");
@@ -96,6 +96,8 @@ public class BuyTicketsController implements Initializable {
         busType.setText(trip.getBus().getVehicleName() + "");
 
         this.orderTrip = trip;
+        List<Bill> bills = b.getBillByTripID(trip.getTripID());
+        this.loadTable(bills);
 
     }
 
@@ -244,13 +246,14 @@ public class BuyTicketsController implements Initializable {
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
         String tripTime = bill.getTrip().getDateOfDeparture() + " " + bill.getTrip().getTimeOfDeparture() + ":00";
-        if (!RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
 
             if (!BillServices.checkSeatUnique(bill) && BillServices.checkOverSeat(bill)) {
                 try {
                     b.addBill(bill);
                     loadTableColumn();
-                    MessageBox.getBox("SUCCESS", "Đã huỷ vé thành công!!!", Alert.AlertType.INFORMATION).show();
+                    this.loadTable(b.getBillByTripID(bill.getTrip().getTripID()));
+                    MessageBox.getBox("SUCCESS", "Bán vé thành công!!!", Alert.AlertType.INFORMATION).show();
                 } catch (SQLException ex) {
                     Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
                 }

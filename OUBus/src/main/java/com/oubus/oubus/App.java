@@ -22,10 +22,8 @@ public class App extends Application {
         scene = new Scene(loadFXML("Login"));
         stage.setScene(scene);
         stage.show();
-//        Executor.getInstance();
-//        stage.setOnCloseRequest((WindowEvent event) -> {
-//            Executor.getInstance().shutDownExecutor();
-//        });
+        Executor.getInstance();
+        
     }
 
     static void setRoot(String fxml) throws IOException {

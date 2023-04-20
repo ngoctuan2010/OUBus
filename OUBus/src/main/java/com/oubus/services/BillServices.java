@@ -60,7 +60,7 @@ public class BillServices {
 
             PreparedStatement stm = cnn.prepareCall(sql);
             stm.setInt(1, id);
-            stm.executeUpdate();
+            
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
@@ -277,44 +277,46 @@ public class BillServices {
     }
 
 
-//    public List<Bill> getInvalidBills() throws SQLException{
-//        List<Bill> bills = new ArrayList<>();
-//        EmployeeServices es = new EmployeeServices();
-//        TripServices ts = new TripServices();
-//        try(Connection conn = JdbcUtils.getConn()){
-//            String sql ="SELECT *FROM bill WHERE aquiredDate(time, INTERVAL 30 minute) < NOW() AND state = 1";
-//            PreparedStatement stm = conn.prepareCall(sql);
-//            ResultSet rs =stm.executeQuery();
-//            while (rs.next()) {
-//                String billID = rs.getString("billID");
-//                Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
-//                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
-//                Trip trip = ts.getTripByID(rs.getInt("tripID"));
-//                int seat = rs.getInt("seatNo");
-//                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
-//                Double totalDue = rs.getDouble("totalDue");
-//                String aquiredDate = rs.getString("aquiredDate");
-//             
-//                Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
-//                bills.add(bill);
-//            }
-//            return bills;
-//        }
-//    }
-//    
-//    public  int getAmountTicketOfCustomer (String customerId) throws SQLException{
-//        try (Connection conn = JdbcUtils.getConn()){
-//            conn.setAutoCommit(false);
-//            String sql =" SELECT COUNT(*) FROM ticket WHERE customerID =?";
-//            PreparedStatement stm = conn.prepareCall(sql);
-//            stm.setString(0, customerId);
-//            ResultSet rs = stm.executeQuery();
-//            if (rs.next()) {
-//                int count = rs.getInt(1);
-//                return count;
-//            }
-//                return 0;
-//        }
-//    }
-//    
+    public List<Bill> getInvalidBills() throws SQLException{
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+        TripServices ts = new TripServices();
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql ="SELECT * \n" +
+                        "FROM bill as b join trip as t on b.tripID = t.tripID\n" +
+                        "WHERE concat(date_format(t.DateOfDeparture, \"%Y-%m-%d\"), \" \", date_format(t.TimeOfDeparture, \"%H:%m:%s\")) + INTERVAL 30 MINUTE < NOW() AND b.state = 1";
+            PreparedStatement stm = conn.prepareCall(sql);
+            ResultSet rs =stm.executeQuery();
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+             
+                Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+            return bills;
+        }
+    }
+    
+    public  int getAmountTicketOfCustomer (String customerId) throws SQLException{
+        try (Connection conn = JdbcUtils.getConn()){
+            conn.setAutoCommit(false);
+            String sql =" SELECT COUNT(*) FROM ticket WHERE customerID =?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(0, customerId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count;
+            }
+                return 0;
+        }
+    }
+    
 }
