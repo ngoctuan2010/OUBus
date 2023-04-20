@@ -203,7 +203,7 @@ public class BillServices {
         int i = 0;
 
         try (Connection cnn = JdbcUtils.getConn()) {
-            int i = 0;
+            i = 0;
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
                 sql += " customerID = ? AND";

@@ -56,7 +56,6 @@ public class BuyTicketsController implements Initializable {
     private Trip orderTrip;
     static TripServices t = new TripServices();
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
 
     @FXML
     TextField TimeChoice;
@@ -311,8 +310,9 @@ public class BuyTicketsController implements Initializable {
         java.util.Date date = Calendar.getInstance().getTime();
         String aDate = dateFormat.format(date);
         String tripTime = bill.getTrip().getDateOfDeparture() + " " + bill.getTrip().getTimeOfDeparture() + ":00";
-        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 3600)) {
-            if (BillServices.checkExist(bill)) {
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
+            if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 1800)) {
+                if (BillServices.checkExist(bill)) {
                     try {
                         b.deleteBill(bill.getBillID());
                         loadTableColumn();
@@ -323,9 +323,9 @@ public class BuyTicketsController implements Initializable {
                 } else {
                     MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
                 }
-        } else if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
-            Bill.statePayment bookingState = Bill.statePayment.CANCELLED;    
-            bill.setBookingState(bookingState);
+            } else {
+                Bill.statePayment bookingState = Bill.statePayment.CANCELLED;
+                bill.setBookingState(bookingState);
                 bill.setAquiredDate(aDate);
                 if (BillServices.checkExist(bill)) {
                     try {
@@ -338,19 +338,20 @@ public class BuyTicketsController implements Initializable {
                 } else {
                     MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
                 }
-            } else {
-                MessageBox.getBox("ERROR", "Đã hết thời gian tương tác!!!", Alert.AlertType.ERROR).show();
             }
+        } else {
+            MessageBox.getBox("ERROR", "Đã hết thời gian tương tác!!!", Alert.AlertType.ERROR).show();
+        }
     }
-    
+
     public void getBillHandler(ActionEvent e) throws SQLException {
         Bill bill = tbBill.getSelectionModel().getSelectedItem();
-        if (bill.getBookingState()==Bill.statePayment.BOOKED){
-        java.util.Date date = Calendar.getInstance().getTime();
-        String aDate = dateFormat.format(date);
-        Bill.statePayment bookingState = Bill.statePayment.PAID;
-        bill.setBookingState(bookingState);
-        bill.setAquiredDate(aDate);
+        if (bill.getBookingState() == Bill.statePayment.BOOKED) {
+            java.util.Date date = Calendar.getInstance().getTime();
+            String aDate = dateFormat.format(date);
+            Bill.statePayment bookingState = Bill.statePayment.PAID;
+            bill.setBookingState(bookingState);
+            bill.setAquiredDate(aDate);
             try {
                 b.updateBill(bill);
                 loadTableColumn();
@@ -388,19 +389,20 @@ public class BuyTicketsController implements Initializable {
         Customer sCus = null;
         if (txtSearch.getText() != null && !txtSearch.getText().isEmpty()) {
             sCus = cs.getCustomer(txtSearch.getText()).get(0);
-        String id = btnTrip.getText();
-        Trip tr;
-        if (!id.contains("Tìm chuyến")) {
-            tr = ts.getTripByID(Integer.parseInt(id));
-        } else {
-            tr = null;
-        }
+            String id = btnTrip.getText();
+            Trip tr;
+            if (!id.contains("Tìm chuyến")) {
+                tr = ts.getTripByID(Integer.parseInt(id));
+            } else {
+                tr = null;
+            }
 
-        List<Bill> bills = bs.searchBill(sCus, tr);
-        loadTable(bills);
+            List<Bill> bills = bs.searchBill(sCus, tr);
+            loadTable(bills);
+        }
     }
 
-    public void updateBillHandler(ActionEvent e) throws SQLException {     
+    public void updateBillHandler(ActionEvent e) throws SQLException {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
@@ -426,7 +428,7 @@ public class BuyTicketsController implements Initializable {
             cus.setEmail(txtEmail.getText());
             cus.setPhoneNumber(txtPhone.getText());
             cus.setAddress(txtAddress.getText());
-            
+
             try {
                 c.updateCustomer(cus);
                 b.updateBill(bill);
@@ -458,8 +460,6 @@ public class BuyTicketsController implements Initializable {
             Trip thisTrip = tbBill.getSelectionModel().getSelectedItem().getTrip();
             //  Trip tripID =tbBill.getSelectionModel().getSelectedItem().getTrip();
 
-           
-            
             Bill checkbill = new Bill();
             checkbill.setBillID(tbBill.getSelectionModel().getSelectedItem().getBillID());
             checkbill.setCustomer(cusID);
@@ -469,7 +469,7 @@ public class BuyTicketsController implements Initializable {
             checkbill.setBookingState(tbBill.getSelectionModel().getSelectedItem().getBookingState());
             checkbill.setTotalDue(tbBill.getSelectionModel().getSelectedItem().getTotalDue());
             checkbill.setAquiredDate(tbBill.getSelectionModel().getSelectedItem().getAquiredDate());
-            
+
             cus.setCustomerID(cusID.getCustomerID());
             cus.setName(txtName.getText());
             cus.setEmail(txtEmail.getText());
@@ -496,7 +496,7 @@ public class BuyTicketsController implements Initializable {
                 } catch (SQLException ex) {
                     MessageBox.getBox("Fail", "Something wrong!", Alert.AlertType.ERROR).show();
                     Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE, null, ex);
-                }    
+                }
             } else {
                 MessageBox.getBox("", "Khong duoc doi ve sau 60 phut ", Alert.AlertType.ERROR).show();
 
