@@ -24,18 +24,19 @@ public class Executor {
     private static Executor instance;
     private ScheduledExecutorService executor;
     
+
     public Executor(){
-        
+
         BillServices bs = new BillServices();
         CustomerServices cs = new CustomerServices();
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(() -> {
         try {
             List<Bill> invalidBills = bs.getInvalidBills();
-            System.out.println();
+
             for (Bill b : invalidBills) {
                 bs.deleteBill(b.getBillID());
-              
+
                 Customer c = CustomerServices.getCustomerByID(b.getCustomer().toString());
                 if (c!= null && bs.getAmountTicketOfCustomer(c.getCustomerID())==0)
                     cs.deleteCustomer(c.getCustomerID());
@@ -44,7 +45,9 @@ public class Executor {
         } catch (SQLException ex) {
              Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }, 0,1,TimeUnit.SECONDS);
+
+        }, 0, 1800,TimeUnit.SECONDS);
+
         
     }
     

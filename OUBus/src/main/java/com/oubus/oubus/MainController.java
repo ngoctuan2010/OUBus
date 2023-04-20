@@ -7,6 +7,7 @@ package com.oubus.oubus;
 import com.oubus.pojo.Account;
 import com.oubus.pojo.Employee;
 import com.oubus.services.EmployeeServices;
+import com.oubus.utils.Executor;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -65,6 +67,8 @@ public class MainController {
             btnEmploy.visibleProperty().set(false);
             btnCus.visibleProperty().set(false);
         }
+        
+        
     }
     
     public void loadBookTickets(ActionEvent e) throws IOException {
