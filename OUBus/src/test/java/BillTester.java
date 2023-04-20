@@ -13,6 +13,7 @@ import com.oubus.pojo.Trip;
 import com.oubus.services.BillServices;
 import com.oubus.services.BusServices;
 import com.oubus.services.CustomerServices;
+import com.oubus.services.EmployeeServices;
 import com.oubus.services.JdbcUtils;
 import com.oubus.services.LocationServices;
 import com.oubus.services.TripServices;
@@ -36,6 +37,7 @@ public class BillTester {
     private static BillServices bis;
     private static CustomerServices cus;
     private static EmployeeServices emps;
+    private static TripServices ts;
     private static BusServices buS;
     private static LocationServices ls;
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -50,6 +52,9 @@ public class BillTester {
         buS = new BusServices();
         ls = new LocationServices();
         bis = new BillServices();
+        cus = new CustomerServices();
+        emps =new EmployeeServices();
+        ts = new TripServices();
     }
     
     @AfterAll
@@ -64,12 +69,9 @@ public class BillTester {
     
     @Test
     public void TestAddBill() throws SQLException {
-        Customer cust = cus.getCustomer(phoneNumber);
-        Employee emp = new Employee("Slim",true,"2002-02-28", "VietNam", "123456789", "Village", "therealslimshady@slim.com", "01000101", "Admin");
-        Bus bus = buS.getBuses().get(0);
-        Location departure = ls.getLocations().get(0);
-        Location destination = ls.getLocations().get(1);
-        Trip trip = new Trip(bus, departure, "14:00:00", "2023-5-13" ,destination, 100000, 0);
+        Customer cust = cus.getCustomerByPhone("242424");
+        Employee emp = emps.getEmployeeByID("Nay");
+        Trip trip = ts.getTripByID(2);
         int seat = 1;
         Bill.statePayment state = Bill.statePayment.BOOKED;
         int price = trip.getPrice();
@@ -77,6 +79,28 @@ public class BillTester {
         String aDate = dateFormat.format(date);
         Bill bill = new Bill(cust, emp, trip, seat, state, price, aDate);
         boolean testing = bis.addBill(bill);
+        Assertions.assertTrue(testing);
+    }
+    
+    @Test
+    public void TestUpdateBill() throws SQLException {
+        Customer cust = cus.getCustomerByPhone("242424");
+        Employee emp = emps.getEmployeeByID("Nay");
+        Trip trip = ts.getTripByID(2);
+        int seat = 1;
+        Bill.statePayment state = Bill.statePayment.PAID;
+        int price = trip.getPrice();
+        java.util.Date date = Calendar.getInstance().getTime();
+        String aDate = dateFormat.format(date);
+        Bill bill = new Bill(cust, emp, trip, seat, state, price, aDate);
+        boolean testing = bis.updateBill(bill);
+        Assertions.assertTrue(testing);
+    }
+    
+    @Test
+   public void TestDeleteBill() throws SQLException {
+        Bill bill = bis.getBill().get(0);
+        boolean testing = bis.deleteBill(bill.getBillID());
         Assertions.assertTrue(testing);
     }
 }

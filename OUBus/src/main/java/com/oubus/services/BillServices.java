@@ -48,6 +48,36 @@ public class BillServices {
             return bills;
         }
     }
+    
+    public List<Bill> getBillByTripID(int id) throws SQLException {
+        
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+        TripServices ts = new TripServices();
+            
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM bill WHERE tripID = ?";
+
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+                Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+            return bills;
+        }
+    }
 
     public boolean addBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
@@ -103,7 +133,7 @@ public class BillServices {
     public boolean deleteBill(String id) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "DELETE Bill where BillID = ?";
+            String sql = "DELETE FROM Bill WHERE billID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setString(1, id);
