@@ -23,7 +23,10 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         Executor.getInstance();
-        
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            Executor.getInstance().shutDownExecutor();
+        });
+
     }
 
     static void setRoot(String fxml) throws IOException {
