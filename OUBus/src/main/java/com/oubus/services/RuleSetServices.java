@@ -17,8 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RuleSetServices {
 
-    public static int timeCalculator(String dateStart, String aDate){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");    
+    public static int timeCalculator(String dateStart, String aDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date d1 = null;
         Date d2 = null;
         try {

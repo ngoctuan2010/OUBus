@@ -14,7 +14,11 @@ import java.util.List;
 import java.util.logging.Logger;
 import javafx.scene.control.TableColumn;
 import com.oubus.pojo.Bus;
-
+import com.oubus.pojo.Trip;
+import com.oubus.services.RuleSetServices;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
@@ -22,7 +26,7 @@ import com.oubus.pojo.Bus;
  */
 public class BusServices {
 
-   public static String getLicensePlateByID(int ID){
+    public static String getLicensePlateByID(int ID) {
         String lp = "";
         try (Connection cnn = JdbcUtils.getConn()) {
 
@@ -61,6 +65,31 @@ public class BusServices {
                 b.setBusType(rs.getString("busType"));
             }
             return b;
+        }
+
+    }
+
+    public Bus getBusByLicensePlate(String plate) throws SQLException {
+
+        try (Connection cnn = JdbcUtils.getConn()) {
+            Bus b = new Bus();
+            String sql = "SELECT * FROM bus WHERE licensePlate like ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, plate);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                b.setBusID(rs.getInt("busID"));
+                b.setVehicleName(rs.getString("vehicleName"));
+                b.setManufacturer(rs.getString("manufacturer"));
+                b.setLicensePlate(rs.getString("licensePlate"));
+                b.setTotalSeat(rs.getInt("totalSeat"));
+                b.setBusType(rs.getString("busType"));
+
+                return b;
+            }
+            return null;
         }
 
     }
@@ -146,5 +175,27 @@ public class BusServices {
         }
 
     }
-}
 
+    public boolean checkBusWorking(int busID) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            TripServices ts = new TripServices();
+            List<Trip> trips = ts.getTripByBusID(busID);
+
+            java.util.Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String aDate = dateFormat.format(date);
+
+            for (Trip tr : trips) {
+                String tDate = tr.getDateOfDeparture() + " " + tr.getTimeOfDeparture() + ":00";
+
+                if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tDate), 0)) {
+                    return true;
+                }
+            }
+            
+            return false;
+
+        }
+    }
+
+}

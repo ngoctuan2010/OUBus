@@ -48,6 +48,36 @@ public class BillServices {
             return bills;
         }
     }
+    
+    public List<Bill> getBillByTripID(int id) throws SQLException {
+        
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+        TripServices ts = new TripServices();
+            
+        try (Connection cnn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM bill WHERE tripID = ?";
+
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer cus = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+                Bill bill = new Bill(billID, cus, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+            return bills;
+        }
+    }
 
     public boolean addBill(Bill bill) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
@@ -103,7 +133,7 @@ public class BillServices {
     public boolean deleteBill(String id) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {
             cnn.setAutoCommit(false);
-            String sql = "DELETE Bill where BillID = ?";
+            String sql = "DELETE FROM Bill WHERE billID = ?";
             PreparedStatement stm = cnn.prepareCall(sql);
 
             stm.setString(1, id);
@@ -193,7 +223,7 @@ public class BillServices {
     }
 
     public static boolean checkOverSeat(Bill bill) throws SQLException {
-        return (bill.getTrip().getBus().getTotalSeat()-bill.getSeat())>=0;
+        return (bill.getTrip().getBus().getTotalSeat() - bill.getSeat()) >= 0;
     }
 
     public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
@@ -203,20 +233,21 @@ public class BillServices {
         
 
         try (Connection cnn = JdbcUtils.getConn()) {
-            int i = 0;
+            i = 0;
+
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
                 sql += " customerID = ? AND";
                 i++;
             }
-            
+
             if (tr != null) {
                 sql += " tripID = ? AND";
                 i++;
             }
-            
+
             sql = sql.substring(0, sql.length() - 3);
-            
+
             PreparedStatement stm = cnn.prepareCall(sql);
             if (tr != null) {
                 stm.setInt(i, tr.getTripID());
@@ -244,6 +275,7 @@ public class BillServices {
         }
         return bills;
     }
+<<<<<<< HEAD
     
     public List<Bill> getInvalidBills() throws SQLException{
         List<Bill> bills = new ArrayList<>();
@@ -285,4 +317,48 @@ public class BillServices {
         }
     }
     
+=======
+
+
+//    public List<Bill> getInvalidBills() throws SQLException{
+//        List<Bill> bills = new ArrayList<>();
+//        EmployeeServices es = new EmployeeServices();
+//        TripServices ts = new TripServices();
+//        try(Connection conn = JdbcUtils.getConn()){
+//            String sql ="SELECT *FROM bill WHERE aquiredDate(time, INTERVAL 30 minute) < NOW() AND state = 1";
+//            PreparedStatement stm = conn.prepareCall(sql);
+//            ResultSet rs =stm.executeQuery();
+//            while (rs.next()) {
+//                String billID = rs.getString("billID");
+//                Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
+//                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+//                Trip trip = ts.getTripByID(rs.getInt("tripID"));
+//                int seat = rs.getInt("seatNo");
+//                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+//                Double totalDue = rs.getDouble("totalDue");
+//                String aquiredDate = rs.getString("aquiredDate");
+//             
+//                Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
+//                bills.add(bill);
+//            }
+//            return bills;
+//        }
+//    }
+//    
+//    public  int getAmountTicketOfCustomer (String customerId) throws SQLException{
+//        try (Connection conn = JdbcUtils.getConn()){
+//            conn.setAutoCommit(false);
+//            String sql =" SELECT COUNT(*) FROM ticket WHERE customerID =?";
+//            PreparedStatement stm = conn.prepareCall(sql);
+//            stm.setString(0, customerId);
+//            ResultSet rs = stm.executeQuery();
+//            if (rs.next()) {
+//                int count = rs.getInt(1);
+//                return count;
+//            }
+//                return 0;
+//        }
+//    }
+//    
+>>>>>>> 11df0015ab91c9406128c843729fcc192e822175
 }
