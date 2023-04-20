@@ -25,10 +25,7 @@ module-info.class
 com\oubus\utils\MessageBox.class
 com\oubus\pojo\Employee.class
 com\oubus\pojo\Job.class
-<<<<<<< HEAD
-=======
 com\oubus\oubus\EmployeeController.class
->>>>>>> 11df0015ab91c9406128c843729fcc192e822175
 com\oubus\oubus\TripController$1.class
 com\oubus\pojo\Bill.class
 com\oubus\services\TripServices.class

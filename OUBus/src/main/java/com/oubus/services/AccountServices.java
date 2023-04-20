@@ -63,7 +63,7 @@ public class AccountServices {
 
                 return false;
             }
-<<<<<<< HEAD
+
           }  
     }
       public boolean updatedAcount(Account ac) throws SQLException{
@@ -90,6 +90,22 @@ public class AccountServices {
             }
           }  
     }
+     public boolean deleteAccount(String id) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "DELETE FROM accounts WHERE accountID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, id);
+            stm.executeUpdate();
+
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
 
 
     public Account getAccountByEmployee(String id) throws SQLException{
@@ -109,30 +125,7 @@ public class AccountServices {
             }
             
         }
-    
-=======
-        }
-    }
 
-    public Account getAccountByEmployee(String id) throws SQLException {
-        try (Connection cnn = JdbcUtils.getConn()) {
-            Account acc;
-            String sql = "SELECT * FROM accounts WHERE employeeID = ?";
-            PreparedStatement stm = cnn.prepareCall(sql);
-            stm.setString(1, id);
-
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                acc = new Account(rs.getString("accountID"), rs.getString("employeeID"), rs.getString("username"), rs.getString("password"), Account.level.values()[rs.getInt("accessedLevel")]);
-                return acc;
-            }
-
-            return null;
-        }
-
-
-    }
->>>>>>> 11df0015ab91c9406128c843729fcc192e822175
 }
 
 

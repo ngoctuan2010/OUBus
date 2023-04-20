@@ -99,6 +99,7 @@ public class BillTester {
     
     @Test
    public void TestDeleteBill() throws SQLException {
+       
         Bill bill = bis.getBill().get(0);
         boolean testing = bis.deleteBill(bill.getBillID());
         Assertions.assertTrue(testing);

@@ -169,6 +169,23 @@ public class EmployeeServices {
             }
         }
     }
+    
+     public boolean deleteEmployee(String id) throws SQLException {
+        try (Connection cnn = JdbcUtils.getConn()) {
+            cnn.setAutoCommit(false);
+            String sql = "DELETE FROM employee WHERE employeeID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, id);
+            stm.executeUpdate();
+
+            try {
+                cnn.commit();
+                return true;
+            } catch (SQLException ex) {
+                return false;
+            }
+        }
+    }
 
     public boolean checkExitedPhone(String phone) throws SQLException {
         try (Connection cnn = JdbcUtils.getConn()) {

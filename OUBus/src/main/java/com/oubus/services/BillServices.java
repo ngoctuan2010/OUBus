@@ -233,7 +233,7 @@ public class BillServices {
         
 
         try (Connection cnn = JdbcUtils.getConn()) {
-            i = 0;
+           int i = 0;
 
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
@@ -275,7 +275,7 @@ public class BillServices {
         }
         return bills;
     }
-<<<<<<< HEAD
+
     
     public List<Bill> getInvalidBills() throws SQLException{
         List<Bill> bills = new ArrayList<>();
@@ -317,7 +317,7 @@ public class BillServices {
         }
     }
     
-=======
+
 
 
 //    public List<Bill> getInvalidBills() throws SQLException{
@@ -360,5 +360,5 @@ public class BillServices {
 //        }
 //    }
 //    
->>>>>>> 11df0015ab91c9406128c843729fcc192e822175
+
 }

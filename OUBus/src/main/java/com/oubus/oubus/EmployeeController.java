@@ -304,4 +304,21 @@ public class EmployeeController implements Initializable {
         }
     }
     
+    public void DeleteEmployee( ActionEvent e) throws SQLException{
+        String employeeID =txtEmployeeID.getText();
+    
+        String accountID = acs.getAccountByEmployee(employeeID).getAccountID();
+        try{
+          
+            acs.deleteAccount(accountID);
+            es.deleteEmployee(employeeID);
+            MessageBox.getBox("Success", "Delete data completely", Alert.AlertType.INFORMATION).show();
+             loadTableData();
+        } catch (SQLException ex){
+             MessageBox.getBox("Wrong", "Something wrong", Alert.AlertType.INFORMATION).show();
+            Logger.getLogger(CustomersController.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
+    }
+    
 }
