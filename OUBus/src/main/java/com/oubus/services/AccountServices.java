@@ -61,6 +61,30 @@ public class AccountServices {
             }
           }  
     }
+      public boolean updatedAcount(Account ac) throws SQLException{
+          try(Connection cnn = JdbcUtils.getConn()){
+            cnn.setAutoCommit(false);
+            String sql = "UPDATE accounts SET employeeID = ?, username = ?,password = ?, accessedLevel = 1 WHERE accountID = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            
+      
+            stm.setString(1, ac.getEmployeeID());
+            stm.setString(2, ac.getUsername());
+            stm.setString(3, ac.getPassword());
+            stm.setString(4, ac.getAccountID());
+           
+            stm.executeUpdate();
+            
+            try{
+                cnn.commit();
+                
+                return true;
+            }catch(SQLException ex){
+              
+                return false;
+            }
+          }  
+    }
 
 
     public Account getAccountByEmployee(String id) throws SQLException{
@@ -80,6 +104,5 @@ public class AccountServices {
             }
             
         }
-    }
-
+    
 }

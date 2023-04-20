@@ -399,12 +399,13 @@ public class BuyTicketsController implements Initializable {
         List<Bill> bills = bs.searchBill(sCus, tr);
         loadTable(bills);
     }
+    }
 
     public void updateBillHandler(ActionEvent e) throws SQLException {     
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
-            // Employee emp = new Employee();
+             Employee emp = new Employee();
 
             Trip trip = new Trip();
 
