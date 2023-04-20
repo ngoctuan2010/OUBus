@@ -175,4 +175,16 @@ public class CustomerServices {
             return rs.next();
         }
     }
+     
+    public static boolean checkExitedPhone(String phone) throws SQLException{
+         try (Connection cnn = JdbcUtils.getConn()) {
+
+            String sql = "SELECT * FROM customer WHERE phoneNumber = ?";
+            PreparedStatement stm = cnn.prepareCall(sql);
+            stm.setString(1, phone);
+
+            ResultSet rs = stm.executeQuery();
+            return rs.next();
+        }
+    }
 }
