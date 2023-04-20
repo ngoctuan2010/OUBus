@@ -223,7 +223,7 @@ public class BillServices {
     }
 
     public static boolean checkOverSeat(Bill bill) throws SQLException {
-        return (bill.getTrip().getBus().getTotalSeat()-bill.getSeat())>=0;
+        return (bill.getTrip().getBus().getTotalSeat() - bill.getSeat()) >= 0;
     }
 
     public List<Bill> searchBill(Customer cus, Trip tr) throws SQLException {
@@ -234,19 +234,20 @@ public class BillServices {
 
         try (Connection cnn = JdbcUtils.getConn()) {
             i = 0;
+
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
                 sql += " customerID = ? AND";
                 i++;
             }
-            
+
             if (tr != null) {
                 sql += " tripID = ? AND";
                 i++;
             }
-            
+
             sql = sql.substring(0, sql.length() - 3);
-            
+
             PreparedStatement stm = cnn.prepareCall(sql);
             if (tr != null) {
                 stm.setInt(i, tr.getTripID());
@@ -274,7 +275,8 @@ public class BillServices {
         }
         return bills;
     }
-    
+
+
 //    public List<Bill> getInvalidBills() throws SQLException{
 //        List<Bill> bills = new ArrayList<>();
 //        EmployeeServices es = new EmployeeServices();

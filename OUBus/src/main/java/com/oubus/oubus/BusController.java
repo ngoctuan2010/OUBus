@@ -108,11 +108,15 @@ public class BusController implements Initializable {
                             Bus tr = (Bus) cell.getTableRow().getItem();
 
                             try {
-                                if (bs.deleteBus(tr.getBusID()) == true) {
-                                    MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
-                                    loadTables();
-                                } else {
-                                    MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+                                if (!bs.checkBusWorking(tr.getBusID())) {
+                                    if (bs.deleteBus(tr.getBusID()) == true) {
+                                        MessageBox.getBox("Announcement", "Delete completely", Alert.AlertType.INFORMATION).show();
+                                        loadTables();
+                                    } else {
+                                        MessageBox.getBox("Announcement", "Delete failure", Alert.AlertType.INFORMATION).show();
+                                    }
+                                }else{
+                                    MessageBox.getBox("Something Wrong", "The bus is still working", Alert.AlertType.INFORMATION).show();
                                 }
                             } catch (SQLException ex) {
                                 Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,12 +156,15 @@ public class BusController implements Initializable {
             Bus newBus = new Bus(name, manufacturer, licensePlate, totalSeat, type);
 
             try {
-
-                if (bs.addBus(newBus)) {
-                    MessageBox.getBox("Success", "Add bus completely", Alert.AlertType.INFORMATION).show();
-                    this.loadTables();
+                if (bs.getBusByLicensePlate(licensePlate) == null) {
+                    if (bs.addBus(newBus)) {
+                        MessageBox.getBox("Success", "Add bus completely", Alert.AlertType.INFORMATION).show();
+                        this.loadTables();
+                    } else {
+                        MessageBox.getBox("Fail", "Add bus failure", Alert.AlertType.INFORMATION).show();
+                    }
                 } else {
-                    MessageBox.getBox("Fail", "Add bus failure", Alert.AlertType.INFORMATION).show();
+                    MessageBox.getBox("Something wrong", "The bus is exist", Alert.AlertType.INFORMATION).show();
                 }
 
             } catch (SQLException ex) {
@@ -181,25 +188,38 @@ public class BusController implements Initializable {
 
     public void updateBusHandler(ActionEvent e) {
         if (tbBus.getSelectionModel().getSelectedItem() != null) {
-            int busID = tbBus.getSelectionModel().getSelectedItem().getBusID();
-            String name = txtName.getText();
-            String manufacturer = txtManufacturer.getText();
-            String licensePlate = txtLicense.getText();
-            int totalSeat = Integer.parseInt(txtSeat.getText());
-            String type = txtType.getText();
 
-            Bus updatedBus = new Bus(busID, name, manufacturer, licensePlate, totalSeat, type);
+            if ((txtName.getText() != null && !txtName.getText().isEmpty())
+                    && (txtManufacturer.getText() != null && !txtManufacturer.getText().isEmpty())
+                    && (txtLicense.getText() != null && !txtLicense.getText().isEmpty())
+                    && (txtSeat.getText() != null && !txtSeat.getText().isEmpty())
+                    && (txtType.getText() != null && !txtType.getText().isEmpty())) {
 
-            try {
-                if (bs.updateBus(updatedBus)) {
-                    MessageBox.getBox("Success", "Updated bus completely", Alert.AlertType.INFORMATION).show();
-                    this.loadTables();
-                } else {
-                    MessageBox.getBox("Fail", "Updated bus failure", Alert.AlertType.INFORMATION).show();
+                int busID = tbBus.getSelectionModel().getSelectedItem().getBusID();
+                String name = txtName.getText();
+                String manufacturer = txtManufacturer.getText();
+                String licensePlate = txtLicense.getText();
+                int totalSeat = Integer.parseInt(txtSeat.getText());
+                String type = txtType.getText();
+                Bus updatedBus = new Bus(busID, name, manufacturer, licensePlate, totalSeat, type);
+
+                try {
+                    if (bs.getBusByLicensePlate(licensePlate) == null) {
+                        if (bs.updateBus(updatedBus)) {
+                            MessageBox.getBox("Success", "Updated bus completely", Alert.AlertType.INFORMATION).show();
+                            this.loadTables();
+                        } else {
+                            MessageBox.getBox("Fail", "Updated bus failure", Alert.AlertType.INFORMATION).show();
+                        }
+                    } else {
+                        MessageBox.getBox("Something wrong", "The bus is exist", Alert.AlertType.INFORMATION).show();
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-            } catch (SQLException ex) {
-                Logger.getLogger(BusController.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                MessageBox.getBox("Something Wrong", "Some field is empty", Alert.AlertType.INFORMATION).show();
             }
 
         } else {

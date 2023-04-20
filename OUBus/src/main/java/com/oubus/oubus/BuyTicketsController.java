@@ -310,6 +310,7 @@ public class BuyTicketsController implements Initializable {
         java.util.Date date = Calendar.getInstance().getTime();
         String aDate = dateFormat.format(date);
         String tripTime = bill.getTrip().getDateOfDeparture() + " " + bill.getTrip().getTimeOfDeparture() + ":00";
+
         if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
             if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 1800)) {
                 if (BillServices.checkExist(bill)) {
@@ -338,6 +339,7 @@ public class BuyTicketsController implements Initializable {
                 } else {
                     MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
                 }
+
             }
         } else {
             MessageBox.getBox("ERROR", "Đã hết thời gian tương tác!!!", Alert.AlertType.ERROR).show();
@@ -397,9 +399,11 @@ public class BuyTicketsController implements Initializable {
                 tr = null;
             }
 
+
             List<Bill> bills = bs.searchBill(sCus, tr);
             loadTable(bills);
         }
+
     }
 
     public void updateBillHandler(ActionEvent e) throws SQLException {
