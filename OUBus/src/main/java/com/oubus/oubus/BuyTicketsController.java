@@ -310,32 +310,36 @@ public class BuyTicketsController implements Initializable {
         java.util.Date date = Calendar.getInstance().getTime();
         String aDate = dateFormat.format(date);
         String tripTime = bill.getTrip().getDateOfDeparture() + " " + bill.getTrip().getTimeOfDeparture() + ":00";
-        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 3600)) {
-            if (BillServices.checkExist(bill)) {
-                try {
-                    b.deleteBill(bill.getBillID());
-                    loadTableColumn();
-                } catch (SQLException ex) {
-                    Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
+            if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 1800)) {
+                if (BillServices.checkExist(bill)) {
+                    try {
+                        b.deleteBill(bill.getBillID());
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    MessageBox.getBox("SUCCESS", "Đã huỷ vé thành công!!!", Alert.AlertType.INFORMATION).show();
+                } else {
+                    MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
                 }
-                MessageBox.getBox("SUCCESS", "Đã huỷ vé thành công!!!", Alert.AlertType.INFORMATION).show();
             } else {
-                MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
-            }
-        } else if (RuleSetServices.CheckTime(RuleSetServices.timeCalculator(aDate, tripTime), 300)) {
-            Bill.statePayment bookingState = Bill.statePayment.CANCELLED;
-            bill.setBookingState(bookingState);
-            bill.setAquiredDate(aDate);
-            if (BillServices.checkExist(bill)) {
-                try {
-                    b.updateBill(bill);
-                    loadTableColumn();
-                } catch (SQLException ex) {
-                    Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+                Bill.statePayment bookingState = Bill.statePayment.CANCELLED;
+                bill.setBookingState(bookingState);
+                bill.setAquiredDate(aDate);
+                if (BillServices.checkExist(bill)) {
+                    try {
+                        b.updateBill(bill);
+                        loadTableColumn();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    MessageBox.getBox("SUCCESS", "Đã huỷ vé thành công!!!", Alert.AlertType.INFORMATION).show();
+                } else {
+                    MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
                 }
-                MessageBox.getBox("SUCCESS", "Đã huỷ vé thành công!!!", Alert.AlertType.INFORMATION).show();
-            } else {
-                MessageBox.getBox("ERROR", "Vé này đã tồn tại!!!", Alert.AlertType.INFORMATION).show();
+
             }
         } else {
             MessageBox.getBox("ERROR", "Đã hết thời gian tương tác!!!", Alert.AlertType.ERROR).show();
@@ -395,11 +399,10 @@ public class BuyTicketsController implements Initializable {
                 tr = null;
             }
 
+
             List<Bill> bills = bs.searchBill(sCus, tr);
             loadTable(bills);
         }
-
-    
 
     }
 
