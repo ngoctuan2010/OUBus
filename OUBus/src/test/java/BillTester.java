@@ -38,8 +38,6 @@ public class BillTester {
     private static CustomerServices cus;
     private static EmployeeServices emps;
     private static TripServices ts;
-    private static BusServices buS;
-    private static LocationServices ls;
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
     @BeforeAll
@@ -49,8 +47,7 @@ public class BillTester {
         } catch (SQLException ex) {
             Logger.getLogger(TripTester.class.getName()).log(Level.SEVERE, null, ex);
         }
-        buS = new BusServices();
-        ls = new LocationServices();
+
         bis = new BillServices();
         cus = new CustomerServices();
         emps =new EmployeeServices();
@@ -69,8 +66,8 @@ public class BillTester {
     
     @Test
     public void TestAddBill() throws SQLException {
-        Customer cust = cus.getCustomerByPhone("242424");
-        Employee emp = emps.getEmployeeByID("Nay");
+        Customer cust = cus.getCustomerByPhone("0963841763");
+        Employee emp = emps.getEmployeeByID("8e8e36e1-f078-4f2b-baa8-ac3882c11cbd");
         Trip trip = ts.getTripByID(2);
         int seat = 1;
         Bill.statePayment state = Bill.statePayment.BOOKED;
@@ -84,8 +81,8 @@ public class BillTester {
     
     @Test
     public void TestUpdateBill() throws SQLException {
-        Customer cust = cus.getCustomerByPhone("242424");
-        Employee emp = emps.getEmployeeByID("Nay");
+        Customer cust = cus.getCustomerByPhone("0963841763");
+        Employee emp = emps.getEmployeeByID("8e8e36e1-f078-4f2b-baa8-ac3882c11cbd");
         Trip trip = ts.getTripByID(2);
         int seat = 1;
         Bill.statePayment state = Bill.statePayment.PAID;
@@ -99,6 +96,7 @@ public class BillTester {
     
     @Test
    public void TestDeleteBill() throws SQLException {
+       
         Bill bill = bis.getBill().get(0);
         boolean testing = bis.deleteBill(bill.getBillID());
         Assertions.assertTrue(testing);

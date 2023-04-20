@@ -230,10 +230,10 @@ public class BillServices {
         List<Bill> bills = new ArrayList<>();
         EmployeeServices es = new EmployeeServices();
         TripServices ts = new TripServices();
-        int i = 0;
+        
 
         try (Connection cnn = JdbcUtils.getConn()) {
-            i = 0;
+           int i = 0;
 
             String sql = "SELECT * FROM bill WHERE";
             if (cus != null) {
@@ -275,6 +275,50 @@ public class BillServices {
         }
         return bills;
     }
+
+    
+    public List<Bill> getInvalidBills() throws SQLException{
+        List<Bill> bills = new ArrayList<>();
+        EmployeeServices es = new EmployeeServices();
+        TripServices ts = new TripServices();
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql ="SELECT * FROM bill WHERE DATE_ADD(aquiredDate, INTERVAL 1800 second) < NOW() AND state = 1";
+            PreparedStatement stm = conn.prepareCall(sql);
+            ResultSet rs =stm.executeQuery();
+            while (rs.next()) {
+                String billID = rs.getString("billID");
+                Customer customer = CustomerServices.getCustomerByID(rs.getString("customerID"));
+                Employee emp = es.getEmployeeByID(rs.getString("employeeID"));
+                Trip trip = ts.getTripByID(rs.getInt("tripID"));
+                int seat = rs.getInt("seatNo");
+                Bill.statePayment state = Bill.statePayment.values()[rs.getInt("state")];
+                Double totalDue = rs.getDouble("totalDue");
+                String aquiredDate = rs.getString("aquiredDate");
+             
+                Bill bill = new Bill(billID, customer, emp, trip, seat, state, totalDue, aquiredDate);
+                bills.add(bill);
+            }
+            return bills;
+        }
+    }
+    
+    public  int getAmountTicketOfCustomer (String customerId) throws SQLException{
+        try (Connection conn = JdbcUtils.getConn()){
+            conn.setAutoCommit(false);
+            String sql =" SELECT COUNT(*) FROM ticket WHERE customerID =?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(0, customerId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count;
+            }
+                return 0;
+        }
+    }
+    
+
+
 
 
     public List<Bill> getInvalidBills() throws SQLException{
@@ -319,4 +363,5 @@ public class BillServices {
         }
     }
     
+
 }

@@ -235,13 +235,13 @@ public class BuyTicketsController implements Initializable {
         if (!CustomerServices.checkUnique(cus)) {
             try {
                 c.addCustomer(cus);
-                loadTableColumn();
+
             } catch (SQLException ex) {
                 Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             cus = CustomerServices.getCustomerByPhone(phone);
-            loadTableColumn();
+
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
@@ -251,9 +251,12 @@ public class BuyTicketsController implements Initializable {
             if (!BillServices.checkSeatUnique(bill) && BillServices.checkOverSeat(bill)) {
                 try {
                     b.addBill(bill);
+
                     loadTableColumn();
                     this.loadTable(b.getBillByTripID(bill.getTrip().getTripID()));
-                    MessageBox.getBox("SUCCESS", "Bán vé thành công!!!", Alert.AlertType.INFORMATION).show();
+
+                    MessageBox.getBox("SUCCESS", "Đã mua vé thành công!!!", Alert.AlertType.INFORMATION).show();
+
                 } catch (SQLException ex) {
                     Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -281,13 +284,11 @@ public class BuyTicketsController implements Initializable {
         if (!CustomerServices.checkUnique(cus)) {
             try {
                 c.addCustomer(cus);
-                loadTableColumn();
             } catch (SQLException ex) {
                 Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             cus = CustomerServices.getCustomerByPhone(phone);
-            loadTableColumn();
         }
 
         Bill bill = new Bill(cus, employ, orderTrip, seat, bookingState, totalDue, aDate);
@@ -296,7 +297,9 @@ public class BuyTicketsController implements Initializable {
             if (!BillServices.checkSeatUnique(bill) && BillServices.checkOverSeat(bill)) {
                 try {
                     b.addBill(bill);
-                    loadTableColumn();
+                    List<Bill> bills = b.getBill();
+                    MessageBox.getBox("SUCCESS", "Đã đặt vé thành công!!!", Alert.AlertType.INFORMATION).show();
+                    loadTable(bills);
                 } catch (SQLException ex) {
                     Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -319,7 +322,8 @@ public class BuyTicketsController implements Initializable {
                 if (BillServices.checkExist(bill)) {
                     try {
                         b.deleteBill(bill.getBillID());
-                        loadTableColumn();
+                        List<Bill> bills = b.getBill();
+                        loadTable(bills);
                     } catch (SQLException ex) {
                         Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -334,7 +338,8 @@ public class BuyTicketsController implements Initializable {
                 if (BillServices.checkExist(bill)) {
                     try {
                         b.updateBill(bill);
-                        loadTableColumn();
+                        List<Bill> bills = b.getBill();
+                        loadTable(bills);
                     } catch (SQLException ex) {
                         Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -359,7 +364,8 @@ public class BuyTicketsController implements Initializable {
             bill.setAquiredDate(aDate);
             try {
                 b.updateBill(bill);
-                loadTableColumn();
+                List<Bill> bills = b.getBill();
+                loadTable(bills);
             } catch (SQLException ex) {
                 Logger.getLogger(BillServices.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -402,7 +408,6 @@ public class BuyTicketsController implements Initializable {
                 tr = null;
             }
 
-
             List<Bill> bills = bs.searchBill(sCus, tr);
             loadTable(bills);
         }
@@ -413,7 +418,7 @@ public class BuyTicketsController implements Initializable {
         if (tbBill.getSelectionModel().getSelectedItem() != null) {
             Bill bill = new Bill();
             Customer cus = new Customer();
-            // Employee emp = new Employee();
+            Employee emp = new Employee();
 
             Trip trip = new Trip();
 
