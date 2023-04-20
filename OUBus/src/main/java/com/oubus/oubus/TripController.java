@@ -122,7 +122,11 @@ public class TripController implements Initializable {
                             Parent main = loader.load();
 
                             BuyTicketsController btc = loader.getController();
-                            btc.initTrip(tr);
+                            try {
+                                btc.initTrip(tr);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TripController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 
                             Stage stg = new Stage();
                             stg.setScene(new Scene(main));

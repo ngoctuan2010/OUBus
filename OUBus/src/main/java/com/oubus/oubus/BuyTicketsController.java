@@ -88,7 +88,7 @@ public class BuyTicketsController implements Initializable {
     @FXML
     Button btnChangeTrip;
 
-    public void initTrip(Trip trip) {
+    public void initTrip(Trip trip) throws SQLException {
         TimeChoice.setText(trip.getTimeOfDeparture() + "");
         DateGo.setText(trip.getDateOfDeparture() + "");
         goLocation.setText(trip.getDeparture() + "");
@@ -96,6 +96,8 @@ public class BuyTicketsController implements Initializable {
         busType.setText(trip.getBus().getVehicleName() + "");
 
         this.orderTrip = trip;
+        List<Bill> bills = b.getBillByTripID(trip.getTripID());
+        this.loadTable(bills);
 
     }
 
@@ -249,9 +251,12 @@ public class BuyTicketsController implements Initializable {
             if (!BillServices.checkSeatUnique(bill) && BillServices.checkOverSeat(bill)) {
                 try {
                     b.addBill(bill);
-                    List<Bill> bills = b.getBill();
-                    loadTable(bills);
+
+                    loadTableColumn();
+                    this.loadTable(b.getBillByTripID(bill.getTrip().getTripID()));
+
                     MessageBox.getBox("SUCCESS", "Đã mua vé thành công!!!", Alert.AlertType.INFORMATION).show();
+
                 } catch (SQLException ex) {
                     Logger.getLogger(CustomerServices.class.getName()).log(Level.SEVERE, null, ex);
                 }
