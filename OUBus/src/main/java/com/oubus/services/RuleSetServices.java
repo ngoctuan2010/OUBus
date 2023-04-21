@@ -42,7 +42,7 @@ public class RuleSetServices {
 //        change ticket 3600 sec
 //        interaction lock 300 sec
         
-        return timeVal>timeRes;
+        return timeVal>=timeRes;
     }
 
 }

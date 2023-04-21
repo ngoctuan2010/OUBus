@@ -100,7 +100,7 @@ public class EmployeeTester {
     @Test
     public void testDeleteEmployee() throws SQLException{
         String employeeID = "5fb7de99-a235-42b0-b097-a39022d69557";
-        boolean actual = es.eleteEmployee(employeeID);
+        boolean actual = es.deleteEmployee(employeeID);
         Assertions.assertTrue(actual);
     }
     
